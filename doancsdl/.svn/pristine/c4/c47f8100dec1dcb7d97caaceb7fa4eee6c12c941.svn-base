@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F3E856A2-4275-45C4-B133-FDA3502B586D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>A.GiaoDien</RootNamespace>
+    <AssemblyName>A.GiaoDien</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DanhSachLopHoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhSachLopHoc.Designer.cs">
+      <DependentUpon>DanhSachLopHoc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DanhSachSinhVien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhSachSinhVien.Designer.cs">
+      <DependentUpon>DanhSachSinhVien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GiaoDiemChinh.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GiaoDiemChinh.Designer.cs">
+      <DependentUpon>GiaoDiemChinh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KetQuaHocTapCuaSinhVien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KetQuaHocTapCuaSinhVien.Designer.cs">
+      <DependentUpon>KetQuaHocTapCuaSinhVien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NhapDiem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NhapDiem.Designer.cs">
+      <DependentUpon>NhapDiem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuanLyLopHoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QuanLyLopHoc.Designer.cs">
+      <DependentUpon>QuanLyLopHoc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="QuanLySinhVien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QuanLySinhVien.Designer.cs">
+      <DependentUpon>QuanLySinhVien.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="DanhSachLopHoc.resx">
+      <DependentUpon>DanhSachLopHoc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhSachSinhVien.resx">
+      <DependentUpon>DanhSachSinhVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GiaoDiemChinh.resx">
+      <DependentUpon>GiaoDiemChinh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KetQuaHocTapCuaSinhVien.resx">
+      <DependentUpon>KetQuaHocTapCuaSinhVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NhapDiem.resx">
+      <DependentUpon>NhapDiem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="QuanLyLopHoc.resx">
+      <DependentUpon>QuanLyLopHoc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QuanLySinhVien.resx">
+      <DependentUpon>QuanLySinhVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\B.ThaoTac\B.ThaoTac.csproj">
+      <Project>{ac238d76-2cf3-4458-b0c8-cdb0e632be38}</Project>
+      <Name>B.ThaoTac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\D.ThongTin\D.ThongTin.csproj">
+      <Project>{176b59f6-cfc2-4084-97f0-01bbb0985bc4}</Project>
+      <Name>D.ThongTin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\select.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

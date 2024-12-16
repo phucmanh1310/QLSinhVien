@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+using D.ThongTin;
+using C.DuLieu;
+
+namespace B.ThaoTac
+{
+    public class BangDiem_B
+    {
+        BangDiem_C cls = new BangDiem_C();
+        public DataTable LayToanBoKetQuaSinhVien(BangDiem_ThongTin BD)
+        {
+            return cls.LayToanBoKetQuaSinhVien(BD);
+        }
+
+        public DataTable LayDiemTheoKySinhVien(BangDiem_ThongTin BD)
+        {
+            return cls.LayDiemTheoKySinhVien(BD);
+        }
+
+        public int ThemKetQua(BangDiem_ThongTin BD)
+        {
+            return cls.ThemKetQua(BD);
+        }
+
+        public DataTable Lay3DiemTheoKySinhVien(BangDiem_ThongTin BD)
+        {
+            return cls.Lay3DiemTheoKySinhVien(BD);    
+        }
+
+        public int UpDateKetQua(BangDiem_ThongTin BD)
+        {
+            return cls.UpDateKetQua(BD);
+        }
+
+        public int UpDateToanBoKetQua(BangDiem_ThongTin BD)
+        {
+            return cls.UpDateToanBoKetQua(BD);
+        }
+
+        public int UpDateDiemQTVaThi(BangDiem_ThongTin BD)
+        {
+            return cls.UpDateDiemQTVaThi(BD);
+        }
+    }
+}

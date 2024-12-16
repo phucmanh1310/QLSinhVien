@@ -1,0 +1,715 @@
+﻿namespace A.GiaoDien
+{
+    partial class GiaoDienChinh
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GiaoDienChinh));
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.đổiMậtKhẩuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.đăngXuấtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trợGiúpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thôngTinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tbDanhSachSinhVien_TTSV = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.btXoa_TTSV = new System.Windows.Forms.Button();
+            this.btChinhSua_TTSV = new System.Windows.Forms.Button();
+            this.btThem_TTSV = new System.Windows.Forms.Button();
+            this.btTimKiem = new System.Windows.Forms.Button();
+            this.txtTimKiem_TTSV = new System.Windows.Forms.TextBox();
+            this.ChonAnh_TTSV = new System.Windows.Forms.Button();
+            this.Anh_TTSV = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.raCo_TTSV = new System.Windows.Forms.RadioButton();
+            this.raKhong_TTSV = new System.Windows.Forms.RadioButton();
+            this.txtDiaChi_TTSV = new System.Windows.Forms.RichTextBox();
+            this.cbLop_TTSV = new System.Windows.Forms.ComboBox();
+            this.raNu_TTSV = new System.Windows.Forms.RadioButton();
+            this.raNam_TTSV = new System.Windows.Forms.RadioButton();
+            this.txtNgaySinh_TTSV = new System.Windows.Forms.DateTimePicker();
+            this.txtTenSinhVien_TTSV = new System.Windows.Forms.TextBox();
+            this.txtMaSinhVien_TTSV = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.menuStrip1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbDanhSachSinhVien_TTSV)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Anh_TTSV)).BeginInit();
+            this.panel1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem4,
+            this.trợGiúpToolStripMenuItem,
+            this.thôngTinToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(947, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem3});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(96, 20);
+            this.toolStripMenuItem1.Text = "Chương Trình.";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(133, 22);
+            this.toolStripMenuItem2.Text = "Trang Chủ.";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(133, 22);
+            this.toolStripMenuItem3.Text = "Thoát.";
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.đổiMậtKhẩuToolStripMenuItem,
+            this.đăngXuấtToolStripMenuItem});
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(75, 20);
+            this.toolStripMenuItem4.Text = "Tài Khoản.";
+            // 
+            // đổiMậtKhẩuToolStripMenuItem
+            // 
+            this.đổiMậtKhẩuToolStripMenuItem.Name = "đổiMậtKhẩuToolStripMenuItem";
+            this.đổiMậtKhẩuToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.đổiMậtKhẩuToolStripMenuItem.Text = "Đổi Mật Khẩu.";
+            // 
+            // đăngXuấtToolStripMenuItem
+            // 
+            this.đăngXuấtToolStripMenuItem.Name = "đăngXuấtToolStripMenuItem";
+            this.đăngXuấtToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.đăngXuấtToolStripMenuItem.Text = "Đăng Xuất.";
+            // 
+            // trợGiúpToolStripMenuItem
+            // 
+            this.trợGiúpToolStripMenuItem.Name = "trợGiúpToolStripMenuItem";
+            this.trợGiúpToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+            this.trợGiúpToolStripMenuItem.Text = "Trợ Giúp.";
+            // 
+            // thôngTinToolStripMenuItem
+            // 
+            this.thôngTinToolStripMenuItem.Name = "thôngTinToolStripMenuItem";
+            this.thôngTinToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
+            this.thôngTinToolStripMenuItem.Text = "Thông Tin.";
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.AutoSize = false;
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripButton2,
+            this.toolStripButton3,
+            this.toolStripButton4,
+            this.toolStripButton5,
+            this.toolStripButton6,
+            this.toolStripButton7});
+            this.toolStrip1.Location = new System.Drawing.Point(221, 24);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(726, 43);
+            this.toolStrip1.TabIndex = 1;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(86, 40);
+            this.toolStripButton1.Text = "Trang Chủ.";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(95, 40);
+            this.toolStripButton2.Text = "Người Dùng.";
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(126, 40);
+            this.toolStripButton3.Text = "Quản Lý Sinh Viên.";
+            // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(121, 40);
+            this.toolStripButton4.Text = "Quản Lý Đào Tạo.";
+            // 
+            // toolStripButton5
+            // 
+            this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
+            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton5.Name = "toolStripButton5";
+            this.toolStripButton5.Size = new System.Drawing.Size(74, 40);
+            this.toolStripButton5.Text = "Báo Cáo.";
+            // 
+            // toolStripButton6
+            // 
+            this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
+            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton6.Name = "toolStripButton6";
+            this.toolStripButton6.Size = new System.Drawing.Size(76, 40);
+            this.toolStripButton6.Text = "Trợ Giúp.";
+            // 
+            // toolStripButton7
+            // 
+            this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
+            this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton7.Name = "toolStripButton7";
+            this.toolStripButton7.Size = new System.Drawing.Size(61, 40);
+            this.toolStripButton7.Text = "Thoát.";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.groupBox1.Location = new System.Drawing.Point(0, 60);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(215, 612);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Thông Tin Người Dùng.";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.tabControl1);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(221, 60);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(726, 612);
+            this.flowLayoutPanel1.TabIndex = 3;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(723, 609);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.btXoa_TTSV);
+            this.tabPage1.Controls.Add(this.btChinhSua_TTSV);
+            this.tabPage1.Controls.Add(this.btThem_TTSV);
+            this.tabPage1.Controls.Add(this.btTimKiem);
+            this.tabPage1.Controls.Add(this.txtTimKiem_TTSV);
+            this.tabPage1.Controls.Add(this.ChonAnh_TTSV);
+            this.tabPage1.Controls.Add(this.Anh_TTSV);
+            this.tabPage1.Controls.Add(this.panel1);
+            this.tabPage1.Controls.Add(this.txtDiaChi_TTSV);
+            this.tabPage1.Controls.Add(this.cbLop_TTSV);
+            this.tabPage1.Controls.Add(this.raNu_TTSV);
+            this.tabPage1.Controls.Add(this.raNam_TTSV);
+            this.tabPage1.Controls.Add(this.txtNgaySinh_TTSV);
+            this.tabPage1.Controls.Add(this.txtTenSinhVien_TTSV);
+            this.tabPage1.Controls.Add(this.txtMaSinhVien_TTSV);
+            this.tabPage1.Controls.Add(this.label8);
+            this.tabPage1.Controls.Add(this.label7);
+            this.tabPage1.Controls.Add(this.label6);
+            this.tabPage1.Controls.Add(this.label5);
+            this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.label3);
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(715, 583);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Thông Tin.";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.tbDanhSachSinhVien_TTSV);
+            this.groupBox2.Location = new System.Drawing.Point(9, 363);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(700, 214);
+            this.groupBox2.TabIndex = 18;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Danh Sách Sinh Viên.";
+            // 
+            // tbDanhSachSinhVien_TTSV
+            // 
+            this.tbDanhSachSinhVien_TTSV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tbDanhSachSinhVien_TTSV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.Column5,
+            this.Column6,
+            this.Column7});
+            this.tbDanhSachSinhVien_TTSV.Location = new System.Drawing.Point(7, 19);
+            this.tbDanhSachSinhVien_TTSV.Name = "tbDanhSachSinhVien_TTSV";
+            this.tbDanhSachSinhVien_TTSV.Size = new System.Drawing.Size(687, 188);
+            this.tbDanhSachSinhVien_TTSV.TabIndex = 0;
+            this.tbDanhSachSinhVien_TTSV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbDanhSachSinhVien_TTSV_CellContentClick);
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "MaSinhVien";
+            this.Column1.HeaderText = "Mã Sinh Viên";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "TenSinhVien";
+            this.Column2.HeaderText = "Tên Sinh Viên";
+            this.Column2.Name = "Column2";
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "NgaySinh";
+            this.Column3.HeaderText = "Ngày Sinh";
+            this.Column3.Name = "Column3";
+            // 
+            // Column4
+            // 
+            this.Column4.DataPropertyName = "GioiTinh";
+            this.Column4.HeaderText = "Giới Tính";
+            this.Column4.Name = "Column4";
+            this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Column5
+            // 
+            this.Column5.DataPropertyName = "Lop";
+            this.Column5.HeaderText = "Lớp";
+            this.Column5.Name = "Column5";
+            // 
+            // Column6
+            // 
+            this.Column6.DataPropertyName = "DiaChi";
+            this.Column6.HeaderText = "Địa Chỉ";
+            this.Column6.Name = "Column6";
+            // 
+            // Column7
+            // 
+            this.Column7.DataPropertyName = "ChinhSachUuTien";
+            this.Column7.HeaderText = "Chính Sách Ưu Tiên";
+            this.Column7.Name = "Column7";
+            this.Column7.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // btXoa_TTSV
+            // 
+            this.btXoa_TTSV.Location = new System.Drawing.Point(405, 306);
+            this.btXoa_TTSV.Name = "btXoa_TTSV";
+            this.btXoa_TTSV.Size = new System.Drawing.Size(75, 23);
+            this.btXoa_TTSV.TabIndex = 17;
+            this.btXoa_TTSV.Text = "Xóa";
+            this.btXoa_TTSV.UseVisualStyleBackColor = true;
+            this.btXoa_TTSV.Click += new System.EventHandler(this.btXoa_TTSV_Click);
+            // 
+            // btChinhSua_TTSV
+            // 
+            this.btChinhSua_TTSV.Location = new System.Drawing.Point(299, 305);
+            this.btChinhSua_TTSV.Name = "btChinhSua_TTSV";
+            this.btChinhSua_TTSV.Size = new System.Drawing.Size(75, 23);
+            this.btChinhSua_TTSV.TabIndex = 16;
+            this.btChinhSua_TTSV.Text = "Chỉnh Sửa";
+            this.btChinhSua_TTSV.UseVisualStyleBackColor = true;
+            this.btChinhSua_TTSV.Click += new System.EventHandler(this.btChinhSua_TTSV_Click);
+            // 
+            // btThem_TTSV
+            // 
+            this.btThem_TTSV.Location = new System.Drawing.Point(185, 306);
+            this.btThem_TTSV.Name = "btThem_TTSV";
+            this.btThem_TTSV.Size = new System.Drawing.Size(75, 23);
+            this.btThem_TTSV.TabIndex = 15;
+            this.btThem_TTSV.Text = "Thêm Mới";
+            this.btThem_TTSV.UseVisualStyleBackColor = true;
+            this.btThem_TTSV.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // btTimKiem
+            // 
+            this.btTimKiem.Location = new System.Drawing.Point(622, 48);
+            this.btTimKiem.Name = "btTimKiem";
+            this.btTimKiem.Size = new System.Drawing.Size(75, 23);
+            this.btTimKiem.TabIndex = 14;
+            this.btTimKiem.Text = "Tìm Kiếm";
+            this.btTimKiem.UseVisualStyleBackColor = true;
+            this.btTimKiem.Click += new System.EventHandler(this.btTimKiem_Click);
+            // 
+            // txtTimKiem_TTSV
+            // 
+            this.txtTimKiem_TTSV.Location = new System.Drawing.Point(458, 50);
+            this.txtTimKiem_TTSV.Name = "txtTimKiem_TTSV";
+            this.txtTimKiem_TTSV.Size = new System.Drawing.Size(149, 20);
+            this.txtTimKiem_TTSV.TabIndex = 13;
+            // 
+            // ChonAnh_TTSV
+            // 
+            this.ChonAnh_TTSV.Location = new System.Drawing.Point(599, 244);
+            this.ChonAnh_TTSV.Name = "ChonAnh_TTSV";
+            this.ChonAnh_TTSV.Size = new System.Drawing.Size(75, 23);
+            this.ChonAnh_TTSV.TabIndex = 12;
+            this.ChonAnh_TTSV.Text = "Chọn Ảnh";
+            this.ChonAnh_TTSV.UseVisualStyleBackColor = true;
+            this.ChonAnh_TTSV.Click += new System.EventHandler(this.ChonAnh_TTSV_Click);
+            // 
+            // Anh_TTSV
+            // 
+            this.Anh_TTSV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Anh_TTSV.Location = new System.Drawing.Point(576, 97);
+            this.Anh_TTSV.Name = "Anh_TTSV";
+            this.Anh_TTSV.Size = new System.Drawing.Size(121, 135);
+            this.Anh_TTSV.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.Anh_TTSV.TabIndex = 11;
+            this.Anh_TTSV.TabStop = false;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.raCo_TTSV);
+            this.panel1.Controls.Add(this.raKhong_TTSV);
+            this.panel1.Location = new System.Drawing.Point(130, 244);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(150, 27);
+            this.panel1.TabIndex = 10;
+            // 
+            // raCo_TTSV
+            // 
+            this.raCo_TTSV.AutoSize = true;
+            this.raCo_TTSV.Location = new System.Drawing.Point(3, 3);
+            this.raCo_TTSV.Name = "raCo_TTSV";
+            this.raCo_TTSV.Size = new System.Drawing.Size(38, 17);
+            this.raCo_TTSV.TabIndex = 8;
+            this.raCo_TTSV.TabStop = true;
+            this.raCo_TTSV.Text = "Có";
+            this.raCo_TTSV.UseVisualStyleBackColor = true;
+            this.raCo_TTSV.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
+            // 
+            // raKhong_TTSV
+            // 
+            this.raKhong_TTSV.AutoSize = true;
+            this.raKhong_TTSV.Location = new System.Drawing.Point(75, 3);
+            this.raKhong_TTSV.Name = "raKhong_TTSV";
+            this.raKhong_TTSV.Size = new System.Drawing.Size(56, 17);
+            this.raKhong_TTSV.TabIndex = 9;
+            this.raKhong_TTSV.TabStop = true;
+            this.raKhong_TTSV.Text = "Không";
+            this.raKhong_TTSV.UseVisualStyleBackColor = true;
+            this.raKhong_TTSV.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
+            // 
+            // txtDiaChi_TTSV
+            // 
+            this.txtDiaChi_TTSV.Location = new System.Drawing.Point(380, 196);
+            this.txtDiaChi_TTSV.Name = "txtDiaChi_TTSV";
+            this.txtDiaChi_TTSV.Size = new System.Drawing.Size(150, 69);
+            this.txtDiaChi_TTSV.TabIndex = 7;
+            this.txtDiaChi_TTSV.Text = "";
+            // 
+            // cbLop_TTSV
+            // 
+            this.cbLop_TTSV.FormattingEnabled = true;
+            this.cbLop_TTSV.Location = new System.Drawing.Point(380, 102);
+            this.cbLop_TTSV.Name = "cbLop_TTSV";
+            this.cbLop_TTSV.Size = new System.Drawing.Size(150, 21);
+            this.cbLop_TTSV.TabIndex = 6;
+            // 
+            // raNu_TTSV
+            // 
+            this.raNu_TTSV.AutoSize = true;
+            this.raNu_TTSV.Location = new System.Drawing.Point(458, 153);
+            this.raNu_TTSV.Name = "raNu_TTSV";
+            this.raNu_TTSV.Size = new System.Drawing.Size(39, 17);
+            this.raNu_TTSV.TabIndex = 5;
+            this.raNu_TTSV.TabStop = true;
+            this.raNu_TTSV.Text = "Nữ";
+            this.raNu_TTSV.UseVisualStyleBackColor = true;
+            this.raNu_TTSV.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            // 
+            // raNam_TTSV
+            // 
+            this.raNam_TTSV.AutoSize = true;
+            this.raNam_TTSV.Location = new System.Drawing.Point(380, 153);
+            this.raNam_TTSV.Name = "raNam_TTSV";
+            this.raNam_TTSV.Size = new System.Drawing.Size(47, 17);
+            this.raNam_TTSV.TabIndex = 4;
+            this.raNam_TTSV.Text = "Nam";
+            this.raNam_TTSV.UseVisualStyleBackColor = true;
+            this.raNam_TTSV.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // txtNgaySinh_TTSV
+            // 
+            this.txtNgaySinh_TTSV.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNgaySinh_TTSV.CustomFormat = "dd/MM/yyyy";
+            this.txtNgaySinh_TTSV.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.txtNgaySinh_TTSV.Location = new System.Drawing.Point(130, 196);
+            this.txtNgaySinh_TTSV.Name = "txtNgaySinh_TTSV";
+            this.txtNgaySinh_TTSV.Size = new System.Drawing.Size(150, 20);
+            this.txtNgaySinh_TTSV.TabIndex = 3;
+            // 
+            // txtTenSinhVien_TTSV
+            // 
+            this.txtTenSinhVien_TTSV.Location = new System.Drawing.Point(130, 150);
+            this.txtTenSinhVien_TTSV.Multiline = true;
+            this.txtTenSinhVien_TTSV.Name = "txtTenSinhVien_TTSV";
+            this.txtTenSinhVien_TTSV.Size = new System.Drawing.Size(150, 20);
+            this.txtTenSinhVien_TTSV.TabIndex = 2;
+            // 
+            // txtMaSinhVien_TTSV
+            // 
+            this.txtMaSinhVien_TTSV.Location = new System.Drawing.Point(130, 101);
+            this.txtMaSinhVien_TTSV.Multiline = true;
+            this.txtMaSinhVien_TTSV.Name = "txtMaSinhVien_TTSV";
+            this.txtMaSinhVien_TTSV.Size = new System.Drawing.Size(150, 20);
+            this.txtMaSinhVien_TTSV.TabIndex = 2;
+            // 
+            // label8
+            // 
+            this.label8.Location = new System.Drawing.Point(6, 245);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(110, 20);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Chính Sách Ưu Tiên:";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(317, 198);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(44, 13);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Địa Chỉ:";
+            // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(308, 101);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 20);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Lớp:";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(296, 151);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 20);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "Giới Tính:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(3, 198);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(110, 20);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Ngày Sinh:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(6, 149);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(110, 20);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Tên Sinh Viên:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(3, 101);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(110, 20);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Mã Sinh Viên:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Times New Roman", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.label1.Location = new System.Drawing.Point(232, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(229, 26);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Thông Tin Sinh Viên.";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(715, 583);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // GiaoDienChinh
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(947, 672);
+            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
+            this.Name = "GiaoDienChinh";
+            this.Text = "GiaoDienChinh";
+            this.Load += new System.EventHandler(this.GiaoDienChinh_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tbDanhSachSinhVien_TTSV)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Anh_TTSV)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem đổiMậtKhẩuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem đăngXuấtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem trợGiúpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thôngTinToolStripMenuItem;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.ToolStripButton toolStripButton5;
+        private System.Windows.Forms.ToolStripButton toolStripButton6;
+        private System.Windows.Forms.ToolStripButton toolStripButton7;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.RadioButton raKhong_TTSV;
+        private System.Windows.Forms.RadioButton raCo_TTSV;
+        private System.Windows.Forms.RichTextBox txtDiaChi_TTSV;
+        private System.Windows.Forms.ComboBox cbLop_TTSV;
+        private System.Windows.Forms.RadioButton raNu_TTSV;
+        private System.Windows.Forms.RadioButton raNam_TTSV;
+        private System.Windows.Forms.TextBox txtTenSinhVien_TTSV;
+        private System.Windows.Forms.TextBox txtMaSinhVien_TTSV;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button ChonAnh_TTSV;
+        private System.Windows.Forms.PictureBox Anh_TTSV;
+        private System.Windows.Forms.DateTimePicker txtNgaySinh_TTSV;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.DataGridView tbDanhSachSinhVien_TTSV;
+        private System.Windows.Forms.Button btXoa_TTSV;
+        private System.Windows.Forms.Button btChinhSua_TTSV;
+        private System.Windows.Forms.Button btThem_TTSV;
+        private System.Windows.Forms.Button btTimKiem;
+        private System.Windows.Forms.TextBox txtTimKiem_TTSV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column7;
+    }
+}

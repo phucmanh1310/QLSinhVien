@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using System.Data.SqlClient;
+using D.ThongTin;
+using B.ThaoTac;
+
+namespace A.GiaoDien
+{
+    public partial class GiaoDiemChinh : Form
+    {
+        public GiaoDiemChinh()
+        {
+            InitializeComponent();
+        }
+
+        private void btQuanLySinhVien_Click(object sender, EventArgs e)
+        {
+            DanhSachSinhVien DSSV = new DanhSachSinhVien();
+            DSSV.TopLevel = false;
+            HienThi.Controls.Clear();
+            HienThi.Controls.Add(DSSV);
+            DSSV.Show();
+        }
+
+        private void btQuanLyDiem_Click(object sender, EventArgs e)
+        {
+            DanhSachLopHoc DSLH = new DanhSachLopHoc();
+            DSLH.TopLevel = false;
+            HienThi.Controls.Clear();
+            HienThi.Controls.Add(DSLH);
+            DSLH.Show();
+        }
+
+        private void btXetHocBong_Click(object sender, EventArgs e)
+        {
+            HocBong_DSSV HB_DSSV = new HocBong_DSSV();
+            HB_DSSV.TopLevel = false;
+            HienThi.Controls.Clear();
+            HienThi.Controls.Add(HB_DSSV);
+            HB_DSSV.Show();
+        }
+
+        private void btXetRaTruong_Click(object sender, EventArgs e)
+        {
+            RaTruong_DSSV RT_DSSV = new RaTruong_DSSV();
+            RT_DSSV.TopLevel = false;
+            HienThi.Controls.Clear();
+            HienThi.Controls.Add(RT_DSSV);
+            RT_DSSV.Show();
+        }
+    }
+}

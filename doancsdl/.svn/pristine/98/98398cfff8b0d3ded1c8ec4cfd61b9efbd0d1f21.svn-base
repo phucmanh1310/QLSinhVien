@@ -1,0 +1,94 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using System.Data.SqlClient;
+using D.ThongTin;
+using B.ThaoTac;
+
+namespace A.GiaoDien.BaoCao
+{
+    public partial class BaoCao : Form
+    {
+        //KHAI BÁO
+        public static DataTable DuLieu;
+        public static string Kieu;
+        public BaoCao()
+        {
+            InitializeComponent();
+        }
+
+        private void BaoCao_Load(object sender, EventArgs e)
+        {
+            if (Kieu.Equals("TimKiemHeDaoTao"))
+            {
+                HeDaoTao HDT = new HeDaoTao();
+                HDT.SetDataSource(DuLieu);
+                HienThi.ReportSource = HDT;
+                HienThi.Refresh();
+            }
+            if (Kieu.Equals("TimKiemHocKy"))
+            {
+                HocKy HK = new HocKy();
+                HK.SetDataSource(DuLieu);
+                HienThi.ReportSource = HK;
+                HienThi.Refresh();
+            }
+            if (Kieu.Equals("TimKiemKhoa"))
+            {
+                Khoa Khoa = new Khoa();
+                Khoa.SetDataSource(DuLieu);
+                HienThi.ReportSource = Khoa;
+                HienThi.Refresh();
+            }
+            if (Kieu.Equals("TimKiemKhoaHoc"))
+            {
+                KhoaHoc KH = new KhoaHoc();
+                KH.SetDataSource(DuLieu);
+                HienThi.ReportSource = KH;
+                HienThi.Refresh();
+            }
+            if (Kieu.Equals("TimKiemLopHoc"))
+            {
+                LopHoc Lop = new LopHoc();
+                Lop.SetDataSource(DuLieu);
+                HienThi.ReportSource = Lop;
+                HienThi.Refresh();
+            }
+            if (Kieu.Equals("TimKiemMonHoc"))
+            {
+                MonHoc MH = new MonHoc();
+                MH.SetDataSource(DuLieu);
+                HienThi.ReportSource = MH;
+                HienThi.Refresh();
+            }
+            if (Kieu.Equals("TimKiemNganhDaoTao"))
+            {
+                NganhDaoTao NDT = new NganhDaoTao();
+                NDT.SetDataSource(DuLieu);
+                HienThi.ReportSource = NDT;
+                HienThi.Refresh();
+            }
+            if (Kieu.Equals("TimKiemSinhVien"))
+            {
+                SinhVien SV = new SinhVien();
+                SV.SetDataSource(DuLieu);
+                HienThi.ReportSource = SV;
+                HienThi.Refresh();
+            }
+            if (Kieu.Equals("TimKiemTaiKhoan"))
+            {
+                TaiKhoan TK = new TaiKhoan();
+                TK.SetDataSource(DuLieu);
+                HienThi.ReportSource = TK;
+                HienThi.Refresh();
+            }
+        }
+    }
+}

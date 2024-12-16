@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using D.ThongTin;
+using C.DuLieu;
+using System.Data.SqlClient;
+
+namespace B.ThaoTac
+{
+    public class DangNhap_B
+    {
+        DangNhap_C cls = new DangNhap_C();
+        public DataTable KiemTraDangNhap(DangNhap_ThongTin DN)
+        {
+            return cls.KiemTraDangNhap(DN);
+        }
+
+        public int UpDateTrangThai(DangNhap_ThongTin DN)
+        {
+            return cls.UpDateTrangThai(DN);
+        }
+    }
+}

@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+using D.ThongTin;
+
+namespace C.DuLieu
+{
+    public class MonHoc_C
+    {
+        KetNoi_CSDL cls = new KetNoi_CSDL();
+        public DataTable DanhSachMonHoc()
+        {
+            return cls.LayDuLieu("DanhSachMonHoc");
+        }
+
+        public DataTable TimKiemMonHoc(MonHoc_ThongTin MH)
+        {
+            int Nparameter = 1;
+            string[] name = new string[Nparameter];
+            object[] value = new object[Nparameter];
+            name[0] = "@TenMonHoc";
+            value[0] = MH.TenMonHoc;
+            return cls.TimKiem("TimKiemMonHoc", name, value, Nparameter);
+        }
+    }
+}

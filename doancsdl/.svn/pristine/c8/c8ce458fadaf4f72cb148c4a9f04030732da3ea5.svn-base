@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using D.ThongTin;
+using System.Data.SqlClient;
+
+namespace C.DuLieu
+{
+    public class NganhDaoTao_C
+    {
+        KetNoi_CSDL cls = new KetNoi_CSDL();
+        public DataTable DanhSachNganhDaoTao()
+        {
+            return cls.LayDuLieu("DanhSachNganhDaoTao");
+        }
+
+        //TÌM KIẾM NGÀNH ĐÀO TẠO
+        public DataTable TimKiemNganhDaoTao(NganhDaoTao_ThongTin NDT)
+        {
+            int Nparameter = 1;
+            string[] name = new string[Nparameter];
+            object[] value = new object[Nparameter];
+            name[0] = "@TenNganh";
+            value[0] = NDT.TenNganh;
+            return cls.TimKiem("TimKiemNganhDaoTao", name, value, Nparameter);
+        }
+    }
+}

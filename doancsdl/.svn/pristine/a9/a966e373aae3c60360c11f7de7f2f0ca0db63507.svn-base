@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using System.Data.SqlClient;
+using D.ThongTin;
+using B.ThaoTac;
+
+namespace A.GiaoDien
+{
+    public partial class GiaoDienChinh : Form
+    {
+        public GiaoDienChinh()
+        {
+            InitializeComponent();
+        }
+        private void GiaoDienChinh_Load(object sender, EventArgs e)
+        {
+            
+        }
+        //Kích vào bt Quản Lý Sinh Viên.
+        private void btQuanLySinhVien_Click(object sender, EventArgs e)
+        {
+            GiaoDienQLSinhVien GDQLSV = new GiaoDienQLSinhVien();
+            GDQLSV.TopLevel = false;
+            HienThi.Controls.Clear();
+            HienThi.Controls.Add(GDQLSV);
+            GDQLSV.Show();
+        }
+    }
+}

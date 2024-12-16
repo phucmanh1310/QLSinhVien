@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+using D.ThongTin;
+
+namespace C.DuLieu
+{
+    public class HocKy_C
+    {
+        KetNoi_CSDL cls = new KetNoi_CSDL();
+        public DataTable DanhSachHocKy()
+        {
+            return cls.LayDuLieu("DanhSachHocKy");
+        }
+    }
+}

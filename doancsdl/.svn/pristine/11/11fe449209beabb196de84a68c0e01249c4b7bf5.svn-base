@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using D.ThongTin;
+using C.DuLieu;
+using System.Data.SqlClient;
+
+namespace B.ThaoTac
+{
+    public class Khoa_B
+    {
+        Khoa_C cls = new Khoa_C();
+        public DataTable DanhSachKhoa()
+        {
+            return cls.DanhSachKhoa();
+        }
+    }
+}

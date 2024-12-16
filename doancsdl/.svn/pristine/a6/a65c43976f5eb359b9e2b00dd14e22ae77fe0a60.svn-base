@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using System.Data.SqlClient;
+using D.ThongTin;
+using B.ThaoTac;
+
+namespace A.GiaoDien
+{
+    public partial class KetQuaHocTapCuaSinhVien : Form
+    {
+        //KHAI BÁO DÙNG CHUNG
+        //BẢNG HỌC KỲ
+        HocKy_B cls_HK = new HocKy_B();
+        //BẢNG ĐIỂM
+        BangDiem_B cls_BD = new BangDiem_B();
+        public KetQuaHocTapCuaSinhVien(SinhVien_ThongTin SV)
+        {
+            InitializeComponent();
+            //LẤY DỮ LIỆU TỪ DANH SÁCH SINH VIÊN ĐỔ VỀ Ô TEXT.
+            txtMaSo.Text = SV.MaSinhVien;
+            txtHoTen.Text = SV.TenSinhVien;
+            txtLop.Text = SV.Lop;
+            //LOAD TOÀN BỘ DỮ LIỆU LÊN COMBOBOX.
+            cbHocKy.DataSource = cls_HK.DanhSachHocKy();
+            cbHocKy.DisplayMember = "TenHocKy";
+            cbHocKy.ValueMember = "MaHocKy";
+            //LẤY RA TOÀN BỘ KẾT QUẢ HỌC TẬP CỦA SINH VIÊN.
+            BangDiem_ThongTin BD = new BangDiem_ThongTin();
+            BD.MaSinhVien = SV.MaSinhVien;
+            tbKetQuaHocTap.DataSource = cls_BD.LayKetQuaHocTap(BD);
+            //HIỂN THỊ KẾT QUẢ HỌC TẬP - DÀO TẠO CỦA SINH VIÊN.
+            DataTable Bang = new DataTable();
+            DataRow Hang;
+            Bang = cls_BD.KetQuaTongKetDaoTao(BD);
+            Hang = Bang.Rows[0];
+            txtSoTCTichLuy.Text = Hang[0].ToString();
+            txtDiemTLHe10.Text = Hang[1].ToString();
+            txtDiemTLHe4.Text = Hang[2].ToString();
+        }
+    }
+}

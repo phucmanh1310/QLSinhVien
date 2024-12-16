@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using D.ThongTin;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace C.DuLieu
+{
+    public class Lop_C
+    {
+        KetNoi_CSDL cls = new KetNoi_CSDL();
+        public DataTable DanhSachLop()
+        {
+            return cls.LayDuLieu("DanhSachLop");
+        }
+    }
+}

@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using D.ThongTin;
+using C.DuLieu;
+using System.Data.SqlClient;
+
+namespace B.ThaoTac
+{
+    public class Lop_B
+    {
+        Lop_C cls = new Lop_C();
+        //LÂY RA DANH SÁCH LƠP HỌC.
+        public DataTable DanhSachLop()
+        {
+            return cls.DanhSachLop();
+        }
+    }
+}

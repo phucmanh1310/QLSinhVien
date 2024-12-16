@@ -1,0 +1,606 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using System.Data.SqlClient;
+using D.ThongTin;
+using B.ThaoTac;
+
+namespace A.GiaoDien
+{
+    public partial class GiaoDienChinh : Form
+    {
+        //Khai báo dùng chung.
+        //Bảng sinh viên.
+        SinhVien_B cls = new SinhVien_B();
+        //Bảng lớp.
+        Lop_B cls_Lop = new Lop_B();
+        //Bảng học kỳ.
+        HocKy_B cls_HocKy = new HocKy_B();
+        //Bảng môn học
+        MonHoc_B cls_MonHoc = new MonHoc_B();
+        //Bảng điểm
+        BangDiem_B cls_BangDiem = new BangDiem_B();
+        public GiaoDienChinh()
+        {
+            InitializeComponent();
+        }
+        //========================================GIAO DIỆN THÔNG TIN SINH VIÊN=========================================//
+        bool GioiTinh;
+        bool DienUuTien;
+
+        String BienCo = "0";
+        String picLoc = null;
+
+        FileStream fstream;
+        BinaryReader br;
+
+        public void XuLyLoadTrang()
+        {
+            txtMaSinhVien_TTSV.Text = "";
+            txtTenSinhVien_TTSV.Text = "";
+            txtNgaySinh_TTSV.Text = "";
+            cbLop_TTSV.Text = "";
+            txtDiaChi_TTSV.Text = "";
+            raCo_TTSV.Checked = false;
+            raKhong_TTSV.Checked = false;
+            raNam_TTSV.Checked = false;
+            raNu_TTSV.Checked = false;
+            Anh_TTSV.Image = null;
+        }
+
+        private void ChonAnh_TTSV_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "PNG Files(*.png)|*.png|JPG Files(*jpg)|*.jpg|All Files(*.*)|*.*";
+            dlg.Title = "Chọn ảnh cho sinh viên.";
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                picLoc = dlg.FileName.ToString();
+                Anh_TTSV.ImageLocation = picLoc;
+                fstream = new FileStream(picLoc, FileMode.Open, FileAccess.Read);
+                br = new BinaryReader(fstream);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (BienCo == "1")
+            {
+                XuLyLoadTrang();
+                GiaoDienChinh_Load(sender, e);
+            }
+            else
+            {
+                try
+                {
+                    SinhVien_ThongTin SV = new SinhVien_ThongTin();
+                    SV.MaSinhVien = txtMaSinhVien_TTSV.Text;
+                    SV.TenSinhVien = txtTenSinhVien_TTSV.Text;
+                    SV.NgaySinh = txtNgaySinh_TTSV.Value;
+                    SV.GioiTinh = GioiTinh;
+                    SV.Anh = br.ReadBytes((int)fstream.Length);
+                    SV.Lop = cbLop_TTSV.SelectedValue.ToString();
+                    SV.DiaChi = txtDiaChi_TTSV.Text;
+                    SV.ChinhSachUuTien = DienUuTien;
+                    cls.ThemSinhVien(SV);
+                    MessageBox.Show("Thêm mới thành công sinh viên " + SV.TenSinhVien + ", mã số " + SV.MaSinhVien + ".", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    XuLyLoadTrang();
+                    GiaoDienChinh_Load(sender, e);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Không thể thêm mới, hãy xem xét lại! Có thể bạn chưa chọn ảnh.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            txtMaSinhVien_TTSV.Focus();
+            btThem_TTSV.Text = "Lưu lại";
+            BienCo = "0";
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            GioiTinh = true;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            GioiTinh = false;
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            DienUuTien = true;
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            DienUuTien = false;
+        }
+
+        private void GiaoDienChinh_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                txtMaSinhVien_TTSV.Focus();
+                tbDanhSachSinhVien_TTSV.DataSource = cls.DanhSachSinhVien();
+                cbLop_TTSV.DataSource = cls_Lop.DanhSachLop();
+                cbLop_TTSV.DisplayMember = "TenLop";
+                cbLop_TTSV.ValueMember = "MaLop";
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("Không thể lấy dữ liệu, hãy kiểm tra kết nối!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btTimKiem_Click(object sender, EventArgs e)
+        {
+            SinhVien_ThongTin SV = new SinhVien_ThongTin();
+            SV.MaSinhVien = txtTimKiem_TTSV.Text.Trim();
+            try
+            {
+                tbDanhSachSinhVien_TTSV.DataSource = cls.TimKiemSinhVien(SV);
+                DataTable Bang = new DataTable();
+                DataRow Hang;
+                Bang = cls.TimKiemSinhVien(SV);
+                Hang = Bang.Rows[0];
+                txtMaSinhVien_TTSV.Text = Hang["MaSinhVien"].ToString();
+                txtTenSinhVien_TTSV.Text = Hang["TenSinhVien"].ToString();
+                txtNgaySinh_TTSV.Text = Hang["NgaySinh"].ToString();
+                if (Hang["GioiTinh"].ToString().Equals("True"))
+                {
+                    raNam_TTSV.Checked = true;
+                }
+                if (Hang["GioiTinh"].ToString().Equals("False"))
+                {
+                    raNu_TTSV.Checked = true;
+                }
+                cbLop_TTSV.SelectedValue = Hang["Lop"].ToString();
+                txtDiaChi_TTSV.Text = Hang["DiaChi"].ToString();
+                if (Hang["ChinhSachUuTien"].ToString().Equals("True"))
+                {
+                    raCo_TTSV.Checked = true;
+                }
+                if (Hang["ChinhSachUuTien"].ToString().Equals("False"))
+                {
+                    raKhong_TTSV.Checked = true;
+                }
+                try
+                {
+                    SqlDataReader Anh = cls.LayAnhSinhVien(SV);
+                    Anh.Read();
+                    if (Anh.HasRows)
+                    {
+                        SV.Anh = (byte[])(Anh[0]);
+                        if (SV.Anh == null)
+                        {
+                            Anh_TTSV.Image = null;
+                        }
+                        else
+                        {
+                            MemoryStream ms = new MemoryStream(SV.Anh);
+                            Anh_TTSV.Image = Image.FromStream(ms);
+                            Anh.Close();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Sinh viên chưa có thông tin ảnh!", "Cảnh báo.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+
+                if (!tbDanhSachSinhVien_TTSV.Rows[0].Cells[0].Value.ToString().Equals(SV.MaSinhVien))
+                {
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không tìm thấy sinh viên yêu cầu", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Question);
+                XuLyLoadTrang();
+                GiaoDienChinh_Load(sender, e);
+            }
+            txtTimKiem_TTSV.Text = "";
+        }
+
+        private void btXoa_TTSV_Click(object sender, EventArgs e)
+        {
+            SinhVien_ThongTin SV = new SinhVien_ThongTin();
+            SV.MaSinhVien = txtMaSinhVien_TTSV.Text.Trim();
+            try
+            {
+                cls.XoaSinhVien(SV);
+                MessageBox.Show("Bạn đã xóa sinh viên "+txtTenSinhVien_TTSV.Text+" có mã "+ SV.MaSinhVien +"", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
+                XuLyLoadTrang();
+                GiaoDienChinh_Load(sender, e);
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("Không thể xóa dữ liệu này, hãy kiểm tra kết nối!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+        }
+
+        private void btChinhSua_TTSV_Click(object sender, EventArgs e)
+        {
+            SinhVien_ThongTin SV = new SinhVien_ThongTin();
+            SV.MaSinhVien = txtMaSinhVien_TTSV.Text;
+            SV.TenSinhVien = txtTenSinhVien_TTSV.Text;
+            SV.NgaySinh = txtNgaySinh_TTSV.Value;
+            SV.GioiTinh = GioiTinh;
+            //FileStream fstream = new FileStream(picLoc, FileMode.Open, FileAccess.Read);
+            //BinaryReader br = new BinaryReader(fstream);
+            //SV.Anh = br.ReadBytes((int)fstream.Length);
+            SV.Lop = cbLop_TTSV.SelectedValue.ToString();
+            SV.DiaChi = txtDiaChi_TTSV.Text;
+            SV.ChinhSachUuTien = DienUuTien;
+            try
+            {
+                cls.SuaThongTinSinhVien(SV);
+                MessageBox.Show("Bạn đã sửa thành công thông tin sinh viên " + txtTenSinhVien_TTSV.Text + " có mã " + SV.MaSinhVien + "", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
+                XuLyLoadTrang();
+                GiaoDienChinh_Load(sender, e);
+                txtMaSinhVien_TTSV.Focus();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("Dữ liệu không thể sửa, hãy kiểm tra lại!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void tbDanhSachSinhVien_TTSV_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            BienCo = "1";
+            btThem_TTSV.Text = "Thêm mới";
+            int RowIndex = e.RowIndex;
+            txtMaSinhVien_TTSV.Text = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[0].Value.ToString();
+            txtTenSinhVien_TTSV.Text = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[1].Value.ToString();
+            txtNgaySinh_TTSV.Text = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[2].Value.ToString();
+            if (tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[3].Value.ToString().Equals("True"))
+            {
+                raNam_TTSV.Checked = true;
+            }
+            if (tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[3].Value.ToString().Equals("False"))
+            {
+                raNu_TTSV.Checked = true;
+            }
+            cbLop_TTSV.SelectedValue = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[4].Value.ToString();
+            txtDiaChi_TTSV.Text = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[5].Value.ToString();
+            if (tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[6].Value.ToString().Equals("True"))
+            {
+                raCo_TTSV.Checked = true;
+            }
+            if (tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[6].Value.ToString().Equals("False"))
+            {
+                raKhong_TTSV.Checked = true;
+            }
+
+            try
+            {
+                SinhVien_ThongTin SV = new SinhVien_ThongTin();
+                SV.MaSinhVien = txtMaSinhVien_TTSV.Text;
+                SqlDataReader Anh = cls.LayAnhSinhVien(SV);
+                Anh.Read();
+                if (Anh.HasRows)
+                {
+                    SV.Anh = (byte[])(Anh[0]);
+                    if (SV.Anh == null)
+                    {
+                        Anh_TTSV.Image = null;
+                    }
+                    else
+                    {
+                        MemoryStream ms = new MemoryStream(SV.Anh);
+                        Anh_TTSV.Image = Image.FromStream(ms);
+                        Anh.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Sinh viên chưa có thông tin ảnh!", "Cảnh báo.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            GiaoDienChinh_Load(sender, e);
+        }
+        //=====================================HẾT GIAO DIỆN THÔNG TIN SINH VIÊN=========================================//
+
+        //=====================================GIAO DIỆN QUẢN LÝ ĐIỂM SINH VIÊN=========================================//
+
+        string ChonGDQLD = "0";
+        private void ChonGiaoDienQuanLyDiem(object sender, EventArgs e)
+        {
+            ChonGDQLD = "1";
+            try
+            {
+                cbHocKy_QLD.DataSource = cls_HocKy.DanhSachHocKy();
+                cbHocKy_QLD.DisplayMember = "TenHocKy";
+                cbHocKy_QLD.ValueMember = "MaHocKy";
+
+                cbMonHoc_QLD.DataSource = cls_MonHoc.DanhSachMonHoc();
+                cbMonHoc_QLD.DisplayMember = "TenMonHoc";
+                cbMonHoc_QLD.ValueMember = "MaMonHoc";
+
+                cbLop_QLD.DataSource = cls_Lop.DanhSachLop();
+                cbLop_QLD.DisplayMember = "TenLop";
+                cbLop_QLD.ValueMember = "MaLop";
+            }
+            catch
+            {
+                MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void XemKetQuaCuaSinhVien(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue.ToString() == "13")
+            {
+                try
+                {
+                    //Load dữ liệu ra bảng
+                    BangDiem_ThongTin BD = new BangDiem_ThongTin();
+                    BD.MaSinhVien = txtMaSinhVien_QLD.Text;
+                    tbKetQua_QLD.DataSource = cls_BangDiem.LayToanBoKetQuaSinhVien(BD);
+
+                    //Lấy 1 số thông tin tên, lớp
+                    DataTable Bang = new DataTable();
+                    DataRow Hang;
+                    SinhVien_ThongTin SV = new SinhVien_ThongTin();
+                    SV.MaSinhVien = txtMaSinhVien_QLD.Text;
+                    Bang = cls.ThongTinSinhVien(SV);
+                    Hang = Bang.Rows[0];
+                    txtTenSinhVien_QLD.Text = Hang["TenSinhVien"].ToString();
+                    cbLop_QLD.SelectedValue = Hang["Lop"].ToString();
+                }
+                catch
+                {
+                    MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void TimKiemMonHoc(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue.ToString() == "13")
+            {
+                try
+                {
+                    MonHoc_ThongTin MH = new MonHoc_ThongTin();
+                    MH.TenMonHoc = cbMonHoc_QLD.Text;
+                    cbMonHoc_QLD.DataSource = cls_MonHoc.TimKiemMonHoc(MH);
+                    cbMonHoc_QLD.DisplayMember = "TenMonHoc";
+                    cbMonHoc_QLD.ValueMember = "MaMonHoc";
+                }
+                catch
+                {
+                    MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public void XemDiemTheoKySinhVien()
+        {
+            try
+            {
+                BangDiem_ThongTin BD = new BangDiem_ThongTin();
+                BD.MaSinhVien = txtMaSinhVien_QLD.Text;
+                BD.MaHocKy = cbHocKy_QLD.SelectedValue.ToString();
+                tbKetQua_QLD.DataSource = cls_BangDiem.LayDiemTheoKySinhVien(BD);
+            }
+            catch
+            {
+                MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void XemDiemTheoKySinhVien(object sender, EventArgs e)
+        {
+            XemDiemTheoKySinhVien();
+        }
+
+        //---------4 nút trước - sau - đầu - cuối
+        BindingSource source;
+        //====> Lúc đầu ChonGDQLD = 0, khi chọn thẻ = 1, khi di chuột vào combobox = 0
+        //====> Nếu = 0 tức đã chon giá trị combobox thì có thông báo
+        private void ChonNhapDiemTheoTungLop(object sender, EventArgs e)
+        {
+            try
+            {
+                SinhVien_ThongTin SV = new SinhVien_ThongTin();
+                SV.Lop = cbLop_QLD.SelectedValue.ToString();
+                source = new BindingSource();
+                foreach (DataRow Hang in cls.DanhSachSinhVienCuaLop(SV).Rows)
+                    source.Add(Hang);
+                
+                //Load lên giá trị đầu tiên
+                if (ChonGDQLD.Equals("0"))
+                {
+                    source.MoveFirst();
+                    ShowRecord();
+                    XemDiemTheoKySinhVien();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+        }
+
+        private void cbLop_QLD_MouseMove(object sender, MouseEventArgs e)
+        {
+            ChonGDQLD = "0";
+        }
+
+        private void ShowRecord()
+        {
+            try
+            {
+                DataRow currentRow = (DataRow)source.Current;
+                txtMaSinhVien_QLD.Text = currentRow["MaSinhVien"].ToString();
+                txtTenSinhVien_QLD.Text = currentRow["TenSinhVien"].ToString();
+            }
+            catch (Exception ex)
+            {
+                txtMaSinhVien_QLD.Text = "";
+                txtTenSinhVien_QLD.Text = "";
+                MessageBox.Show("Lớp học chưa có sinh viên nào.!", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+        //===>
+
+        private void btDau_QLD_Click(object sender, EventArgs e)
+        {
+            source.MoveFirst();
+            ShowRecord();
+            XemDiemTheoKySinhVien();
+        }
+
+        private void btTruoc_QLD_Click(object sender, EventArgs e)
+        {
+            source.MovePrevious();
+            ShowRecord();
+            XemDiemTheoKySinhVien();
+        }
+
+        private void btSau_QLD_Click(object sender, EventArgs e)
+        {
+            source.MoveNext();
+            ShowRecord();
+            XemDiemTheoKySinhVien();
+        }
+
+        private void brCuoi_QLD_Click(object sender, EventArgs e)
+        {
+            source.MoveLast();
+            ShowRecord();
+            XemDiemTheoKySinhVien();
+        }
+
+        private void KhiAnPhimEnter(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue.ToString() == "13")
+            {
+                try
+                {
+                    //Thêm kết quả học tập
+                    BangDiem_ThongTin BD = new BangDiem_ThongTin();
+                    BD.MaSinhVien = txtMaSinhVien_QLD.Text;
+                    BD.MaMonHoc = cbMonHoc_QLD.SelectedValue.ToString();
+                    BD.MaHocKy = cbHocKy_QLD.SelectedValue.ToString();
+                    BD.DiemQuaTrinh = float.Parse(txtDiemQuaTrinh_QLD.Text);
+                    BD.DiemThi = float.Parse(txtDiemThi_QLD.Text);
+                    if (ChinhSua.Equals("0"))
+                    {
+                        cls_BangDiem.ThemKetQua(BD);
+                    }
+                    else
+                    {
+                        cls_BangDiem.UpDateDiemQTVaThi(BD);
+                    }
+                    //Lấy dữ liệu tạm thời
+                    DataTable Bang = new DataTable();
+                    DataRow Hang;
+                    SinhVien_ThongTin SV = new SinhVien_ThongTin();
+                    SV.MaSinhVien = txtMaSinhVien_QLD.Text;
+                    Bang = cls_BangDiem.Lay3DiemTheoKySinhVien(BD);
+                    Hang = Bang.Rows[0];
+                    txtDiemHe10_QLD.Text = Hang[0].ToString();
+                    txtDiemChu_QLD.Text = Hang[1].ToString();
+                    txtDiemHe4_QLD.Text = Hang[2].ToString();
+                    BD.DiemTKHe10 = float.Parse(txtDiemHe10_QLD.Text);
+                    BD.DiemChu = txtDiemChu_QLD.Text;
+                    BD.DiemTKHe4 = float.Parse(txtDiemHe4_QLD.Text);
+                   
+                }
+                catch
+                {
+                    MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btXacNhan_QLD_Click(object sender, EventArgs e)
+        {
+            //Update kết quả
+            try
+            {
+                BangDiem_ThongTin BD = new BangDiem_ThongTin();
+                BD.MaSinhVien = txtMaSinhVien_QLD.Text;
+                BD.MaMonHoc = cbMonHoc_QLD.SelectedValue.ToString();
+                BD.MaHocKy = cbHocKy_QLD.SelectedValue.ToString();
+                BD.DiemQuaTrinh = float.Parse(txtDiemQuaTrinh_QLD.Text);
+                BD.DiemThi = float.Parse(txtDiemThi_QLD.Text);
+                BD.DiemTKHe10 = float.Parse(txtDiemHe10_QLD.Text);
+                BD.DiemChu = txtDiemChu_QLD.Text;
+                BD.DiemTKHe4 = float.Parse(txtDiemHe4_QLD.Text);
+                cls_BangDiem.UpDateKetQua(BD);
+            }
+            catch
+            {
+                MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            //Next đến người tiếp theo
+            source.MoveNext();
+            ShowRecord();
+            //Load bảng điểm
+            XemDiemTheoKySinhVien();
+            txtDiemQuaTrinh_QLD.Text = "";
+            txtDiemThi_QLD.Text = "";
+            txtDiemHe10_QLD.Text = "";
+            txtDiemChu_QLD.Text = "";
+            txtDiemHe4_QLD.Text = "";
+        }
+        string ChinhSua = "0";
+        private void btChinhSua_QLD_Click(object sender, EventArgs e)
+        {
+            if (ChinhSua.Equals("0"))
+            {
+                ChinhSua = "1";
+                btChinhSua_QLD.Text = "Lưu lại.";
+
+                txtTenSinhVien_QLD.Text = "";
+                txtMaSinhVien_QLD.Text = "";
+                cbHocKy_QLD.Text = "";
+                cbMonHoc_QLD.Text = "";
+                cbLop_QLD.Text = "";
+                txtDiemQuaTrinh_QLD.Text = "";
+                txtDiemThi_QLD.Text = "";
+                txtDiemHe10_QLD.Text = "";
+                txtDiemChu_QLD.Text = "";
+                txtDiemHe4_QLD.Text = "";
+            }
+            else
+            {
+                try
+                {
+                    BangDiem_ThongTin BD = new BangDiem_ThongTin();
+                    BD.MaSinhVien = txtMaSinhVien_QLD.Text;
+                    BD.MaMonHoc = cbMonHoc_QLD.SelectedValue.ToString();
+                    BD.MaHocKy = cbHocKy_QLD.SelectedValue.ToString();
+                    BD.DiemQuaTrinh = float.Parse(txtDiemQuaTrinh_QLD.Text);
+                    BD.DiemThi = float.Parse(txtDiemThi_QLD.Text);
+                    BD.DiemTKHe10 = float.Parse(txtDiemHe10_QLD.Text);
+                    BD.DiemChu = txtDiemChu_QLD.Text;
+                    BD.DiemTKHe4 = float.Parse(txtDiemHe4_QLD.Text);
+                    cls_BangDiem.UpDateToanBoKetQua(BD);
+                    ChinhSua = "0";
+                    btChinhSua_QLD.Text = "Chỉnh sửa";
+                }
+                catch
+                {
+                    MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            //Load bảng điểm
+            XemDiemTheoKySinhVien();
+        }
+        //---------hết 4 nút trước - sau - đầu cuối.
+    }
+}

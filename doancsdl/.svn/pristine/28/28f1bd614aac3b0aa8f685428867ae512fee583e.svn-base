@@ -1,0 +1,114 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+using D.ThongTin;
+
+namespace C.DuLieu
+{
+    public class BangDiem_C
+    {
+        KetNoi_CSDL cls = new KetNoi_CSDL();
+        //Lấy ra toàn bộ điểm của một sinh viên
+        public DataTable LayToanBoKetQuaSinhVien(BangDiem_ThongTin BD)
+        {
+            int Nparameter = 1;
+            string[] name = new string[Nparameter];
+            object[] value = new object[Nparameter];
+            name[0] = "@MaSinhVien";
+            value[0] = BD.MaSinhVien;
+            return cls.TimKiem("LayToanBoKetQuaSinhVien", name, value, Nparameter);
+        }
+
+        //Lấy ra điểm theo kỳ học của sinh viên
+        public DataTable LayDiemTheoKySinhVien(BangDiem_ThongTin BD)
+        {
+            int Nparameter = 2;
+            string[] name = new string[Nparameter];
+            object[] value = new object[Nparameter];
+            name[0] = "@MaSinhVien";
+            value[0] = BD.MaSinhVien;
+            name[1] = "@MaHocKy";
+            value[1] = BD.MaHocKy;
+            return cls.TimKiem("LayDiemTheoKySinhVien", name, value, Nparameter);
+        }
+
+        //Thêm vào bảng điểm kết quả môn học là điểm quá trình và điểm thi
+        public int ThemKetQua(BangDiem_ThongTin BD)
+        {
+            int Nparameter = 5;
+            string[] name = new string[Nparameter];
+            object[] value = new object[Nparameter];
+            name[0] = "@MaSinhVien";    value[0] = BD.MaSinhVien;
+            name[1] = "@MaMonHoc";      value[1] = BD.MaMonHoc;
+            name[2] = "@MaHocKy";       value[2] = BD.MaHocKy;
+            name[3] = "@DiemQuaTrinh";  value[3] = BD.DiemQuaTrinh;
+            name[4] = "@DiemThi";       value[4] = BD.DiemThi;
+            return cls.CapNhat("ThemKetQua", name, value, Nparameter);
+        }
+
+        public DataTable Lay3DiemTheoKySinhVien(BangDiem_ThongTin BD)
+        {
+            int Nparameter = 5;
+            string[] name = new string[Nparameter];
+            object[] value = new object[Nparameter];
+            name[0] = "@MaSinhVien";    value[0] = BD.MaSinhVien;
+            name[1] = "@MaMonHoc";      value[1] = BD.MaMonHoc;
+            name[2] = "@MaHocKy";       value[2] = BD.MaHocKy;
+            name[3] = "@DiemQuaTrinh";  value[3] = BD.DiemQuaTrinh;
+            name[4] = "@DiemThi";       value[4] = BD.DiemThi;
+            return cls.TimKiem("Lay3DiemTheoKySinhVien", name, value, Nparameter);
+        }
+
+        //Update kết quả điểm chữ, điểm tổng kết 
+        public int UpDateKetQua(BangDiem_ThongTin BD)
+        {
+            int Nparameter = 8;
+            string[] name = new string[Nparameter];
+            object[] value = new object[Nparameter];
+            name[0] = "@MaSinhVien";    value[0] = BD.MaSinhVien;
+            name[1] = "@MaMonHoc";      value[1] = BD.MaMonHoc;
+            name[2] = "@MaHocKy";       value[2] = BD.MaHocKy;
+            name[3] = "@DiemQuaTrinh";  value[3] = BD.DiemQuaTrinh;
+            name[4] = "@DiemThi";       value[4] = BD.DiemThi;
+            name[5] = "@DiemTKHe10";    value[5] = BD.DiemTKHe10;
+            name[6] = "@DiemChu";       value[6] = BD.DiemChu;
+            name[7] = "@DiemTKHe4";     value[7] = BD.DiemTKHe4;
+            return cls.CapNhat("UpDateKetQua", name, value, Nparameter);
+        }
+
+        //Update toàn bộ kết quả 
+        public int UpDateToanBoKetQua(BangDiem_ThongTin BD)
+        {
+            int Nparameter = 8;
+            string[] name = new string[Nparameter];
+            object[] value = new object[Nparameter];
+            name[0] = "@MaSinhVien";    value[0] = BD.MaSinhVien;
+            name[1] = "@MaMonHoc";      value[1] = BD.MaMonHoc;
+            name[2] = "@MaHocKy";       value[2] = BD.MaHocKy;
+            name[3] = "@DiemQuaTrinh";  value[3] = BD.DiemQuaTrinh;
+            name[4] = "@DiemThi";       value[4] = BD.DiemThi;
+            name[5] = "@DiemTKHe10";    value[5] = BD.DiemTKHe10;
+            name[6] = "@DiemChu";       value[6] = BD.DiemChu;
+            name[7] = "@DiemTKHe4";     value[7] = BD.DiemTKHe4;
+            return cls.CapNhat("UpDateToanBoKetQua", name, value, Nparameter);
+        }
+
+        //Update điểm quá trình và điểm thi
+        public int UpDateDiemQTVaThi(BangDiem_ThongTin BD)
+        {
+            int Nparameter = 5;
+            string[] name = new string[Nparameter];
+            object[] value = new object[Nparameter];
+            name[0] = "@MaSinhVien"; value[0] = BD.MaSinhVien;
+            name[1] = "@MaMonHoc"; value[1] = BD.MaMonHoc;
+            name[2] = "@MaHocKy"; value[2] = BD.MaHocKy;
+            name[3] = "@DiemQuaTrinh"; value[3] = BD.DiemQuaTrinh;
+            name[4] = "@DiemThi"; value[4] = BD.DiemThi;
+            return cls.CapNhat("UpDateDiemQTVaThi", name, value, Nparameter);
+        }
+    }
+}

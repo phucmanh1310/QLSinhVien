@@ -1,0 +1,165 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using System.Data.SqlClient;
+using D.ThongTin;
+using B.ThaoTac;
+
+namespace A.GiaoDien
+{
+    public partial class GiaoDienChinh : Form
+    {
+        bool GioiTinh;
+        bool DienUuTien;
+        String picLoc = null;
+        public GiaoDienChinh()
+        {
+            InitializeComponent();
+        }
+
+        SinhVien_B cls = new SinhVien_B();
+        Lop_B cls_Lop = new Lop_B();
+
+        private void ChonAnh_TTSV_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "PNG Files(*.png)|*.png|JPG Files(*jpg)|*.jpg|All Files(*.*)|*.*";
+            dlg.Title = "Chọn ảnh cho sinh viên.";
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                picLoc = dlg.FileName.ToString();
+                Anh_TTSV.ImageLocation = picLoc;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SinhVien_ThongTin SV = new SinhVien_ThongTin();
+            SV.MaSinhVien = txtMaSinhVien_TTSV.Text;
+            SV.TenSinhVien = txtTenSinhVien_TTSV.Text;
+            SV.NgaySinh = txtNgaySinh_TTSV.Value;
+            SV.GioiTinh = GioiTinh;
+            FileStream fstream = new FileStream(picLoc, FileMode.Open, FileAccess.Read);
+            BinaryReader br = new BinaryReader(fstream);
+            SV.Anh = br.ReadBytes((int)fstream.Length);
+            SV.Lop = cbLop_TTSV.SelectedValue.ToString();
+            SV.DiaChi = txtDiaChi_TTSV.Text;
+            SV.ChinhSachUuTien = DienUuTien;
+            cls.ThemSinhVien(SV);
+            GiaoDienChinh_Load(sender, e);
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            GioiTinh = true;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            GioiTinh = false;
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            DienUuTien = true;
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            DienUuTien = false;
+        }
+
+        private void GiaoDienChinh_Load(object sender, EventArgs e)
+        {
+            tbDanhSachSinhVien_TTSV.DataSource = cls.DanhSachSinhVien();
+            cbLop_TTSV.DataSource = cls_Lop.DanhSachLop();
+            cbLop_TTSV.DisplayMember = "TenLop";
+            cbLop_TTSV.ValueMember = "MaLop";
+            
+        }
+
+        private void btTimKiem_Click(object sender, EventArgs e)
+        {
+            SinhVien_ThongTin SV = new SinhVien_ThongTin();
+            SV.MaSinhVien = txtTimKiem_TTSV.Text.Trim();
+            tbDanhSachSinhVien_TTSV.DataSource = cls.TimKiemSinhVien(SV);
+            txtTimKiem_TTSV.Text = "";
+        }
+
+        private void btXoa_TTSV_Click(object sender, EventArgs e)
+        {
+            SinhVien_ThongTin SV = new SinhVien_ThongTin();
+            SV.MaSinhVien = txtMaSinhVien_TTSV.Text.Trim();
+            cls.XoaSinhVien(SV);
+            GiaoDienChinh_Load(sender, e);
+        }
+
+        private void btChinhSua_TTSV_Click(object sender, EventArgs e)
+        {
+            SinhVien_ThongTin SV = new SinhVien_ThongTin();
+            SV.MaSinhVien = txtMaSinhVien_TTSV.Text;
+            SV.TenSinhVien = txtTenSinhVien_TTSV.Text;
+            SV.NgaySinh = txtNgaySinh_TTSV.Value;
+            SV.GioiTinh = GioiTinh;
+            //FileStream fstream = new FileStream(picLoc, FileMode.Open, FileAccess.Read);
+            //BinaryReader br = new BinaryReader(fstream);
+            //SV.Anh = br.ReadBytes((int)fstream.Length);
+            SV.Lop = cbLop_TTSV.SelectedValue.ToString();
+            SV.DiaChi = txtDiaChi_TTSV.Text;
+            SV.ChinhSachUuTien = DienUuTien;
+            cls.SuaThongTinSinhVien(SV);
+            GiaoDienChinh_Load(sender, e);
+        }
+
+        private void tbDanhSachSinhVien_TTSV_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int RowIndex = e.RowIndex;
+            txtMaSinhVien_TTSV.Text = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[0].Value.ToString();
+            txtTenSinhVien_TTSV.Text = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[1].Value.ToString();
+            txtNgaySinh_TTSV.Text = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[2].Value.ToString();
+            if (tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[3].Value.ToString().Equals("True"))
+            {
+                raNam_TTSV.Checked = true;
+            }
+            if (tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[3].Value.ToString().Equals("False"))
+            {
+                raNu_TTSV.Checked = true;
+            }
+            cbLop_TTSV.SelectedValue = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[4].Value.ToString();
+            txtDiaChi_TTSV.Text = tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[5].Value.ToString();
+            if (tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[6].Value.ToString().Equals("True"))
+            {
+                raCo_TTSV.Checked = true;
+            }
+            if (tbDanhSachSinhVien_TTSV.Rows[RowIndex].Cells[6].Value.ToString().Equals("False"))
+            {
+                raKhong_TTSV.Checked = true;
+            }
+
+            SinhVien_ThongTin SV = new SinhVien_ThongTin();
+            SV.MaSinhVien = txtMaSinhVien_TTSV.Text;
+            SqlDataReader Anh = cls.LayAnhSinhVien(SV);
+            Anh.Read();
+            if (Anh.HasRows)
+            {
+                SV.Anh = (byte[])(Anh[0]);
+                if (SV.Anh == null)
+                    Anh_TTSV.Image = null;
+                else
+                {
+                    MemoryStream ms = new MemoryStream(SV.Anh);
+                    Anh_TTSV.Image = Image.FromStream(ms);
+                    Anh.Close();
+                }
+            }
+            
+        }
+    }
+}
