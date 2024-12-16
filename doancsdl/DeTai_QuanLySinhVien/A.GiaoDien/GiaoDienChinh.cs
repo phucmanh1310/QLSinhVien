@@ -61,20 +61,20 @@ namespace A.GiaoDien
 
         private void btXetHocBong_Click(object sender, EventArgs e)
         {
-            HocBong_DSSV HB_DSSV = new HocBong_DSSV();
+           /* HocBong_DSSV HB_DSSV = new HocBong_DSSV();
             HB_DSSV.TopLevel = false;
             HienThi.Controls.Clear();
             HienThi.Controls.Add(HB_DSSV);
-            HB_DSSV.Show();
+            HB_DSSV.Show();*/
         }
 
         private void btXetRaTruong_Click(object sender, EventArgs e)
         {
-            RaTruong_DSSV RT_DSSV = new RaTruong_DSSV();
+            /*RaTruong_DSSV RT_DSSV = new RaTruong_DSSV();
             RT_DSSV.TopLevel = false;
             HienThi.Controls.Clear();
             HienThi.Controls.Add(RT_DSSV);
-            RT_DSSV.Show();
+            RT_DSSV.Show();*/
         }
 
         private void btKhoaHoc_Click(object sender, EventArgs e)

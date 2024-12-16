@@ -30,14 +30,25 @@ namespace A.GiaoDien
         {
             InitializeComponent();
             cbHeDaoTao.DataSource = cls_HDT.DanhSachHeDaoTao();
-            cbHeDaoTao.DisplayMember = "TenHe";
-            cbHeDaoTao.ValueMember = "MaHe";
+            if (cbHeDaoTao.DataSource != null)
+            {
+                cbHeDaoTao.DisplayMember = "TenHe";
+                cbHeDaoTao.ValueMember = "MaHe";
+            }
+
             cbKhoaHoc.DataSource = cls_KH.DanhSachKhoaHoc();
-            cbKhoaHoc.DisplayMember = "MaKhoaHoc";
-            cbKhoaHoc.ValueMember = "MaKhoaHoc";
+            if (cbKhoaHoc.DataSource != null)
+            {
+                cbKhoaHoc.DisplayMember = "MaKhoaHoc";
+                cbKhoaHoc.ValueMember = "MaKhoaHoc";
+            }
+
             cbTenNganh.DataSource = cls_NDT.DanhSachNganhDaoTao();
-            cbTenNganh.DisplayMember = "TenNganh";
-            cbTenNganh.ValueMember = "MaNganh";
+            if (cbTenNganh.DataSource != null)
+            {
+                cbTenNganh.DisplayMember = "TenNganh";
+                cbTenNganh.ValueMember = "MaNganh";
+            }
             this.ChucNang = ChucNang;
             if (ChucNang.Equals("F9"))
             {
@@ -77,10 +88,27 @@ namespace A.GiaoDien
             {
                 cls_LOP.ThemLopHocMoi(LOP);
                 MessageBox.Show("Bạn đã thêm lớp học " + LOP.TenLop + " với mã " + LOP.MaLop + " vào hệ thống.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.None);
+
+                // Xóa dữ liệu input cũ
                 txtMaLop.Text = "";
                 txtTenLop.Text = "";
                 txtMaLop.Focus();
+
+                // Load lại ComboBox để tránh lỗi binding
+                cbHeDaoTao.DataSource = cls_HDT.DanhSachHeDaoTao();
+                cbHeDaoTao.DisplayMember = "TenHe";
+                cbHeDaoTao.ValueMember = "MaHe";
+
+                cbKhoaHoc.DataSource = cls_KH.DanhSachKhoaHoc();
+                cbKhoaHoc.DisplayMember = "MaKhoaHoc";
+                cbKhoaHoc.ValueMember = "MaKhoaHoc";
+
+                cbTenNganh.DataSource = cls_NDT.DanhSachNganhDaoTao();
+                cbTenNganh.DisplayMember = "TenNganh";
+                cbTenNganh.ValueMember = "MaNganh";
+
                 btHoanTat.Enabled = true;
+
                 if (DuLieu != null)
                 {
                     DuLieu(LOP);
@@ -91,6 +119,7 @@ namespace A.GiaoDien
                 MessageBox.Show("Không thể thêm mới, hãy xem xét lại!.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         //SỬA THÔNG TIN LỚP HỌC.
         private void SuaThongTinLopHoc()
         {
@@ -121,13 +150,16 @@ namespace A.GiaoDien
             if (ChucNang.Equals("F9"))
             {
                 ThemMoiLopHoc();
+                // Load lại DataGridView sau khi thêm lớp học
+                DanhSachLopHoc parentForm = (DanhSachLopHoc)this.Owner;
+                parentForm.LoadDataGridView();
             }
             if (ChucNang.Equals("F10"))
             {
                 SuaThongTinLopHoc();
             }
-                
         }
+
         //TẮT.
         private void btHoanTat_Click(object sender, EventArgs e)
         {

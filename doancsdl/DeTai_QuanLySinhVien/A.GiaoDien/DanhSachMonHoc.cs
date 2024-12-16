@@ -33,10 +33,14 @@ namespace A.GiaoDien
         {
             try
             {
-                tbDanhSachMonHoc.DataSource = cls_MonHoc.DanhSachMonHocToanTruong();
+                var data = cls_MonHoc.DanhSachMonHocToanTruong();
+                var dataTable = DataConversion1.ConvertToDataTable1(data);
+                tbDanhSachMonHoc.DataSource = dataTable;
             }
-            catch { }
-            txtTimKiem.Focus();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         //LẤY DỮ LIỆU GỬI VỀ.
         public void LayDuLieu(MonHoc_ThongTin MonHoc)
@@ -90,10 +94,18 @@ namespace A.GiaoDien
         //KÍCH VÀO BẢNG
         private void tbDanhSachMonHoc_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            DongChon = e.RowIndex;
-            XacNhanXoa = 1;
-            txtTimKiem.Focus();
+            if (e.RowIndex >= 0) // Kiểm tra chỉ số dòng hợp lệ
+            {
+                DongChon = e.RowIndex;
+                XacNhanXoa = 1;
+                txtTimKiem.Focus();
+            }
+            else
+            {
+                XacNhanXoa = 0;
+            }
         }
+
         //XÓA MÔN HỌC
         private void XoaMonHoc()
         {
@@ -167,14 +179,28 @@ namespace A.GiaoDien
             txtTimKiem.Focus();
         }
 
-        /*private void btInBaoCao_Click(object sender, EventArgs e)
+        private void tbDanhSachMonHoc_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            MonHoc_ThongTin MH = new MonHoc_ThongTin();
-            MH.MaMonHoc = txtTimKiem.Text;
-            BaoCao.BaoCao.DuLieu = cls_MonHoc.TimMonHoc(MH);
-            BaoCao.BaoCao.Kieu = "TimKiemMonHoc";
-            BaoCao.BaoCao BC = new BaoCao.BaoCao();
-            BC.ShowDialog();
-        }*/
-    }
+            if (e.RowIndex >= 0) // Kiểm tra chỉ số dòng hợp lệ
+            {
+                DongChon = e.RowIndex;
+                XacNhanXoa = 1;
+                txtTimKiem.Focus();
+            }
+            else
+            {
+                XacNhanXoa = 0;
+            }
+        }
+
+    /*private void btInBaoCao_Click(object sender, EventArgs e)
+    {
+        MonHoc_ThongTin MH = new MonHoc_ThongTin();
+        MH.MaMonHoc = txtTimKiem.Text;
+        BaoCao.BaoCao.DuLieu = cls_MonHoc.TimMonHoc(MH);
+        BaoCao.BaoCao.Kieu = "TimKiemMonHoc";
+        BaoCao.BaoCao BC = new BaoCao.BaoCao();
+        BC.ShowDialog();
+    }*/
+}
 }

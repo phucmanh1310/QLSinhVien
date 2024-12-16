@@ -19,7 +19,7 @@ namespace C.DuLieu
             var database = client.GetDatabase(databaseName);
 
             // Kết nối đến collection "ThongTinDanhNhap"
-            collection = database.GetCollection<BsonDocument>("ThongTinDanhNhap");
+            collection = database.GetCollection<BsonDocument>("ThongTinDangNhap");
 
         }
 

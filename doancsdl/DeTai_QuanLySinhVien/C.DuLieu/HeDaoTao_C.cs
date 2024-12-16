@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using System.Collections.Generic;
 using D.ThongTin;
 using System;
+using System.Linq;
 
 namespace C.DuLieu
 {
@@ -33,8 +34,9 @@ namespace C.DuLieu
         // Lấy danh sách hệ đào tạo
         public List<BsonDocument> DanhSachHeDaoTao()
         {
-            var filter = new BsonDocument(); // Lọc tất cả dữ liệu
-            return collection.Find(filter).ToList();
+            var filter = new BsonDocument();
+            var documents = collection.Find(filter).ToList();
+            return SanitizeBsonDocuments(documents); // Làm sạch dữ liệu
         }
 
 
@@ -68,7 +70,23 @@ namespace C.DuLieu
         public List<BsonDocument> TimKiemHeDaoTao(HeDaoTao_ThongTin HDT)
         {
             var filter = Builders<BsonDocument>.Filter.Regex("MaHe", new BsonRegularExpression(HDT.MaHe, "i"));
-            return collection.Find(filter).ToList();
+            var documents = collection.Find(filter).ToList();
+            return SanitizeBsonDocuments(documents); // Làm sạch dữ liệu
+        }
+        // Hàm chuyển đổi BsonDocument thành dữ liệu an toàn
+        private List<BsonDocument> SanitizeBsonDocuments(List<BsonDocument> documents)
+        {
+            foreach (var doc in documents)
+            {
+                foreach (var element in doc.Elements.ToList())
+                {
+                    if (element.Value.IsBsonDocument || element.Value.IsBsonArray)
+                    {
+                        doc[element.Name] = element.Value.ToString(); // Chuyển thành chuỗi JSON
+                    }
+                }
+            }
+            return documents;
         }
     }
 }

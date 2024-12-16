@@ -46,37 +46,36 @@ namespace A.GiaoDien
         //THÊM MÔN HỌC MỚI.
         private void ThemMonHoc()
         {
-            MonHoc_ThongTin MH = new MonHoc_ThongTin();
-            MH.MaMonHoc = txtMaMonHoc.Text;
-            MH.TenMonHoc = txtTenMonHoc.Text;
-            MH.SoTinChi = int.Parse(txtSoTinChi.Value.ToString());
+            MonHoc_ThongTin MH = new MonHoc_ThongTin
+            {
+                MaMonHoc = txtMaMonHoc.Text,
+                TenMonHoc = txtTenMonHoc.Text,
+                SoTinChi = int.Parse(txtSoTinChi.Value.ToString())
+            };
+
+            if (string.IsNullOrWhiteSpace(MH.MaMonHoc) || string.IsNullOrWhiteSpace(MH.TenMonHoc))
+            {
+                MessageBox.Show("Mã môn học và tên môn học không được để trống!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             try
             {
-                if (!MH.MaMonHoc.Equals(""))
+                cls_MonHoc.ThemMonHoc(MH);
+                MessageBox.Show("Thêm môn học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Hide();
+                if (DuLieu != null)
                 {
-                    cls_MonHoc.ThemMonHoc(MH);
-                    MessageBox.Show("Bạn đã thêm khóa học " + MH.MaMonHoc + "", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
-                }
-                else
-                {
-                    MessageBox.Show("Hãy nhập mã khóa học");
-                    txtMaMonHoc.Focus();
+                    DuLieu(MH);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Không thể thêm mới, có thể khóa chính bị trùng.", "Thông báo lối!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            txtMaMonHoc.Text = "";
-            txtMaMonHoc.Focus();
-            txtTenMonHoc.Text = "";
-            btHoanTat.Enabled = true;
-            if (DuLieu != null)
-            {
-                DuLieu(MH);
+                MessageBox.Show($"Lỗi khi thêm môn học: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-         //CHỈNH SỬA MÔN HỌC.
+
+        //CHỈNH SỬA MÔN HỌC.
         private void SuaMonHoc()
         {
             MonHoc_ThongTin MH = new MonHoc_ThongTin();

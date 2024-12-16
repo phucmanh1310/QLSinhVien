@@ -81,7 +81,7 @@
             this.btThem.Image = ((System.Drawing.Image)(resources.GetObject("btThem.Image")));
             this.btThem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btThem.Name = "btThem";
-            this.btThem.Size = new System.Drawing.Size(116, 22);
+            this.btThem.Size = new System.Drawing.Size(115, 22);
             this.btThem.Text = "Thêm Khóa Học.";
             this.btThem.Click += new System.EventHandler(this.btThem_Click);
             // 
@@ -97,7 +97,7 @@
             this.btSua.Image = ((System.Drawing.Image)(resources.GetObject("btSua.Image")));
             this.btSua.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btSua.Name = "btSua";
-            this.btSua.Size = new System.Drawing.Size(107, 22);
+            this.btSua.Size = new System.Drawing.Size(105, 22);
             this.btSua.Text = "Sửa Thông Tin.";
             this.btSua.Click += new System.EventHandler(this.btSua_Click);
             // 
@@ -127,11 +127,12 @@
             // lbTimKiem
             // 
             this.lbTimKiem.Name = "lbTimKiem";
-            this.lbTimKiem.Size = new System.Drawing.Size(77, 22);
+            this.lbTimKiem.Size = new System.Drawing.Size(76, 22);
             this.lbTimKiem.Text = "Tìm Kiếm (*):";
             // 
             // txtTimKiem
             // 
+            this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(150, 25);
             this.txtTimKiem.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KhiAnOTimKiem);
@@ -144,7 +145,6 @@
             this.btInBaoCao.Name = "btInBaoCao";
             this.btInBaoCao.Size = new System.Drawing.Size(84, 22);
             this.btInBaoCao.Text = "In Báo Cáo";
-           /* this.btInBaoCao.Click += new System.EventHandler(this.btInBaoCao_Click);*/
             // 
             // groupBox1
             // 
@@ -168,7 +168,8 @@
             this.tbKhoaHoc.Name = "tbKhoaHoc";
             this.tbKhoaHoc.Size = new System.Drawing.Size(845, 533);
             this.tbKhoaHoc.TabIndex = 0;
-            this.tbKhoaHoc.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbKhoaHoc_CellContentClick);
+            this.tbKhoaHoc.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbKhoaHoc_CellClick);
+           
             this.tbKhoaHoc.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.KhiKichDupChuot);
             // 
             // Column1

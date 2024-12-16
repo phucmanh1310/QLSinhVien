@@ -11,6 +11,7 @@ using System.IO;
 using System.Data.SqlClient;
 using D.ThongTin;
 using B.ThaoTac;
+using MongoDB.Bson;
 
 namespace A.GiaoDien
 {
@@ -32,8 +33,11 @@ namespace A.GiaoDien
             if (this.ChucNang.Equals("F10"))
             {
                 txtMaKhoaHoc.Text = KhoaHoc.MaKhoaHoc;
-                txtNgayBatDau.Value = KhoaHoc.NgayBatDau;
-                txtNgayKetThuc.Value = KhoaHoc.NgayKetThuc;
+
+                // Sử dụng ConvertBsonDateTimeToDateTime để chuyển đổi ngày
+                txtNgayBatDau.Value = DataConversion1.ConvertBsonDateTimeToDateTime(new BsonDateTime(KhoaHoc.NgayBatDau));
+                txtNgayKetThuc.Value = DataConversion1.ConvertBsonDateTimeToDateTime(new BsonDateTime(KhoaHoc.NgayKetThuc));
+
                 btHoanTat.Enabled = false;
                 txtMaKhoaHoc.Enabled = false;
             }
@@ -48,31 +52,39 @@ namespace A.GiaoDien
             KH.MaKhoaHoc = txtMaKhoaHoc.Text;
             KH.NgayBatDau = txtNgayBatDau.Value;
             KH.NgayKetThuc = txtNgayKetThuc.Value;
+
             try
             {
-                if (!KH.MaKhoaHoc.Equals(""))
+                if (string.IsNullOrWhiteSpace(KH.MaKhoaHoc))
                 {
-                    cls_KhoaHoc.ThemKhoaHoc(KH);
-                    MessageBox.Show("Bạn đã thêm khóa học " + KH.MaKhoaHoc + "", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
-                }
-                else
-                {
-                    MessageBox.Show("Hãy nhập mã khóa học");
+                    MessageBox.Show("Hãy nhập mã khóa học", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtMaKhoaHoc.Focus();
+                    return;
                 }
+
+                // Kiểm tra ngày hợp lệ
+                if (KH.NgayBatDau >= KH.NgayKetThuc)
+                {
+                    MessageBox.Show("Ngày bắt đầu phải trước ngày kết thúc.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNgayBatDau.Focus();
+                    return;
+                }
+
+                cls_KhoaHoc.ThemKhoaHoc(KH);
+                MessageBox.Show($"Đã thêm khóa học {KH.MaKhoaHoc} thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Không thể thêm mới, có thể khóa chính bị trùng.", "Thông báo lối!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể thêm mới, lỗi: " + ex.Message, "Lỗi!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
             txtMaKhoaHoc.Text = "";
             txtMaKhoaHoc.Focus();
             btHoanTat.Enabled = true;
-            if (DuLieu != null)
-            {
-                DuLieu(KH);
-            }
+
+            DuLieu?.Invoke(KH); // Truyền dữ liệu về form cha
         }
+
         //CHỈNH SỬA KHÓA HỌC.
         private void ChinhSuaKhoaHoc()
         {
@@ -80,21 +92,28 @@ namespace A.GiaoDien
             KH.MaKhoaHoc = txtMaKhoaHoc.Text;
             KH.NgayBatDau = txtNgayBatDau.Value;
             KH.NgayKetThuc = txtNgayKetThuc.Value;
+
             try
             {
+                if (KH.NgayBatDau >= KH.NgayKetThuc)
+                {
+                    MessageBox.Show("Ngày bắt đầu phải trước ngày kết thúc.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNgayBatDau.Focus();
+                    return;
+                }
+
                 cls_KhoaHoc.ChinhSuaKhoaHoc(KH);
-                MessageBox.Show("Bạn đã chỉnh sửa thông tin khóa học "+KH.MaKhoaHoc+".", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
+                MessageBox.Show($"Đã cập nhật thông tin khóa học {KH.MaKhoaHoc} thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Không thể chỉnh sửa, hãy kiểm tra lại,", "Thông báo lối!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể chỉnh sửa, lỗi: " + ex.Message, "Lỗi!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            if (DuLieu != null)
-            {
-                DuLieu(KH);
-            }
+
+            DuLieu?.Invoke(KH); // Truyền dữ liệu về form cha
             this.Hide();
         }
+
         //KHI CLICK XÁC NHẬN.
         private void btXacNhan_Click(object sender, EventArgs e)
         {

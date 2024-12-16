@@ -27,12 +27,25 @@ namespace A.GiaoDien
         {
             InitializeComponent();
         }
-
         private void DanhSachLopHoc_Load(object sender, EventArgs e)
         {
+            LoadDataGridView();
             txtTimKiem.Focus();
-            tbDanhSachLopHoc.DataSource = cls_Lop.DanhSach_ThongTin_Lop();
         }
+        public void LoadDataGridView()
+        {
+            try
+            {
+                var data = cls_Lop.DanhSach_ThongTin_DayDu();
+                var dataTable = DataConversion1.ConvertToDataTable1(data);
+                tbDanhSachLopHoc.DataSource = dataTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải dữ liệu: " + ex.Message, "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         //KHI KICH DUP CHUỘT CHỌN LỚP NHẬP ĐIỂM.
         private void NhapDiemChoLop()
         {
@@ -64,47 +77,37 @@ namespace A.GiaoDien
         //TÌM KIẾM VÀ PHÍM TẮT
         private void KhiTimKiem_PhimTat(object sender, KeyEventArgs e)
         {
-            if (!e.KeyValue.ToString().Equals("112") && !e.KeyValue.ToString().Equals("120") && !e.KeyValue.ToString().Equals("121") && !e.KeyValue.ToString().Equals("122") && !e.KeyValue.ToString().Equals("123") && !e.KeyValue.ToString().Equals("13"))
+            if (e.KeyValue == 13) // Nhấn Enter
             {
-                txtTimKiem.BackColor = Color.White;
-                Lop_ThongTin LOP = new Lop_ThongTin();
-                LOP.MaLop = txtTimKiem.Text;
-                tbDanhSachLopHoc.DataSource = cls_Lop.TimKiemLopHoc(LOP);
-               
-            }
-            if (e.KeyValue.ToString().Equals("112"))
-            {
-                NhapDiemChoLop();
-            }
-            if (e.KeyValue.ToString().Equals("120"))
-            {
-                ThemLopHoc();
-            }
-            if (e.KeyValue.ToString().Equals("121"))
-            {
-                SuaThongTinLopHoc();
-            }
-            if (e.KeyValue.ToString().Equals("122"))
-            {
-                XoaLopHoc();
-            }
-            if (e.KeyValue.ToString().Equals("123"))
-            {
-                txtTimKiem.BackColor = Color.YellowGreen;
-                txtTimKiem.Focus();
+                try
+                {
+                    Lop_ThongTin Lop = new Lop_ThongTin();
+                    Lop.TenLop = txtTimKiem.Text;
+
+                    // Gọi hàm tìm kiếm từ lớp B
+                    var data = cls_Lop.TimKiemLopHoc(Lop);
+                    var dataTable = DataConversion1.ConvertToDataTable1(data);
+
+                    tbDanhSachLopHoc.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
+
         //KÍCH CHỌN THÊM LỚP HỌC MỚI.
         private void ThemLopHoc()
         {
             ChucNang = "F9";
             Lop_ThongTin Lop = new Lop_ThongTin();
-            A.GiaoDien.QuanLyLopHoc QLLH = new A.GiaoDien.QuanLyLopHoc(ChucNang, Lop);
+            QuanLyLopHoc QLLH = new QuanLyLopHoc(ChucNang, Lop);
             QLLH.DuLieu = new QuanLyLopHoc.DuLieuTruyenVe(LayDuLieu);
             QLLH.ShowDialog(this);
-            txtTimKiem.Focus();
-            XacNhanXoa = "0";
+            LoadDataGridView();
         }
+
         private void btThem_Click(object sender, EventArgs e)
         {
             ThemLopHoc();
@@ -122,18 +125,21 @@ namespace A.GiaoDien
         private void SuaThongTinLopHoc()
         {
             ChucNang = "F10";
-            Lop_ThongTin Lop = new Lop_ThongTin();
-            Lop.MaLop = tbDanhSachLopHoc.Rows[DongChon].Cells[0].Value.ToString();
-            Lop.TenLop = tbDanhSachLopHoc.Rows[DongChon].Cells[1].Value.ToString();
-            Lop.MaKhoaHoc = tbDanhSachLopHoc.Rows[DongChon].Cells[2].Value.ToString();
-            Lop.MaHeDaoTao = tbDanhSachLopHoc.Rows[DongChon].Cells[3].Value.ToString();
-            Lop.MaNganh = tbDanhSachLopHoc.Rows[DongChon].Cells[4].Value.ToString();
-            A.GiaoDien.QuanLyLopHoc QLLH = new A.GiaoDien.QuanLyLopHoc(ChucNang, Lop);
+            Lop_ThongTin Lop = new Lop_ThongTin
+            {
+                MaLop = tbDanhSachLopHoc.Rows[DongChon].Cells[0].Value.ToString(),
+                TenLop = tbDanhSachLopHoc.Rows[DongChon].Cells[1].Value.ToString(),
+                MaKhoaHoc = tbDanhSachLopHoc.Rows[DongChon].Cells[2].Value.ToString(),
+                MaHeDaoTao = tbDanhSachLopHoc.Rows[DongChon].Cells[3].Value.ToString(),
+                MaNganh = tbDanhSachLopHoc.Rows[DongChon].Cells[4].Value.ToString()
+            };
+
+            QuanLyLopHoc QLLH = new QuanLyLopHoc(ChucNang, Lop);
             QLLH.DuLieu = new QuanLyLopHoc.DuLieuTruyenVe(LayDuLieu);
             QLLH.ShowDialog(this);
-            txtTimKiem.Focus();
-            XacNhanXoa = "0";
+            LoadDataGridView();
         }
+
         private void btSua_Click(object sender, EventArgs e)
         {
             SuaThongTinLopHoc();
@@ -142,30 +148,34 @@ namespace A.GiaoDien
         //XÓA LỚP HỌC
         private void XoaLopHoc()
         {
-            if (XacNhanXoa.Equals("1"))
+            if (XacNhanXoa == "1")
             {
-                Lop_ThongTin Lop = new Lop_ThongTin();
-                Lop.MaLop = tbDanhSachLopHoc.Rows[DongChon].Cells[0].Value.ToString();
-                if (MessageBox.Show("Bạn có thật sự muốn xóa thông tin lớp có mã " + Lop.MaLop + "", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                var Lop = new Lop_ThongTin
+                {
+                    MaLop = tbDanhSachLopHoc.Rows[DongChon].Cells[0].Value.ToString()
+                };
+
+                if (MessageBox.Show($"Bạn có thật sự muốn xóa lớp học {Lop.MaLop}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
                         cls_Lop.XoaLopHoc(Lop);
-                        tbDanhSachLopHoc.DataSource = cls_Lop.DanhSach_ThongTin_Lop();
+                        MessageBox.Show("Xóa lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadDataGridView();
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Không thể xóa dữ liệu này, hãy kiểm tra kết nối!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Lỗi khi xóa lớp học: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-                XacNhanXoa = "0";
             }
             else
             {
-                MessageBox.Show("Bạn hãy chọn lớp muốn xóa.", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Vui lòng chọn lớp học muốn xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            txtTimKiem.Focus();
         }
+
+
         private void btXoa_Click(object sender, EventArgs e)
         {
             XoaLopHoc();

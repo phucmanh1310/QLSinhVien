@@ -36,19 +36,19 @@ namespace A.GiaoDien
 
         public void LayDuLieu(KhoaHoc_ThongTin KhoaHoc)
         {
-            //DataTable DT = (DataTable)tbKhoaHoc.DataSource;
-            //DT.Rows.Add(KhoaHoc.MaKhoaHoc, KhoaHoc.NgayBatDau, KhoaHoc.NgayKetThuc);
-            //tbKhoaHoc.DataSource = DT;
-            this.MaKhoaHoc = KhoaHoc.MaKhoaHoc;
-            if (!this.MaKhoaHoc.Equals(""))
+            try
             {
-                try
-                {
-                    tbKhoaHoc.DataSource = cls_KhoaHoc.DanhSach_ThongTin_KhoaHoc();
-                }
-                catch { }
+                var data = cls_KhoaHoc.DanhSach_ThongTin_KhoaHoc();
+                var dataTable = DataConversion1.ConvertToDataTable1(data);
+                tbKhoaHoc.DataSource = dataTable;
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi làm mới dữ liệu: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            txtTimKiem.Focus();
         }
+
         //KHI CLICK BUTTON THÊM
         private void ThemKhoaHoc()
         {
@@ -58,6 +58,7 @@ namespace A.GiaoDien
             DSKH.DuLieu = new KhoaHoc.DuLieuTruyenVe(LayDuLieu);
             DSKH.ShowDialog(this);
             XacNhanXoa = 0;
+            RefreshDataGridView(); // Làm mới DataGridView
             txtTimKiem.Focus();
         }
         private void btThem_Click(object sender, EventArgs e)
@@ -83,41 +84,47 @@ namespace A.GiaoDien
             SuaKhoaHoc();
         }
 
-        private void tbKhoaHoc_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        /*private void tbKhoaHoc_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             DongChon = e.RowIndex;
             XacNhanXoa = 1;
             txtTimKiem.Focus();
-        }
+        }*/
         //XÓA KHÓA HỌC
         private void XoaKhoaHoc()
         {
             if (XacNhanXoa == 1)
             {
-                KhoaHoc_ThongTin KhoaHoc = new KhoaHoc_ThongTin();
-                KhoaHoc.MaKhoaHoc = tbKhoaHoc.Rows[DongChon].Cells[0].Value.ToString();
-                if (MessageBox.Show("Bạn có thật sự muốn xóa thông tin khóa học " + KhoaHoc.MaKhoaHoc + "", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                try
                 {
-                    try
+                    KhoaHoc_ThongTin KhoaHoc = new KhoaHoc_ThongTin
                     {
+                        MaKhoaHoc = tbKhoaHoc.Rows[DongChon].Cells[0].Value.ToString()
+                    };
 
-                        cls_KhoaHoc.XoaKhoaHoc(KhoaHoc);
-                        tbKhoaHoc.DataSource = cls_KhoaHoc.DanhSach_ThongTin_KhoaHoc();
-                    }
-                    catch
+                    if (MessageBox.Show($"Bạn có chắc chắn muốn xóa khóa học {KhoaHoc.MaKhoaHoc}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        MessageBox.Show("Không thể xóa dữ liệu này, hãy kiểm tra lại.!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        cls_KhoaHoc.XoaKhoaHoc(KhoaHoc);
+                        MessageBox.Show("Đã xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // Làm mới DataGridView
+                        RefreshDataGridView();
                     }
                 }
-                XacNhanXoa = 0;
-                txtTimKiem.Focus();
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xóa: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
-                MessageBox.Show("Bạn hãy chọn khóa học muốn xóa.", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtTimKiem.Focus();
+                MessageBox.Show("Vui lòng chọn dòng cần xóa.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+            XacNhanXoa = 0;
+            txtTimKiem.Focus();
         }
+
         private void btXoa_Click(object sender, EventArgs e)
         {
             XoaKhoaHoc();
@@ -153,12 +160,43 @@ namespace A.GiaoDien
 
         private void DanhSachKhoaHoc_Load(object sender, EventArgs e)
         {
+            try
+            {
+                var data = cls_KhoaHoc.DanhSach_ThongTin_KhoaHoc();
+                var dataTable = DataConversion1.ConvertToDataTable1(data);
+                tbKhoaHoc.DataSource = dataTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải dữ liệu: " + ex.Message, "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             txtTimKiem.Focus();
         }
+
 
         private void KhiKichDupChuot(object sender, MouseEventArgs e)
         {
             SuaKhoaHoc();
+        }
+
+        private void tbKhoaHoc_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DongChon = e.RowIndex;
+            XacNhanXoa = 1;
+            txtTimKiem.Focus();
+        }
+        private void RefreshDataGridView()
+        {
+            try
+            {
+                var data = cls_KhoaHoc.DanhSach_ThongTin_KhoaHoc();
+                var dataTable = DataConversion1.ConvertToDataTable1(data);
+                tbKhoaHoc.DataSource = dataTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi làm mới dữ liệu: " + ex.Message, "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /*private void btInBaoCao_Click(object sender, EventArgs e)

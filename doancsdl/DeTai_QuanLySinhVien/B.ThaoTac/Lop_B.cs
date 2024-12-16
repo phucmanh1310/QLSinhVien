@@ -44,5 +44,10 @@ namespace B.ThaoTac
         {
             return cls.TimKiemLopHoc(Lop);
         }
+        public List<BsonDocument> DanhSach_ThongTin_DayDu()
+        {
+            return cls.DanhSach_ThongTin_DayDu();
+        }
+
     }
 }

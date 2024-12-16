@@ -42,8 +42,6 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.btQuanLySinhVien = new System.Windows.Forms.ToolStripButton();
             this.btQuanLyDiem = new System.Windows.Forms.ToolStripButton();
-            this.btXetHocBong = new System.Windows.Forms.ToolStripButton();
-            this.btXetRaTruong = new System.Windows.Forms.ToolStripButton();
             this.btHocKy = new System.Windows.Forms.ToolStripButton();
             this.btKhoaHoc = new System.Windows.Forms.ToolStripButton();
             this.btMonHoc = new System.Windows.Forms.ToolStripButton();
@@ -73,7 +71,7 @@
             this.thôngTinToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1103, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1128, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -145,17 +143,15 @@
             this.toolStripButton1,
             this.btQuanLySinhVien,
             this.btQuanLyDiem,
-            this.btXetHocBong,
-            this.btXetRaTruong,
+            this.btHeDaoTao,
             this.btHocKy,
             this.btKhoaHoc,
-            this.btMonHoc,
-            this.btKhoa,
             this.btNganhDaoTao,
-            this.btHeDaoTao});
+            this.btMonHoc,
+            this.btKhoa});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1103, 47);
+            this.toolStrip1.Size = new System.Drawing.Size(1128, 47);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -192,26 +188,6 @@
             this.btQuanLyDiem.Size = new System.Drawing.Size(208, 44);
             this.btQuanLyDiem.Text = "Quản Lý Lớp Học - Nhập Điểm.";
             this.btQuanLyDiem.Click += new System.EventHandler(this.btQuanLyDiem_Click);
-            // 
-            // btXetHocBong
-            // 
-            this.btXetHocBong.Image = ((System.Drawing.Image)(resources.GetObject("btXetHocBong.Image")));
-            this.btXetHocBong.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btXetHocBong.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btXetHocBong.Name = "btXetHocBong";
-            this.btXetHocBong.Size = new System.Drawing.Size(116, 44);
-            this.btXetHocBong.Text = "Xét Học Bổng";
-            this.btXetHocBong.Click += new System.EventHandler(this.btXetHocBong_Click);
-            // 
-            // btXetRaTruong
-            // 
-            this.btXetRaTruong.Image = ((System.Drawing.Image)(resources.GetObject("btXetRaTruong.Image")));
-            this.btXetRaTruong.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btXetRaTruong.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btXetRaTruong.Name = "btXetRaTruong";
-            this.btXetRaTruong.Size = new System.Drawing.Size(116, 44);
-            this.btXetRaTruong.Text = "Xét Ra Trường";
-            this.btXetRaTruong.Click += new System.EventHandler(this.btXetRaTruong_Click);
             // 
             // btHocKy
             // 
@@ -259,7 +235,7 @@
             this.btNganhDaoTao.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btNganhDaoTao.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btNganhDaoTao.Name = "btNganhDaoTao";
-            this.btNganhDaoTao.Size = new System.Drawing.Size(125, 36);
+            this.btNganhDaoTao.Size = new System.Drawing.Size(125, 44);
             this.btNganhDaoTao.Text = "Ngành Đào Tạo";
             this.btNganhDaoTao.Click += new System.EventHandler(this.btNganhDaoTao_Click);
             // 
@@ -269,7 +245,7 @@
             this.btHeDaoTao.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btHeDaoTao.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btHeDaoTao.Name = "btHeDaoTao";
-            this.btHeDaoTao.Size = new System.Drawing.Size(104, 36);
+            this.btHeDaoTao.Size = new System.Drawing.Size(104, 44);
             this.btHeDaoTao.Text = "Hệ Đào Tạo";
             this.btHeDaoTao.Click += new System.EventHandler(this.btHeDaoTao_Click);
             // 
@@ -322,7 +298,7 @@
             // 
             this.HienThi.Location = new System.Drawing.Point(246, 75);
             this.HienThi.Name = "HienThi";
-            this.HienThi.Size = new System.Drawing.Size(857, 590);
+            this.HienThi.Size = new System.Drawing.Size(870, 590);
             this.HienThi.TabIndex = 0;
             // 
             // groupBox2
@@ -364,7 +340,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1103, 665);
+            this.ClientSize = new System.Drawing.Size(1128, 665);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.HienThi);
             this.Controls.Add(this.groupBox1);
@@ -403,8 +379,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Panel HienThi;
         private System.Windows.Forms.ToolStripButton btQuanLyDiem;
-        private System.Windows.Forms.ToolStripButton btXetHocBong;
-        private System.Windows.Forms.ToolStripButton btXetRaTruong;
         private System.Windows.Forms.ToolStripButton btKhoaHoc;
         private System.Windows.Forms.ToolStripButton btMonHoc;
         private System.Windows.Forms.ToolStripButton btHocKy;

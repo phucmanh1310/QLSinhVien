@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using System.Collections.Generic;
 using D.ThongTin;
+using System;
 
 namespace C.DuLieu
 {
@@ -11,30 +12,27 @@ namespace C.DuLieu
 
         public KhoaHoc_C()
         {
-            // Kết nối MongoDB
             var connectionString = System.Configuration.ConfigurationManager.AppSettings["MongoDBConnectionString"];
             var databaseName = System.Configuration.ConfigurationManager.AppSettings["MongoDBDatabaseName"];
 
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(databaseName);
 
-            // Kết nối tới collection "KhoaHoc"
             collection = database.GetCollection<BsonDocument>("KhoaHoc");
         }
 
-        // Lấy danh sách khóa học
         public List<BsonDocument> DanhSachKhoaHoc()
         {
-            return collection.Find(new BsonDocument()).ToList();
+            var documents = collection.Find(new BsonDocument()).ToList();
+            return documents;
         }
 
-        // Lấy danh sách thông tin đầy đủ khóa học
         public List<BsonDocument> DanhSach_ThongTin_KhoaHoc()
         {
-            return collection.Find(new BsonDocument()).ToList();
+            var documents = collection.Find(new BsonDocument()).ToList();
+            return documents;
         }
 
-        // Thêm khóa học
         public void ThemKhoaHoc(KhoaHoc_ThongTin KH)
         {
             var document = new BsonDocument
@@ -46,7 +44,6 @@ namespace C.DuLieu
             collection.InsertOne(document);
         }
 
-        // Chỉnh sửa khóa học
         public void ChinhSuaKhoaHoc(KhoaHoc_ThongTin KH)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("MaKhoaHoc", KH.MaKhoaHoc);
@@ -56,14 +53,25 @@ namespace C.DuLieu
             collection.UpdateOne(filter, update);
         }
 
-        // Xóa khóa học
         public void XoaKhoaHoc(KhoaHoc_ThongTin KH)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("MaKhoaHoc", KH.MaKhoaHoc);
-            collection.DeleteOne(filter);
+            try
+            {
+                var filter = Builders<BsonDocument>.Filter.Eq("MaKhoaHoc", KH.MaKhoaHoc);
+                var result = collection.DeleteOne(filter);
+
+                if (result.DeletedCount == 0)
+                {
+                    throw new Exception($"Không tìm thấy khóa học có mã {KH.MaKhoaHoc}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi xóa khóa học: " + ex.Message);
+            }
         }
 
-        // Tìm kiếm khóa học
+
         public List<BsonDocument> TimKiemKhoaHoc(KhoaHoc_ThongTin KH)
         {
             var filter = Builders<BsonDocument>.Filter.Regex("MaKhoaHoc", new BsonRegularExpression(KH.MaKhoaHoc, "i"));
