@@ -13,6 +13,7 @@ using D.ThongTin;
 using B.ThaoTac;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Bson.Serialization;
 using System.Collections.ObjectModel;
 
 namespace A.GiaoDien
@@ -57,29 +58,42 @@ namespace A.GiaoDien
         public void LayDuLieu(HocKy_ThongTin HocKy)
         {
             this.MaHocKy = HocKy.MaHocKy;
-            if (!this.MaHocKy.Equals(""))
+            if (!string.IsNullOrEmpty(this.MaHocKy))
             {
                 try
                 {
-                    tbDanhSachHocKy.DataSource = cls_HocKy.DanhSachThongTinHocKy();
+                    // Gọi hàm RefreshDanhSach để làm sạch dữ liệu
+                    RefreshDanhSach();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi làm mới dữ liệu sau khi thêm: {ex.Message}",
+                                    "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             txtTimKiem.Focus();
         }
+
         //KHI KÍCH BUTTON THÊM
         private void ThemHocKy()
         {
             ChucNang = "F9";
             HocKy_ThongTin HK = new HocKy_ThongTin();
+
+            // Mở form thêm mới
             A.GiaoDien.QuanLyHocKy QLHK = new A.GiaoDien.QuanLyHocKy(ChucNang, HK);
 
             // Đăng ký delegate để làm mới dữ liệu
             QLHK.DuLieu = new QuanLyHocKy.DuLieuTruyenVe(LayDuLieu);
-            QLHK.ShowDialog(this);
 
-            RefreshDanhSach();
+            // Hiển thị form thêm học kỳ
+            if (QLHK.ShowDialog(this) == DialogResult.OK)
+            {
+                // Làm mới danh sách
+                RefreshDanhSach();
+            }
         }
+
 
         // Làm mới danh sách học kỳ
         private void RefreshDanhSach()
@@ -90,36 +104,57 @@ namespace A.GiaoDien
 
                 if (data != null && data.Count > 0)
                 {
-                    // Kiểm tra và chuyển đổi dữ liệu đúng định dạng
-                    var validData = data.Select(doc =>
+                    DataTable table = new DataTable();
+
+                    foreach (var field in data[0].Elements)
                     {
-                        // Tạo bản sao dữ liệu mới
-                        var newDoc = new BsonDocument();
+                        table.Columns.Add(field.Name, typeof(string));
+                    }
+
+                    foreach (var doc in data)
+                    {
+                        var row = table.NewRow();
                         foreach (var field in doc.Elements)
                         {
-                            if (field.Value.IsBsonBoolean) // Kiểm tra nếu là Boolean
-                                newDoc.Add(field.Name, field.Value.AsBoolean.ToString());
-                            else if (field.Value.IsBsonNull) // Xử lý null
-                                newDoc.Add(field.Name, string.Empty);
-                            else if (field.Value.IsBsonArray || field.Value.IsBsonDocument)
-                                newDoc.Add(field.Name, field.Value.ToJson());
-                            else
-                                newDoc.Add(field.Name, field.Value.ToString());
+                            switch (field.Value.BsonType)
+                            {
+                                case BsonType.Boolean:
+                                    row[field.Name] = field.Value.AsBoolean.ToString();
+                                    break;
+                                case BsonType.Null:
+                                    row[field.Name] = string.Empty;
+                                    break;
+                                case BsonType.Array:
+                                case BsonType.Document:
+                                    row[field.Name] = field.Value.ToJson();
+                                    break;
+                                default:
+                                    row[field.Name] = field.Value.ToString();
+                                    break;
+                            }
                         }
-                        return newDoc;
-                    }).ToList();
+                        table.Rows.Add(row);
+                    }
 
-                    tbDanhSachHocKy.DataSource = DataConversion1.ConvertToDataTable1(validData);
+                    tbDanhSachHocKy.DataSource = table;
+
+                    // Ẩn cột _id nếu có
+                    if (tbDanhSachHocKy.Columns.Contains("_id"))
+                    {
+                        tbDanhSachHocKy.Columns["_id"].Visible = false;
+                    }
                 }
                 else
                 {
                     tbDanhSachHocKy.DataSource = null;
-                    MessageBox.Show("Không có dữ liệu để hiển thị!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Không có dữ liệu để hiển thị!",
+                                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi làm mới danh sách: {ex.Message}", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi làm mới danh sách: {ex.Message}",
+                                "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -136,21 +171,49 @@ namespace A.GiaoDien
         //KHI KÍCH BUTTON SỬA THÔNG TIN
         private void SuaHocKy()
         {
-            ChucNang = "F10";
-            HocKy_ThongTin HK = new HocKy_ThongTin
+            if (DongChon >= 0) // Kiểm tra dòng đã chọn
             {
-                MaHocKy = tbDanhSachHocKy.Rows[DongChon].Cells[0].Value.ToString(),
-                TenHocKy = tbDanhSachHocKy.Rows[DongChon].Cells[1].Value.ToString()
-            };
+                try
+                {
+                    // Chuyển đổi giá trị sang chuỗi
+                    string maHocKy = tbDanhSachHocKy.Rows[DongChon].Cells["ColumnMaHocKy"].Value?.ToString() ?? "";
+                    string tenHocKy = tbDanhSachHocKy.Rows[DongChon].Cells["ColumnTenHocKy"].Value?.ToString() ?? "";
 
-            A.GiaoDien.QuanLyHocKy QLHK = new A.GiaoDien.QuanLyHocKy(ChucNang, HK);
+                    if (string.IsNullOrEmpty(maHocKy))
+                    {
+                        MessageBox.Show("Không thể xác định mã học kỳ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
-            // Đăng ký delegate để làm mới dữ liệu
-            QLHK.DuLieu = new QuanLyHocKy.DuLieuTruyenVe(LayDuLieu);
-            QLHK.ShowDialog(this);
+                    ChucNang = "F10";
+                    HocKy_ThongTin HK = new HocKy_ThongTin
+                    {
+                        MaHocKy = maHocKy,
+                        TenHocKy = tenHocKy
+                    };
 
-            RefreshDanhSach();
+                    A.GiaoDien.QuanLyHocKy QLHK = new A.GiaoDien.QuanLyHocKy(ChucNang, HK);
+
+                    // Đăng ký delegate để làm mới dữ liệu
+                    QLHK.DuLieu = new QuanLyHocKy.DuLieuTruyenVe(LayDuLieu);
+                    QLHK.ShowDialog(this);
+
+                    RefreshDanhSach();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi sửa học kỳ: {ex.Message}", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một dòng để sửa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
+
+
+
+
 
         //KÍCH VÀO BẢNG
         private void tbDanhSachHocKy_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -158,9 +221,14 @@ namespace A.GiaoDien
             if (e.RowIndex >= 0)
             {
                 DongChon = e.RowIndex;
-                XacNhanXoa = 1; // Đánh dấu dòng đã chọn
+                XacNhanXoa = 1;
+
+                // Kiểm tra dữ liệu
+                string maHocKy = tbDanhSachHocKy.Rows[e.RowIndex].Cells["ColumnMaHocKy"].Value?.ToString();
+                Console.WriteLine($"Mã Học Kỳ: {maHocKy}");
             }
         }
+
 
         private void tbDanhSachHocKy_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -180,30 +248,41 @@ namespace A.GiaoDien
         {
             if (XacNhanXoa == 1)
             {
-                HocKy_ThongTin HocKy = new HocKy_ThongTin();
-                HocKy.MaHocKy = tbDanhSachHocKy.Rows[DongChon].Cells[0].Value.ToString();
-
-                if (MessageBox.Show($"Bạn có thật sự muốn xóa học kỳ {HocKy.MaHocKy} không?",
-                                    "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                try
                 {
-                    try
+                    // Chuyển đổi giá trị sang chuỗi
+                    string maHocKy = tbDanhSachHocKy.Rows[DongChon].Cells["ColumnMaHocKy"].Value?.ToString() ?? "";
+
+                    if (string.IsNullOrEmpty(maHocKy))
                     {
+                        MessageBox.Show("Không thể xác định mã học kỳ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    if (MessageBox.Show($"Bạn có thật sự muốn xóa học kỳ {maHocKy} không?",
+                                        "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        HocKy_ThongTin HocKy = new HocKy_ThongTin { MaHocKy = maHocKy };
                         cls_HocKy.XoaHocKy(HocKy);
                         MessageBox.Show("Xóa học kỳ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        RefreshDanhSach(); // Làm mới danh sách
+                        RefreshDanhSach();
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Lỗi khi xóa học kỳ: {ex.Message}", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi xóa học kỳ: {ex.Message}", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 XacNhanXoa = 0;
             }
             else
             {
-                MessageBox.Show("Bạn hãy chọn khóa học muốn xóa.", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Bạn hãy chọn khóa học muốn xóa.", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+
+
+
 
         //
         private void btXoa_Click(object sender, EventArgs e)

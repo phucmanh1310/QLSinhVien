@@ -113,7 +113,7 @@
             this.txtTenServer.Name = "txtTenServer";
             this.txtTenServer.Size = new System.Drawing.Size(150, 20);
             this.txtTenServer.TabIndex = 1;
-            this.txtTenServer.Text = "LAPTOP-GJKU54SJ\\MANH";
+            this.txtTenServer.Text = "localhost";
             // 
             // label5
             // 

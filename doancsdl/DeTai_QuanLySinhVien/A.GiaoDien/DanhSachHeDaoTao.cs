@@ -11,6 +11,7 @@ using System.IO;
 using System.Data.SqlClient;
 using D.ThongTin;
 using B.ThaoTac;
+using MongoDB.Bson;
 
 namespace A.GiaoDien
 {
@@ -53,15 +54,32 @@ namespace A.GiaoDien
             {
                 try
                 {
-                    var data = cls_HeDaoTao.DanhSachHeDaoTao(); // Lấy danh sách từ MongoDB
-                    tbHeDaoTao.DataSource = DataConversion1.ConvertToDataTable1(data); // Chuyển đổi sang DataTable
+                    var data = cls_HeDaoTao.DanhSachHeDaoTao(); // Lấy dữ liệu từ MongoDB
+                    var sanitizedData = SanitizeBsonDocuments(data); // Làm sạch dữ liệu
+                    var dataTable = DataConversion1.ConvertToDataTable1(sanitizedData);
+                    tbHeDaoTao.DataSource = dataTable; // Gán dữ liệu cho DataGridView
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi làm mới dữ liệu: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Lỗi khi tải dữ liệu: " + ex.Message, "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             txtTimKiem.Focus();
+        }
+        // Hàm làm sạch dữ liệu (tránh BsonDocument)
+        private List<BsonDocument> SanitizeBsonDocuments(List<BsonDocument> documents)
+        {
+            foreach (var doc in documents)
+            {
+                foreach (var element in doc.Elements.ToList())
+                {
+                    if (element.Value.IsBsonDocument || element.Value.IsBsonArray)
+                    {
+                        doc[element.Name] = element.Value.ToString(); // Chuyển về chuỗi
+                    }
+                }
+            }
+            return documents;
         }
 
 
@@ -179,6 +197,16 @@ namespace A.GiaoDien
             SuaHeDaoTao();
             txtTimKiem.Focus();
         }
+
+        private void tbHeDaoTao_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // Đảm bảo không click vào header
+            {
+                DongChon = e.RowIndex; // Cập nhật dòng được chọn
+                XacNhanXoa = 1; // Đánh dấu đã chọn dòng
+            }
+        }
+
 
         /*private void btInBaoCao_Click(object sender, EventArgs e)
         {

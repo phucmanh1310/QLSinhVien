@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using System.Collections.Generic;
 using D.ThongTin;
+using System;
 
 namespace C.DuLieu
 {
@@ -38,6 +39,14 @@ namespace C.DuLieu
         // Thêm khoa
         public void ThemKhoa(Khoa_ThongTin K)
         {
+            var filter = Builders<BsonDocument>.Filter.Eq("MaKhoa", K.MaKhoa);
+            var existing = collection.Find(filter).FirstOrDefault();
+
+            if (existing != null)
+            {
+                throw new Exception("Mã khoa đã tồn tại!");
+            }
+
             var document = new BsonDocument
             {
                 { "MaKhoa", K.MaKhoa },

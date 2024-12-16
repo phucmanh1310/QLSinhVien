@@ -80,7 +80,7 @@
             this.btThem.Image = ((System.Drawing.Image)(resources.GetObject("btThem.Image")));
             this.btThem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btThem.Name = "btThem";
-            this.btThem.Size = new System.Drawing.Size(126, 22);
+            this.btThem.Size = new System.Drawing.Size(124, 22);
             this.btThem.Text = "Thêm Hệ Đào Tạo.";
             this.btThem.Click += new System.EventHandler(this.btThem_Click);
             // 
@@ -96,7 +96,7 @@
             this.btSua.Image = ((System.Drawing.Image)(resources.GetObject("btSua.Image")));
             this.btSua.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btSua.Name = "btSua";
-            this.btSua.Size = new System.Drawing.Size(107, 22);
+            this.btSua.Size = new System.Drawing.Size(105, 22);
             this.btSua.Text = "Sửa Thông Tin.";
             this.btSua.Click += new System.EventHandler(this.btSua_Click);
             // 
@@ -112,7 +112,7 @@
             this.btXoa.Image = ((System.Drawing.Image)(resources.GetObject("btXoa.Image")));
             this.btXoa.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btXoa.Name = "btXoa";
-            this.btXoa.Size = new System.Drawing.Size(115, 22);
+            this.btXoa.Size = new System.Drawing.Size(114, 22);
             this.btXoa.Text = "Xóa Hệ Đào Tạo.";
             this.btXoa.Click += new System.EventHandler(this.btXoa_Click);
             // 
@@ -126,11 +126,12 @@
             // lbTimKiem
             // 
             this.lbTimKiem.Name = "lbTimKiem";
-            this.lbTimKiem.Size = new System.Drawing.Size(77, 22);
+            this.lbTimKiem.Size = new System.Drawing.Size(76, 22);
             this.lbTimKiem.Text = "Tìm Kiếm (*):";
             // 
             // txtTimKiem
             // 
+            this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(150, 25);
             this.txtTimKiem.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KhiAnTimKiem);
@@ -143,7 +144,6 @@
             this.btInBaoCao.Name = "btInBaoCao";
             this.btInBaoCao.Size = new System.Drawing.Size(84, 22);
             this.btInBaoCao.Text = "In Báo Cáo";
-            //this.btInBaoCao.Click += new System.EventHandler(this.btInBaoCao_Click);
             // 
             // groupBox1
             // 
@@ -166,6 +166,7 @@
             this.tbHeDaoTao.Name = "tbHeDaoTao";
             this.tbHeDaoTao.Size = new System.Drawing.Size(845, 533);
             this.tbHeDaoTao.TabIndex = 0;
+            this.tbHeDaoTao.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbHeDaoTao_CellClick);
             this.tbHeDaoTao.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbHeDaoTao_CellContentClick);
             this.tbHeDaoTao.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.KhiKichDupChuot);
             // 

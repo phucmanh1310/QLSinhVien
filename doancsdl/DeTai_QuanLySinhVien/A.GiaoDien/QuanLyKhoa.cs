@@ -50,56 +50,51 @@ namespace A.GiaoDien
         //THÊM KHOA MỚI.
         private void ThemKhoa()
         {
-            Khoa_ThongTin K = new Khoa_ThongTin();
-            K.MaKhoa = txtMaKhoa.Text;
-            K.TenKhoa = txtTenKhoa.Text;
+            Khoa_ThongTin K = new Khoa_ThongTin
+            {
+                MaKhoa = txtMaKhoa.Text.Trim(),
+                TenKhoa = txtTenKhoa.Text.Trim()
+            };
+
             try
             {
-                if (!K.MaKhoa.Equals(""))
-                {
-                    cls_Khoa.ThemKhoa(K);
-                    MessageBox.Show("Bạn đã thêm khoa có mã " + K.MaKhoa + "", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
-                }
-                else
-                {
-                    MessageBox.Show("Hãy nhập mã khoa.");
-                    txtMaKhoa.Focus();
-                }
+                cls_Khoa.ThemKhoa(K);
+                MessageBox.Show($"Thêm khoa {K.MaKhoa} thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Gọi delegate để cập nhật dữ liệu trên form cha
+                DuLieu?.Invoke(K);
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Không thể thêm mới, có thể khóa chính bị trùng.", "Thông báo lối!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            txtMaKhoa.Text = "";
-            txtMaKhoa.Focus();
-            txtTenKhoa.Text = "";
-            btHoanTat.Enabled = true;
-            if (DuLieu != null)
-            {
-                DuLieu(K);
+                MessageBox.Show($"Lỗi khi thêm khoa: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
         //CHỈNH SỬA KHOA.
         private void SuaKhoa()
         {
-            Khoa_ThongTin K = new Khoa_ThongTin();
-            K.MaKhoa = txtMaKhoa.Text;
-            K.TenKhoa = txtTenKhoa.Text;
+            Khoa_ThongTin K = new Khoa_ThongTin
+            {
+                MaKhoa = txtMaKhoa.Text.Trim(),
+                TenKhoa = txtTenKhoa.Text.Trim()
+            };
+
             try
             {
                 cls_Khoa.SuaKhoa(K);
-                MessageBox.Show("Bạn đã chỉnh sửa thông tin khoa " + K.MaKhoa + ".", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
+                MessageBox.Show($"Chỉnh sửa khoa {K.MaKhoa} thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Gọi delegate để cập nhật dữ liệu trên form cha
+                DuLieu?.Invoke(K);
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Không thể chỉnh sửa, hãy kiểm tra lại,", "Thông báo lối!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi chỉnh sửa khoa: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            if (DuLieu != null)
-            {
-                DuLieu(K);
-            }
-            this.Hide();
         }
+
+
 
         private void btHoanTat_Click(object sender, EventArgs e)
         {
@@ -112,10 +107,15 @@ namespace A.GiaoDien
             {
                 ThemKhoa();
             }
-            if (this.ChucNang.Equals("F10"))
+            else if (this.ChucNang.Equals("F10"))
             {
                 SuaKhoa();
             }
+
+            // Đặt DialogResult để form cha biết thao tác đã hoàn thành
+            this.DialogResult = DialogResult.OK;
+            this.Close(); // Đóng form
         }
+
     }
 }
