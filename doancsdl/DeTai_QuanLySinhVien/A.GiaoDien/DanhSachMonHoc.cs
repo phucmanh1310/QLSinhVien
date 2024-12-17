@@ -43,30 +43,62 @@ namespace A.GiaoDien
             }
         }
         //LẤY DỮ LIỆU GỬI VỀ.
-        public void LayDuLieu(MonHoc_ThongTin MonHoc)
+        public void LayDuLieu(MonHoc_ThongTin MonHoc )
         {
-            this.MaMonHoc = MonHoc.MaMonHoc;
-            if (!this.MaMonHoc.Equals(""))
+            // Nếu MonHoc không được truyền hoặc MaMonHoc rỗng, vẫn tải toàn bộ danh sách
+            if (MonHoc == null || string.IsNullOrEmpty(MonHoc.MaMonHoc))
             {
                 try
                 {
-                    tbDanhSachMonHoc.DataSource = cls_MonHoc.DanhSachMonHocToanTruong();
+                    var data = cls_MonHoc.DanhSachMonHocToanTruong();
+                    var dataTable = DataConversion1.ConvertToDataTable1(data);
+                    tbDanhSachMonHoc.DataSource = dataTable;
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
+            else
+            {
+                // Nếu có MaMonHoc, tải theo điều kiện tìm kiếm cụ thể
+                try
+                {
+                    var data = cls_MonHoc.TimMonHoc(MonHoc);
+                    var dataTable = DataConversion1.ConvertToDataTable1(data);
+                    tbDanhSachMonHoc.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi tìm kiếm dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
             txtTimKiem.Focus();
         }
+
+
         //KHI KÍCH BUTTON THÊM
         private void ThemMonHoc()
         {
             ChucNang = "F9";
-            MonHoc_ThongTin MonHoc = new MonHoc_ThongTin();
+            MonHoc_ThongTin MonHoc = new MonHoc_ThongTin
+            {
+                MaMonHoc = "", // Giá trị mặc định ban đầu
+                TenMonHoc = "",
+                SoTinChi = 0
+            };
+
+            // Mở form thêm dữ liệu
             A.GiaoDien.MonHoc MH = new A.GiaoDien.MonHoc(ChucNang, MonHoc);
             MH.DuLieu = new MonHoc.DuLieuTruyenVe(LayDuLieu);
             MH.ShowDialog(this);
-            XacNhanXoa = 0;
-            txtTimKiem.Focus();
+
+            // Làm mới danh sách từ CSDL
+            LoadDanhSachMonHoc();
         }
+
+
         private void btThem_Click(object sender, EventArgs e)
         {
             ThemMonHoc();
@@ -76,16 +108,34 @@ namespace A.GiaoDien
         private void SuaMonHoc()
         {
             ChucNang = "F10";
-            MonHoc_ThongTin MonHoc = new MonHoc_ThongTin();
-            MonHoc.MaMonHoc = tbDanhSachMonHoc.Rows[DongChon].Cells[0].Value.ToString();
-            MonHoc.TenMonHoc = tbDanhSachMonHoc.Rows[DongChon].Cells[1].Value.ToString();
-            MonHoc.SoTinChi = int.Parse(tbDanhSachMonHoc.Rows[DongChon].Cells[2].Value.ToString());
+            MonHoc_ThongTin MonHoc = new MonHoc_ThongTin
+            {
+                MaMonHoc = tbDanhSachMonHoc.CurrentRow.Cells["ColumnMaMonHoc"].Value.ToString(),
+                TenMonHoc = tbDanhSachMonHoc.CurrentRow.Cells["ColumnTenMonHoc"].Value.ToString(),
+                SoTinChi = int.Parse(tbDanhSachMonHoc.CurrentRow.Cells["ColumnSoTinChi"].Value.ToString())
+            };
+
             A.GiaoDien.MonHoc MH = new A.GiaoDien.MonHoc(ChucNang, MonHoc);
             MH.DuLieu = new MonHoc.DuLieuTruyenVe(LayDuLieu);
             MH.ShowDialog(this);
-            XacNhanXoa = 0;
-            txtTimKiem.Focus();
+
+            // Làm mới dữ liệu sau khi sửa
+            LoadDanhSachMonHoc();
         }
+        private void LoadDanhSachMonHoc()
+        {
+            try
+            {
+                var data = cls_MonHoc.DanhSachMonHocToanTruong();
+                var dataTable = DataConversion1.ConvertToDataTable1(data);
+                tbDanhSachMonHoc.DataSource = dataTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void btSua_Click(object sender, EventArgs e)
         {
             SuaMonHoc();
@@ -111,29 +161,32 @@ namespace A.GiaoDien
         {
             if (XacNhanXoa == 1)
             {
-                MonHoc_ThongTin MonHoc = new MonHoc_ThongTin();
-                MonHoc.MaMonHoc = tbDanhSachMonHoc.Rows[DongChon].Cells[0].Value.ToString();
-                if (MessageBox.Show("Bạn có thật sự muốn xóa thông tin môn học " + MonHoc.MaMonHoc + "", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                MonHoc_ThongTin MonHoc = new MonHoc_ThongTin
+                {
+                    MaMonHoc = tbDanhSachMonHoc.CurrentRow.Cells["ColumnMaMonHoc"].Value.ToString()
+                };
+
+                if (MessageBox.Show($"Bạn có thật sự muốn xóa thông tin môn học {MonHoc.MaMonHoc}?",
+                                    "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
                         cls_MonHoc.XoaMonHoc(MonHoc);
-                        tbDanhSachMonHoc.DataSource = cls_MonHoc.DanhSachMonHocToanTruong();
+                        LayDuLieu(new MonHoc_ThongTin());
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Không thể xóa dữ liệu này, hãy kiểm tra lại.!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Không thể xóa dữ liệu này, lỗi: {ex.Message}", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 XacNhanXoa = 0;
-                txtTimKiem.Focus();
             }
             else
             {
-                MessageBox.Show("Bạn hãy chọn khóa học muốn xóa.", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtTimKiem.Focus();
+                MessageBox.Show("Bạn hãy chọn môn học muốn xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         //
         private void btXoa_Click(object sender, EventArgs e)
         {
@@ -178,29 +231,26 @@ namespace A.GiaoDien
             SuaMonHoc();
             txtTimKiem.Focus();
         }
-
         private void tbDanhSachMonHoc_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) // Kiểm tra chỉ số dòng hợp lệ
+            if (e.RowIndex >= 0)
             {
                 DongChon = e.RowIndex;
                 XacNhanXoa = 1;
-                txtTimKiem.Focus();
             }
             else
             {
                 XacNhanXoa = 0;
             }
         }
-
-    /*private void btInBaoCao_Click(object sender, EventArgs e)
-    {
-        MonHoc_ThongTin MH = new MonHoc_ThongTin();
-        MH.MaMonHoc = txtTimKiem.Text;
-        BaoCao.BaoCao.DuLieu = cls_MonHoc.TimMonHoc(MH);
-        BaoCao.BaoCao.Kieu = "TimKiemMonHoc";
-        BaoCao.BaoCao BC = new BaoCao.BaoCao();
-        BC.ShowDialog();
-    }*/
-}
+        /*private void btInBaoCao_Click(object sender, EventArgs e)
+        {
+            MonHoc_ThongTin MH = new MonHoc_ThongTin();
+            MH.MaMonHoc = txtTimKiem.Text;
+            BaoCao.BaoCao.DuLieu = cls_MonHoc.TimMonHoc(MH);
+            BaoCao.BaoCao.Kieu = "TimKiemMonHoc";
+            BaoCao.BaoCao BC = new BaoCao.BaoCao();
+            BC.ShowDialog();
+        }*/
+    }
 }

@@ -58,57 +58,52 @@ namespace A.GiaoDien
         //THÊM NGÀNH ĐÀO TẠO MỚI.
         private void ThemNganhDaoTao()
         {
-            NganhDaoTao_ThongTin NDT = new NganhDaoTao_ThongTin();
-            NDT.MaNganh = txtMaNganh.Text;
-            NDT.TenNganh = txtTenNganh.Text;
-            NDT.MaKhoa = cbTenKhoa.SelectedValue.ToString();
+            if (string.IsNullOrWhiteSpace(txtMaNganh.Text) || string.IsNullOrWhiteSpace(txtTenNganh.Text))
+            {
+                MessageBox.Show("Mã ngành và tên ngành không được để trống!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            NganhDaoTao_ThongTin NDT = new NganhDaoTao_ThongTin
+            {
+                MaNganh = txtMaNganh.Text.Trim(),
+                TenNganh = txtTenNganh.Text.Trim(),
+                MaKhoa = cbTenKhoa.SelectedValue.ToString()
+            };
+
             try
             {
-                if (!NDT.MaNganh.Equals(""))
-                {
-                    cls_NganhDaoTao.ThemNganhDaoTao(NDT);
-                    MessageBox.Show("Bạn đã thêm ngành đào tạo có mã " + NDT.MaNganh + "", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
-                }
-                else
-                {
-                    MessageBox.Show("Hãy nhập mã ngành.");
-                    txtMaNganh.Focus();
-                }
+                cls_NganhDaoTao.ThemNganhDaoTao(NDT);
+                MessageBox.Show("Thêm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DuLieu?.Invoke(NDT); // Truyền dữ liệu về Form cha
+                this.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Không thể thêm mới, có thể khóa chính bị trùng.", "Thông báo lối!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            txtMaNganh.Text = "";
-            txtMaNganh.Focus();
-            txtTenNganh.Text = "";
-            btHoanTat.Enabled = true;
-            if (DuLieu != null)
-            {
-                DuLieu(NDT);
+                MessageBox.Show($"Lỗi khi thêm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         //CHỈNH SỬA KHOA.
         private void SuaNganhDaoTao()
         {
-            NganhDaoTao_ThongTin NDT = new NganhDaoTao_ThongTin();
-            NDT.MaNganh = txtMaNganh.Text;
-            NDT.TenNganh = txtTenNganh.Text;
-            NDT.MaKhoa = cbTenKhoa.SelectedValue.ToString();
+            NganhDaoTao_ThongTin NDT = new NganhDaoTao_ThongTin
+            {
+                MaNganh = txtMaNganh.Text.Trim(),
+                TenNganh = txtTenNganh.Text.Trim(),
+                MaKhoa = cbTenKhoa.SelectedValue.ToString()
+            };
+
             try
             {
                 cls_NganhDaoTao.SuaNganhDaoTao(NDT);
-                MessageBox.Show("Bạn đã chỉnh sửa thông tin ngành đào tạo " + NDT.MaNganh + ".", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
+                MessageBox.Show("Sửa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DuLieu?.Invoke(NDT);
+                this.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Không thể chỉnh sửa, hãy kiểm tra lại,", "Thông báo lối!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi sửa: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            if (DuLieu != null)
-            {
-                DuLieu(NDT);
-            }
-            this.Hide();
         }
         //
         private void btXacNhan_Click(object sender, EventArgs e)

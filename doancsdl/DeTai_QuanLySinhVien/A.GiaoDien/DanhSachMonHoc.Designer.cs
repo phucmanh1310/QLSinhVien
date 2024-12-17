@@ -42,9 +42,9 @@
             this.btInBaoCao = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbDanhSachMonHoc = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnMaMonHoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnTenMonHoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnSoTinChi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbDanhSachMonHoc)).BeginInit();
@@ -161,9 +161,9 @@
             this.tbDanhSachMonHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.tbDanhSachMonHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tbDanhSachMonHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3});
+            this.ColumnMaMonHoc,
+            this.ColumnTenMonHoc,
+            this.ColumnSoTinChi});
             this.tbDanhSachMonHoc.Location = new System.Drawing.Point(6, 19);
             this.tbDanhSachMonHoc.Name = "tbDanhSachMonHoc";
             this.tbDanhSachMonHoc.Size = new System.Drawing.Size(845, 535);
@@ -171,23 +171,23 @@
             this.tbDanhSachMonHoc.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbDanhSachMonHoc_CellClick);
             this.tbDanhSachMonHoc.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.KichDupChuot);
             // 
-            // Column1
+            // ColumnMaMonHoc
             // 
-            this.Column1.DataPropertyName = "MaMonHoc";
-            this.Column1.HeaderText = "Mã Môn Học";
-            this.Column1.Name = "Column1";
+            this.ColumnMaMonHoc.DataPropertyName = "MaMonHoc";
+            this.ColumnMaMonHoc.HeaderText = "Mã Môn Học";
+            this.ColumnMaMonHoc.Name = "ColumnMaMonHoc";
             // 
-            // Column2
+            // ColumnTenMonHoc
             // 
-            this.Column2.DataPropertyName = "TenMonHoc";
-            this.Column2.HeaderText = "Tên Môn Học";
-            this.Column2.Name = "Column2";
+            this.ColumnTenMonHoc.DataPropertyName = "TenMonHoc";
+            this.ColumnTenMonHoc.HeaderText = "Tên Môn Học";
+            this.ColumnTenMonHoc.Name = "ColumnTenMonHoc";
             // 
-            // Column3
+            // ColumnSoTinChi
             // 
-            this.Column3.DataPropertyName = "SoTinChi";
-            this.Column3.HeaderText = "Số Tín Chỉ";
-            this.Column3.Name = "Column3";
+            this.ColumnSoTinChi.DataPropertyName = "SoTinChi";
+            this.ColumnSoTinChi.HeaderText = "Số Tín Chỉ";
+            this.ColumnSoTinChi.Name = "ColumnSoTinChi";
             // 
             // DanhSachMonHoc
             // 
@@ -223,9 +223,9 @@
         private System.Windows.Forms.ToolStripTextBox txtTimKiem;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView tbDanhSachMonHoc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.ToolStripButton btInBaoCao;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMaMonHoc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTenMonHoc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSoTinChi;
     }
 }

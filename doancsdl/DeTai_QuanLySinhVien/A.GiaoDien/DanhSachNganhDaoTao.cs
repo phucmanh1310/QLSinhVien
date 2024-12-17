@@ -30,27 +30,29 @@ namespace A.GiaoDien
         //SAU KHI KHỞI TẠO
         private void DanhSachNganhDaoTao_Load(object sender, EventArgs e)
         {
-            try
-            {
-                tbNganhDaoTao.DataSource = cls_NganhDaoTao.DanhSachThongTinNganhDaoTao();
-            }
-            catch { }
+            LoadDanhSachNganhDaoTao();
             txtTimKiem.Focus();
         }
+        private void LoadDanhSachNganhDaoTao()
+        {
+            try
+            {
+                var data = cls_NganhDaoTao.DanhSachThongTinNganhDaoTao();
+                tbNganhDaoTao.DataSource = DataConversion1.ConvertToDataTable1(data);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         //LẤY DỮ LIỆU GỬI VỀ.
         public void LayDuLieu(NganhDaoTao_ThongTin NDT)
         {
-            this.MaNganh = NDT.MaNganh;
-            if (!this.MaNganh.Equals(""))
-            {
-                try
-                {
-                    tbNganhDaoTao.DataSource = cls_NganhDaoTao.DanhSachThongTinNganhDaoTao();
-                }
-                catch { }
-            }
+            LoadDanhSachNganhDaoTao(); // Làm mới dữ liệu
             txtTimKiem.Focus();
         }
+
         //KHI KÍCH BUTTON THÊM
         private void ThemNganhDaoTao()
         {
@@ -59,8 +61,9 @@ namespace A.GiaoDien
             A.GiaoDien.QuanLyNganhDaoTao QLNDT = new A.GiaoDien.QuanLyNganhDaoTao(ChucNang, NDT);
             QLNDT.DuLieu = new QuanLyNganhDaoTao.DuLieuTruyenVe(LayDuLieu);
             QLNDT.ShowDialog(this);
-            XacNhanXoa = 0;
-            txtTimKiem.Focus();
+
+            // Làm mới danh sách
+            LoadDanhSachNganhDaoTao();
         }
         //
         private void btThem_Click(object sender, EventArgs e)
@@ -76,13 +79,14 @@ namespace A.GiaoDien
             NDT.MaNganh = tbNganhDaoTao.Rows[DongChon].Cells[0].Value.ToString();
             NDT.TenNganh = tbNganhDaoTao.Rows[DongChon].Cells[1].Value.ToString();
             NDT.MaKhoa = tbNganhDaoTao.Rows[DongChon].Cells[2].Value.ToString();
+
             A.GiaoDien.QuanLyNganhDaoTao QLNDT = new A.GiaoDien.QuanLyNganhDaoTao(ChucNang, NDT);
             QLNDT.DuLieu = new QuanLyNganhDaoTao.DuLieuTruyenVe(LayDuLieu);
             QLNDT.ShowDialog(this);
-            XacNhanXoa = 0;
-            txtTimKiem.Focus();
-        }
 
+            // Làm mới danh sách
+            LoadDanhSachNganhDaoTao();
+        }
         private void tbNganhDaoTao_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             DongChon = e.RowIndex;
@@ -99,31 +103,29 @@ namespace A.GiaoDien
         {
             if (XacNhanXoa == 1)
             {
-                NganhDaoTao_ThongTin NDT = new NganhDaoTao_ThongTin();
-                NDT.MaNganh = tbNganhDaoTao.Rows[DongChon].Cells[0].Value.ToString();
-                if (MessageBox.Show("Bạn có thật sự muốn xóa thông tin ngành " + NDT.MaNganh + "", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                string maNganh = tbNganhDaoTao.Rows[DongChon].Cells[0].Value.ToString();
+                if (MessageBox.Show($"Bạn có chắc chắn muốn xóa ngành {maNganh} không?",
+                                    "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
-                        cls_NganhDaoTao.XoaNganhDaoTao(NDT.MaNganh); // Truyền trực tiếp MaNganh
-                        tbNganhDaoTao.DataSource = DataConversion1.ConvertToDataTable1(cls_NganhDaoTao.DanhSachThongTinNganhDaoTao());
-                    }
+                        cls_NganhDaoTao.XoaNganhDaoTao(maNganh);
+                        MessageBox.Show("Xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    catch
+                        // Làm mới danh sách
+                        LoadDanhSachNganhDaoTao();
+                    }
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Không thể xóa dữ liệu này, hãy kiểm tra lại.!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Lỗi khi xóa: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-                XacNhanXoa = 0;
-                txtTimKiem.Focus();
             }
             else
             {
-                MessageBox.Show("Bạn hãy chọn khóa học muốn xóa.", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtTimKiem.Focus();
+                MessageBox.Show("Vui lòng chọn ngành đào tạo cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         private void btXoa_Click(object sender, EventArgs e)
         {
             XoaNganhDaoTao();
@@ -131,26 +133,20 @@ namespace A.GiaoDien
 
         private void KhiAnTimKiem(object sender, KeyEventArgs e)
         {
-            if (!e.KeyValue.ToString().Equals("120") && !e.KeyValue.ToString().Equals("121") && !e.KeyValue.ToString().Equals("122") && !e.KeyValue.ToString().Equals("123"))
+            if (e.KeyCode == Keys.Enter)
             {
-                txtTimKiem.BackColor = Color.White;
-                string maNganh = txtTimKiem.Text; // Lấy mã ngành từ textbox
-                var data = cls_NganhDaoTao.TimKiemThongTinNganhDaoTao(maNganh); // Gọi hàm mới
-                tbNganhDaoTao.DataSource = DataConversion1.ConvertToDataTable1(data); // Chuyển đổi dữ liệu
+                string maNganh = txtTimKiem.Text.Trim();
+                try
+                {
+                    var data = cls_NganhDaoTao.TimKiemThongTinNganhDaoTao(maNganh);
+                    tbNganhDaoTao.DataSource = DataConversion1.ConvertToDataTable1(data);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            // Giữ nguyên phần điều hướng bằng phím tắt
-            if (e.KeyValue.ToString().Equals("120")) { ThemNganhDaoTao(); txtTimKiem.Focus(); }
-            if (e.KeyValue.ToString().Equals("121")) { SuaNganhDaoTao(); txtTimKiem.Focus(); }
-            if (e.KeyValue.ToString().Equals("122")) { XoaNganhDaoTao(); txtTimKiem.Focus(); }
-            if (e.KeyValue.ToString().Equals("123"))
-            {
-                txtTimKiem.BackColor = Color.YellowGreen;
-                txtTimKiem.Focus();
-            }
-            txtTimKiem.Focus();
         }
-
 
         private void KhiKichDupChuot(object sender, MouseEventArgs e)
         {
