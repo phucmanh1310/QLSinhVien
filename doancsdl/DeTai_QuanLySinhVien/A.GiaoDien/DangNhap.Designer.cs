@@ -78,9 +78,7 @@
             this.txtTaiKhoan.Name = "txtTaiKhoan";
             this.txtTaiKhoan.Size = new System.Drawing.Size(166, 26);
             this.txtTaiKhoan.TabIndex = 2;
-            this.txtTaiKhoan.Text = "chukimmuoi";
-        /*    this.txtTaiKhoan.TextChanged += new System.EventHandler(this.txtTaiKhoan_TextChanged);
-            this.txtTaiKhoan.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KhiAnOTaiKhoan);*/
+            this.txtTaiKhoan.Text = "Manh";
             // 
             // txtMatKhau
             // 
@@ -90,8 +88,7 @@
             this.txtMatKhau.PasswordChar = '*';
             this.txtMatKhau.Size = new System.Drawing.Size(166, 26);
             this.txtMatKhau.TabIndex = 3;
-            this.txtMatKhau.Text = "pomcoi";
-        /*    this.txtMatKhau.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KhiAnPhimTat);*/
+            this.txtMatKhau.Text = "123";
             // 
             // label4
             // 

@@ -36,44 +36,65 @@ namespace C.DuLieu
         }
 
         // Thêm lớp học mới
-        public void ThemLopHocMoi(Lop_ThongTin Lop)
+        /*  public void ThemLopHocMoi(Lop_ThongTin Lop)
+          {
+              // Kiểm tra trùng mã lớp học
+              var existingLop = collection.Find(Builders<BsonDocument>.Filter.Eq("MaLop", Lop.MaLop)).FirstOrDefault();
+              if (existingLop != null)
+              {
+                  throw new Exception($"Mã lớp {Lop.MaLop} đã tồn tại!");
+              }
+
+              var document = new BsonDocument
+              {
+                  { "MaLop", Lop.MaLop },
+                  { "TenLop", Lop.TenLop },
+                  { "MaKhoaHoc", Lop.MaKhoaHoc },
+                  { "MaHeDaoTao", Lop.MaHeDaoTao },
+                  { "MaNganh", Lop.MaNganh }
+              };
+
+              collection.InsertOne(document);
+          }*/
+        public void ThemLopHocMoi(Lop_ThongTin lop)
         {
-            // Kiểm tra trùng mã lớp học
-            var existingLop = collection.Find(Builders<BsonDocument>.Filter.Eq("MaLop", Lop.MaLop)).FirstOrDefault();
-            if (existingLop != null)
+            var filter = Builders<BsonDocument>.Filter.Eq("MaLop", lop.MaLop);
+            var existing = collection.Find(filter).FirstOrDefault();
+
+            if (existing == null)
             {
-                throw new Exception($"Mã lớp {Lop.MaLop} đã tồn tại!");
+                var document = new BsonDocument
+        {
+            { "MaLop", lop.MaLop },
+            { "TenLop", lop.TenLop },
+            { "MaKhoaHoc", lop.MaKhoaHoc },
+            { "MaHeDaoTao", lop.MaHeDaoTao },
+            { "MaNganh", lop.MaNganh }
+        };
+                collection.InsertOne(document);
             }
-
-            var document = new BsonDocument
+            else
             {
-                { "MaLop", Lop.MaLop },
-                { "TenLop", Lop.TenLop },
-                { "MaKhoaHoc", Lop.MaKhoaHoc },
-                { "MaHeDaoTao", Lop.MaHeDaoTao },
-                { "MaNganh", Lop.MaNganh }
-            };
-
-            collection.InsertOne(document);
+                throw new Exception("Mã lớp học đã tồn tại!");
+            }
         }
-
 
         // Sửa thông tin lớp học
-        public void SuaThongTinLopHoc(Lop_ThongTin Lop)
+        public void SuaThongTinLopHoc(Lop_ThongTin lop)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("MaLop", Lop.MaLop);
+            var filter = Builders<BsonDocument>.Filter.Eq("MaLop", lop.MaLop);
             var update = Builders<BsonDocument>.Update
-                .Set("TenLop", Lop.TenLop)
-                .Set("MaKhoaHoc", Lop.MaKhoaHoc)
-                .Set("MaHeDaoTao", Lop.MaHeDaoTao)
-                .Set("MaNganh", Lop.MaNganh);
+                .Set("TenLop", lop.TenLop)
+                .Set("MaKhoaHoc", lop.MaKhoaHoc)
+                .Set("MaHeDaoTao", lop.MaHeDaoTao)
+                .Set("MaNganh", lop.MaNganh);
 
             var result = collection.UpdateOne(filter, update);
+
             if (result.MatchedCount == 0)
-            {
-                throw new Exception("Không tìm thấy lớp học cần chỉnh sửa.");
-            }
+                throw new Exception("Không tìm thấy lớp học để cập nhật.");
         }
+
 
 
         // Xóa lớp học
@@ -129,13 +150,15 @@ namespace C.DuLieu
             { "MaKhoaHoc", 1 },
             { "TenHe", new BsonDocument("$arrayElemAt", new BsonArray { "$HeDaoTao_Info.TenHe", 0 }) },
             { "TenNganh", new BsonDocument("$arrayElemAt", new BsonArray { "$NganhDaoTao_Info.TenNganh", 0 }) },
-            { "TenKhoa", new BsonDocument("$arrayElemAt", new BsonArray { "$Khoa_Info.TenKhoa", 0 }) }
+            { "TenKhoa", new BsonDocument("$arrayElemAt", new BsonArray { "$Khoa_Info.TenKhoa", 0 }) },
+            { "MaHe", new BsonDocument("$arrayElemAt", new BsonArray { "$HeDaoTao_Info.MaHe", 0 }) },
+            { "MaNganh", new BsonDocument("$arrayElemAt", new BsonArray { "$NganhDaoTao_Info.MaNganh", 0 }) },
+            { "MaKhoa", new BsonDocument("$arrayElemAt", new BsonArray { "$NganhDaoTao_Info.MaKhoa", 0 }) },
         })
-    };
+             };
 
             return collection.Aggregate<BsonDocument>(pipeline).ToList();
         }
-
 
 
 

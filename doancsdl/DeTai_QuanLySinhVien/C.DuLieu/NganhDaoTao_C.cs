@@ -38,9 +38,39 @@ namespace C.DuLieu
         // Lấy danh sách thông tin đầy đủ ngành đào tạo
         public List<BsonDocument> DanhSachThongTinNganhDaoTao()
         {
-            var filter = new BsonDocument(); // Không lọc, lấy toàn bộ dữ liệu
-            return collection.Find(filter).ToList();
+            var pipeline = new[]
+            {
+        // Bước 1: Join collection "Khoa"
+        new BsonDocument("$lookup", new BsonDocument
+        {
+            { "from", "Khoa" },               // Tên collection cần join
+            { "localField", "MaKhoa" },       // Trường từ collection NganhDaoTao
+            { "foreignField", "MaKhoa" },     // Trường từ collection Khoa
+            { "as", "Khoa_Info" }             // Alias để lưu kết quả join
+        }),
+
+        // Bước 2: Giải nén dữ liệu từ mảng Khoa_Info
+        new BsonDocument("$unwind", new BsonDocument
+        {
+            { "path", "$Khoa_Info" },
+            { "preserveNullAndEmptyArrays", true }
+        }),
+
+        // Bước 3: Chọn dữ liệu hiển thị
+        new BsonDocument("$project", new BsonDocument
+        {
+            { "MaNganh", 1 },                          // Mã ngành
+            { "TenNganh", 1 },                         // Tên ngành
+            { "MaKhoa", "$Khoa_Info.MaKhoa" },         // Mã khoa từ join (để truy vấn)
+            { "TenKhoa", "$Khoa_Info.TenKhoa" }        // Tên khoa từ join (hiển thị)
+        })
+    };
+
+            // Thực thi pipeline
+            return collection.Aggregate<BsonDocument>(pipeline).ToList();
         }
+
+
 
         // Xóa một ngành đào tạo
         public void XoaNganhDaoTao(string maNganh)

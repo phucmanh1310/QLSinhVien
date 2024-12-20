@@ -101,8 +101,8 @@
             this.tbKetQuaHocTap.Name = "tbKetQuaHocTap";
             this.tbKetQuaHocTap.Size = new System.Drawing.Size(688, 260);
             this.tbKetQuaHocTap.TabIndex = 0;
-/*            this.tbKetQuaHocTap.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.StbKetQuaHocTap_CellContentClick);
-*/            // 
+            this.tbKetQuaHocTap.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbKetQuaHocTap_CellClick);
+            // 
             // Column8
             // 
             this.Column8.DataPropertyName = "STT";
@@ -199,7 +199,7 @@
             this.btXoa.Text = "Xóa";
             this.btXoa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btXoa.UseVisualStyleBackColor = true;
-        /*    this.btXoa.Click += new System.EventHandler(this.btXoa_Click);*/
+            this.btXoa.Click += new System.EventHandler(this.btXoa_Click_1);
             // 
             // label20
             // 
@@ -217,7 +217,6 @@
             this.txtDiemThi.Name = "txtDiemThi";
             this.txtDiemThi.Size = new System.Drawing.Size(150, 20);
             this.txtDiemThi.TabIndex = 2;
-         /*   this.txtDiemThi.KeyUp += new System.Windows.Forms.KeyEventHandler(this.EnterDiemThi);*/
             // 
             // btChinhSua_QLD
             // 
@@ -309,7 +308,6 @@
             this.cbHocKy.Name = "cbHocKy";
             this.cbHocKy.Size = new System.Drawing.Size(150, 21);
             this.cbHocKy.TabIndex = 3;
-       /*     this.cbHocKy.SelectedValueChanged += new System.EventHandler(this.ChonKyHocDeXemDiemCuaSinhVien);*/
             // 
             // cbMonHoc
             // 
@@ -318,7 +316,6 @@
             this.cbMonHoc.Name = "cbMonHoc";
             this.cbMonHoc.Size = new System.Drawing.Size(150, 21);
             this.cbMonHoc.TabIndex = 4;
-          /*  this.cbMonHoc.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TimKiemMonHoc);*/
             // 
             // txtTenSinhVien
             // 
@@ -379,7 +376,7 @@
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.label9.Location = new System.Drawing.Point(218, 9);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(321, 32);
+            this.label9.Size = new System.Drawing.Size(320, 32);
             this.label9.TabIndex = 8;
             this.label9.Text = "Quản Lý Điểm Sinh Viên";
             // 
@@ -443,7 +440,6 @@
             this.Name = "NhapDiem";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Quản Lý Điểm";
-   /*         this.Load += new System.EventHandler(this.NhapDiem_Load);*/
             this.groupBox6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tbKetQuaHocTap)).EndInit();
             this.groupBox4.ResumeLayout(false);

@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using System.Collections.Generic;
 using D.ThongTin;
+using System;
 
 namespace C.DuLieu
 {
@@ -25,7 +26,17 @@ namespace C.DuLieu
         // Lấy danh sách môn học
         public List<BsonDocument> DanhSachMonHoc()
         {
-            return collection.Find(new BsonDocument()).ToList();
+            try
+            {
+                return collection.Find(new BsonDocument()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi lấy danh sách môn học: " + ex.Message);
+                return new List<BsonDocument>();
+            }
+
+
         }
 
         // Tìm kiếm môn học theo tên

@@ -25,72 +25,56 @@ namespace A.GiaoDien
         bool GioiTinh;
         bool DienUuTien;
         string ChucNang = null;
-        String picLoc = null;
-        FileStream fstream;
-        BinaryReader br;
         public QuanLySinhVien(string ChucNang, SinhVien_ThongTin SV)
         {
             InitializeComponent();
-            cbLop.DataSource = cls_Lop.DanhSachLop();
-            cbLop.DisplayMember = "TenLop";
-            cbLop.ValueMember = "MaLop";
-            this.ChucNang = ChucNang;
-            et1.Enabled = false;
-            et2.Enabled = false;
-            //NẾU CHỌN SỬA THÔNG TIN SINH VIÊN
-            if (ChucNang.Equals("F10"))
+
+            var danhSachLop = cls_Lop.DanhSachLop();
+            var dataTable = DataConversion1.ConvertToDataTable1(danhSachLop);
+
+            // Load danh sách lớp
+            if (dataTable != null && dataTable.Columns.Contains("TenLop") && dataTable.Columns.Contains("MaLop"))
             {
-                et1.Enabled = true;
-                et2.Enabled = true;
-                txtMaSinhVien.Enabled = false;
-                ChonAnh.Enabled = false;
-                txtMaSinhVien.Text = SV.MaSinhVien;
-                txtTenSinhVien.Text = SV.TenSinhVien;
-                txtNgaySinh.Text = SV.NgaySinh.ToString();
-                if (SV.GioiTinh == true)
-                {
-                    raNam.Checked = true;
-                }
-                if (SV.GioiTinh == false)
-                {
-                    raNu.Checked = true;
-                }
-                cbLop.SelectedValue = SV.Lop;
-                txtDiaChi.Text = SV.DiaChi;
-                if (SV.ChinhSachUuTien == true)
-                {
-                    raCo.Checked = true;
-                }
-                if (SV.ChinhSachUuTien == false)
-                {
-                    raKhong.Checked = true;
-                }
-               /* try
-                {
-                    SqlDataReader Anh = cls_SinhVien.LayAnhSinhVien(SV);
-                    Anh.Read();
-                    if (Anh.HasRows)
-                    {
-                        SV.Anh = (byte[])(Anh[0]);
-                        if (SV.Anh == null)
-                        {
-                            AnhSV.Image = null;
-                        }
-                        else
-                        {
-                            MemoryStream ms = new MemoryStream(SV.Anh);
-                            AnhSV.Image = Image.FromStream(ms);
-                            Anh.Close();
-                        }
-                    }
-                }
-                catch
-                {
-                    MessageBox.Show("Sinh viên chưa có thông tin ảnh!", "Cảnh báo.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }*/
+                cbLop.DataSource = dataTable;
+                cbLop.DisplayMember = "TenLop";
+                cbLop.ValueMember = "MaLop";
+            }
+            else
+            {
+                MessageBox.Show("Dữ liệu lớp không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+            this.ChucNang = ChucNang;
+
+            if (ChucNang.Equals("F10")) // Sửa thông tin sinh viên
+            {
+                txtMaSinhVien.Enabled = false;
+                txtMaSinhVien.Text = SV.MaSinhVien;
+                txtTenSinhVien.Text = SV.TenSinhVien;
+                txtNgaySinh.Value = SV.NgaySinh;
+
+                if (SV.GioiTinh)
+                    raNam.Checked = true;
+                else
+                    raNu.Checked = true;
+
+                // Gán lớp mặc định (kiểm tra trước khi gán)
+                if (!string.IsNullOrEmpty(SV.Lop))
+                    cbLop.SelectedValue = SV.Lop;
+
+                // Gán địa chỉ (kiểm tra trước khi gán)
+                txtDiaChi.Text = SV.DiaChi ?? ""; // Đảm bảo không bị null
+
+                if (SV.ChinhSachUuTien)
+                    raCo.Checked = true;
+                else
+                    raKhong.Checked = true;
+            }
         }
+
+
+
+
 
         private void QuanLySinhVien_Load(object sender, EventArgs e)
         {
@@ -102,30 +86,30 @@ namespace A.GiaoDien
         public DuLieuTruyenVe DuLieu;
         private void SuaThongTinSinhVien()
         {
-            SinhVien_ThongTin SV = new SinhVien_ThongTin();
-            SV.MaSinhVien = txtMaSinhVien.Text;
-            SV.TenSinhVien = txtTenSinhVien.Text;
-            SV.NgaySinh = txtNgaySinh.Value;
-            SV.GioiTinh = GioiTinh;
-            SV.Lop = cbLop.SelectedValue.ToString();
-            SV.DiaChi = txtDiaChi.Text;
-            SV.ChinhSachUuTien = DienUuTien;
+            SinhVien_ThongTin SV = new SinhVien_ThongTin
+            {
+                MaSinhVien = txtMaSinhVien.Text,
+                TenSinhVien = txtTenSinhVien.Text,
+                NgaySinh = txtNgaySinh.Value,
+                GioiTinh = raNam.Checked,
+                Lop = cbLop.SelectedValue.ToString(),
+                DiaChi = txtDiaChi.Text,
+                ChinhSachUuTien = raCo.Checked
+            };
+
             try
             {
                 cls_SinhVien.SuaThongTinSinhVien(SV);
-                MessageBox.Show("Bạn đã sửa thành công thông tin sinh viên " + txtTenSinhVien.Text + " có mã " + SV.MaSinhVien + "", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
-                if (DuLieu != null)
-                {
-                    SV.MaSinhVien = txtMaSinhVien.Text;
-                    DuLieu(SV);
-                }
+                MessageBox.Show("Sửa thông tin thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Dữ liệu không thể chỉnh sửa, hãy kiểm tra lại!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi sửa sinh viên: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             this.Hide();
         }
+
+
         //
         private void btThem_Click(object sender, EventArgs e)
         {
@@ -141,22 +125,16 @@ namespace A.GiaoDien
                     SV.TenSinhVien = txtTenSinhVien.Text;
                     SV.NgaySinh = txtNgaySinh.Value;
                     SV.GioiTinh = GioiTinh;
-                    SV.Anh = br.ReadBytes((int)fstream.Length);
                     SV.Lop = cbLop.SelectedValue.ToString();
                     SV.DiaChi = txtDiaChi.Text;
-                    SV.ChinhSachUuTien = DienUuTien;
+                    SV.ChinhSachUuTien = DienUuTien;               
                     cls_SinhVien.ThemSinhVien(SV);
-                    MessageBox.Show("Thêm mới thành công sinh viên " + SV.TenSinhVien + ", mã số " + SV.MaSinhVien + ".", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.None);
-                    if (DuLieu != null)
-                    {
-                        SV.MaSinhVien = txtMaSinhVien.Text;
-                        DuLieu(SV);
-                    }
+                    MessageBox.Show($"Thêm mới thành công sinh viên {SV.TenSinhVien}, mã số {SV.MaSinhVien}.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadTrang();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Không thể thêm mới, hãy xem xét lại! Có thể bạn chưa chọn ảnh.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Lỗi khi thêm sinh viên: {ex.Message}", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             if (ChucNang.Equals("F10"))
@@ -171,28 +149,13 @@ namespace A.GiaoDien
             txtMaSinhVien.Text = "";
             txtTenSinhVien.Text = "";
             txtNgaySinh.Text = "";
-            //cbLop.Text = "";
+            cbLop.Text = "";
             txtDiaChi.Text = "";
             raCo.Checked = false;
             raKhong.Checked = false;
             raNam.Checked = false;
             raNu.Checked = false;
-            AnhSV.Image = null;
-        }
-        //CHỌN ẢNH.
-        private void ChonAnh_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "PNG Files(*.png)|*.png|JPG Files(*jpg)|*.jpg|All Files(*.*)|*.*";
-            dlg.Title = "Chọn ảnh cho sinh viên.";
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                picLoc = dlg.FileName.ToString();
-                AnhSV.ImageLocation = picLoc;
-                fstream = new FileStream(picLoc, FileMode.Open, FileAccess.Read);
-                br = new BinaryReader(fstream);
-            }
-        }
+        }       
         //CÁC BIẾN CỜ.
         private void raCo_CheckedChanged(object sender, EventArgs e)
         {

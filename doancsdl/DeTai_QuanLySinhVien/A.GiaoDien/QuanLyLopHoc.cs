@@ -23,48 +23,80 @@ namespace A.GiaoDien
         KhoaHoc_B cls_KH = new KhoaHoc_B();
         //BẢNG NGÀNH ĐÀO TẠO
         NganhDaoTao_B cls_NDT = new NganhDaoTao_B();
+        //Khoa
+        Khoa_B cls_Khoa = new Khoa_B();
         //BẢNG LỚP
         Lop_B cls_LOP = new Lop_B();
         string ChucNang = null;
         public QuanLyLopHoc(string ChucNang, Lop_ThongTin Lop)
         {
             InitializeComponent();
-            cbHeDaoTao.DataSource = cls_HDT.DanhSachHeDaoTao();
-            if (cbHeDaoTao.DataSource != null)
-            {
-                cbHeDaoTao.DisplayMember = "TenHe";
-                cbHeDaoTao.ValueMember = "MaHe";
-            }
+            LoadComboBoxData(); // Gọi hàm load dữ liệu cho Combobox
 
-            cbKhoaHoc.DataSource = cls_KH.DanhSachKhoaHoc();
-            if (cbKhoaHoc.DataSource != null)
-            {
-                cbKhoaHoc.DisplayMember = "MaKhoaHoc";
-                cbKhoaHoc.ValueMember = "MaKhoaHoc";
-            }
-
-            cbTenNganh.DataSource = cls_NDT.DanhSachNganhDaoTao();
-            if (cbTenNganh.DataSource != null)
-            {
-                cbTenNganh.DisplayMember = "TenNganh";
-                cbTenNganh.ValueMember = "MaNganh";
-            }
             this.ChucNang = ChucNang;
-            if (ChucNang.Equals("F9"))
+
+            if (ChucNang.Equals("F9")) // Thêm mới
             {
                 txtMaLop.Focus();
                 btHoanTat.Enabled = false;
             }
-            if (ChucNang.Equals("F10"))
+            else if (ChucNang.Equals("F10")) // Sửa
             {
+                // Set dữ liệu lớp học
                 txtMaLop.Text = Lop.MaLop;
                 txtTenLop.Text = Lop.TenLop;
-                cbKhoaHoc.Text = Lop.MaKhoaHoc;
-                cbHeDaoTao.Text = Lop.MaHeDaoTao;
-                cbTenNganh.Text = Lop.MaNganh;
+
+                // Set SelectedValue cho Combobox
+                cbKhoaHoc.SelectedValue = Lop.MaKhoaHoc;
+                cbHeDaoTao.SelectedValue = Lop.MaHeDaoTao;
+                cbTenNganh.SelectedValue = Lop.MaNganh;
+
                 btHoanTat.Enabled = false;
                 txtMaLop.Enabled = false;
                 txtTenLop.Focus();
+            }
+        }
+
+
+        private void LoadComboBoxData()
+        {
+            try
+            {
+                // Load Hệ Đào Tạo
+                var heDaoTaoData = cls_HDT.DanhSachHeDaoTao();
+
+                if (heDaoTaoData != null && heDaoTaoData.Rows.Count > 0)
+                {
+                    cbHeDaoTao.DataSource = heDaoTaoData;
+                    cbHeDaoTao.DisplayMember = "TenHe";
+                    cbHeDaoTao.ValueMember = "MaHe";
+                }
+
+                // Load Khóa Học
+                var khoaHocData = cls_KH.DanhSachKhoaHoc();
+                var khoaHocTable = DataConversion1.ConvertToDataTable1(khoaHocData);
+
+                if (khoaHocTable != null && khoaHocTable.Rows.Count > 0)
+                {
+                    cbKhoaHoc.DataSource = khoaHocTable;
+                    cbKhoaHoc.DisplayMember = "MaKhoaHoc";
+                    cbKhoaHoc.ValueMember = "MaKhoaHoc";
+                }
+
+                // Load Ngành Đào Tạo
+                var nganhDaoTaoData = cls_NDT.DanhSachNganhDaoTao();
+                var nganhDaoTaoTable = DataConversion1.ConvertToDataTable1(nganhDaoTaoData);
+
+                if (nganhDaoTaoTable != null && nganhDaoTaoTable.Rows.Count > 0)
+                {
+                    cbTenNganh.DataSource = nganhDaoTaoTable;
+                    cbTenNganh.DisplayMember = "TenNganh";
+                    cbTenNganh.ValueMember = "MaNganh";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi load dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         //DỮ LIỆU TRUYỀN VỀ.
@@ -93,19 +125,69 @@ namespace A.GiaoDien
                 txtMaLop.Text = "";
                 txtTenLop.Text = "";
                 txtMaLop.Focus();
+                var KhoaHocData = cls_KH.DanhSachKhoaHoc();
+                if (KhoaHocData != null && KhoaHocData.Count > 0)
+                {
+                    cbHeDaoTao.DataSource = KhoaHocData;
+                    cbHeDaoTao.DisplayMember = "MaKhoaHoc"; // Tên hiển thị
+                    cbHeDaoTao.ValueMember = "MaKhoaHoc";   // Giá trị thực tế
+                }
+                else
+                {
+                    MessageBox.Show("Dữ liệu Hệ Đào Tạo không hợp lệ.", "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                var heDaoTaoData = cls_HDT.DanhSachHeDaoTao();
+                if (heDaoTaoData != null )
+                {
+                    cbHeDaoTao.DataSource = heDaoTaoData;
+                    /* cbHeDaoTao.DisplayMember = "TenHe"; // Tên hiển thị
+                     cbHeDaoTao.ValueMember = "MaHe";  // Giá trị thực tế*/
 
-                // Load lại ComboBox để tránh lỗi binding
-                cbHeDaoTao.DataSource = cls_HDT.DanhSachHeDaoTao();
-                cbHeDaoTao.DisplayMember = "TenHe";
-                cbHeDaoTao.ValueMember = "MaHe";
+                    cbHeDaoTao.DisplayMember = "MaHe"; // Tên hiển thị
+                    cbHeDaoTao.ValueMember = "MaHe";  // Giá trị thực tế
+                }
+                else
+                {
+                    MessageBox.Show("Dữ liệu Hệ Đào Tạo không hợp lệ.", "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
-                cbKhoaHoc.DataSource = cls_KH.DanhSachKhoaHoc();
-                cbKhoaHoc.DisplayMember = "MaKhoaHoc";
-                cbKhoaHoc.ValueMember = "MaKhoaHoc";
-
-                cbTenNganh.DataSource = cls_NDT.DanhSachNganhDaoTao();
-                cbTenNganh.DisplayMember = "TenNganh";
-                cbTenNganh.ValueMember = "MaNganh";
+                /*               // Load lại ComboBox để tránh lỗi binding
+                               cbHeDaoTao.DataSource = cls_HDT.DanhSachHeDaoTao();
+                               cbHeDaoTao.DisplayMember = "TenHe";
+                               cbHeDaoTao.ValueMember = "MaHe";*/
+               
+                /*     cbKhoaHoc.DataSource = cls_KH.DanhSachKhoaHoc();
+                     cbKhoaHoc.DisplayMember = "MaKhoaHoc";
+                     cbKhoaHoc.ValueMember = "MaKhoaHoc";*/
+                var Nganh = cls_NDT.DanhSachNganhDaoTao();
+                if (Nganh != null && Nganh.Count > 0)
+                {
+                    cbHeDaoTao.DataSource = KhoaHocData;
+                    /*  cbHeDaoTao.DisplayMember = "TenNganh"; // Tên hiển thị
+                      cbHeDaoTao.ValueMember = "MaNganh";   // Giá trị thực tế*/
+                    cbHeDaoTao.DisplayMember = "TenNganh"; // Tên hiển thị
+                    cbHeDaoTao.ValueMember = "MaNganh";   // Giá trị thực tế
+                }
+                else
+                {
+                    MessageBox.Show("Dữ liệu Hệ Đào Tạo không hợp lệ.", "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                var KhoaData = cls_Khoa.DanhSachKhoa();
+                if (KhoaData != null && KhoaData.Count > 0)
+                {
+                    cbHeDaoTao.DataSource = KhoaHocData;
+                    /*  cbHeDaoTao.DisplayMember = "TenNganh"; // Tên hiển thị
+                      cbHeDaoTao.ValueMember = "MaNganh";   // Giá trị thực tế*/
+                    cbHeDaoTao.DisplayMember = "TenKhoa"; // Tên hiển thị
+                    cbHeDaoTao.ValueMember = "MaKhoa";   // Giá trị thực tế
+                }
+                else
+                {
+                    MessageBox.Show("Dữ liệu Hệ Đào Tạo không hợp lệ.", "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                /*  cbTenNganh.DataSource = cls_NDT.DanhSachNganhDaoTao();
+                  cbTenNganh.DisplayMember = "TenNganh";
+                  cbTenNganh.ValueMember = "MaNganh";*/
 
                 btHoanTat.Enabled = true;
 
@@ -147,18 +229,16 @@ namespace A.GiaoDien
         //KHI ẤN NÚT XÁC NHẬN
         private void btXacNhan_Click(object sender, EventArgs e)
         {
-            if (ChucNang.Equals("F9"))
+            if (ChucNang.Equals("F9")) // Thêm mới
             {
                 ThemMoiLopHoc();
-                // Load lại DataGridView sau khi thêm lớp học
-                DanhSachLopHoc parentForm = (DanhSachLopHoc)this.Owner;
-                parentForm.LoadDataGridView();
             }
-            if (ChucNang.Equals("F10"))
+            else if (ChucNang.Equals("F10")) // Sửa
             {
                 SuaThongTinLopHoc();
             }
         }
+
 
         //TẮT.
         private void btHoanTat_Click(object sender, EventArgs e)

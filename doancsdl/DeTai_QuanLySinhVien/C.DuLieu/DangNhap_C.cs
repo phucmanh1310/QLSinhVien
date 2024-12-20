@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using System.Collections.Generic;
 using D.ThongTin;
+using System.Linq;
 
 namespace C.DuLieu
 {
@@ -59,7 +60,7 @@ namespace C.DuLieu
             {
                 { "TaiKhoan", DN.TaiKhoan },
                 { "Quyen", DN.Quyen },
-                { "MatKhau", DN.MatKhau },
+                { "MatKhau", DN.MatKhau }, // Thêm mật khẩu người dùng nhập vào
                 { "TrangThai", false }
             };
             collection.InsertOne(document);
@@ -80,14 +81,19 @@ namespace C.DuLieu
             return collection.Find(filter).ToList();
         }
         // Cập nhật trong lớp DangNhap_C
-        public List<BsonDocument> DanhSachQuyen()
+        public List<string> DanhSachQuyen()
         {
-            // Giả định bạn có một collection tên là "Quyen"
             var database = collection.Database;
             var quyenCollection = database.GetCollection<BsonDocument>("Quyen");
 
-            // Truy vấn toàn bộ danh sách quyền
-            return quyenCollection.Find(new BsonDocument()).ToList();
+            // Truy vấn và lấy danh sách TenQuyen
+            var quyenList = quyenCollection.Find(new BsonDocument())
+                                           .ToList()
+                                           .Select(doc => doc["TenQuyen"]?.AsString) // Lấy giá trị "TenQuyen"
+                                           .Where(q => !string.IsNullOrEmpty(q))    // Lọc bỏ giá trị rỗng
+                                           .ToList();
+
+            return quyenList;
         }
         public void UpDateMatKhau(DangNhap_ThongTin DN)
         {

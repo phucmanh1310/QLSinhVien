@@ -39,6 +39,7 @@ namespace A.GiaoDien
                 txtTenKhoa.Focus();
             }
         }
+
         //
         private void QuanLyKhoa_Load(object sender, EventArgs e)
         {

@@ -46,7 +46,7 @@ namespace B.ThaoTac
         {
             return cls.TimKiemTaiKhoan(DN);
         }
-        public List<BsonDocument> DanhSachQuyen()
+        public List<string> DanhSachQuyen()
         {
             return cls.DanhSachQuyen();
         }

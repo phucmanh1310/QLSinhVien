@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D.ThongTin
 {
@@ -34,13 +30,6 @@ namespace D.ThongTin
         {
             get { return _GioiTinh; }
             set { _GioiTinh = value; }
-        }
-
-        private byte[] _Anh;
-        public byte[] Anh
-        {
-            get { return _Anh; }
-            set { _Anh = value; }
         }
 
         private string _Lop;

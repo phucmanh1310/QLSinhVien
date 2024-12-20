@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.btThem = new System.Windows.Forms.Button();
-            this.ChonAnh = new System.Windows.Forms.Button();
-            this.AnhSV = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.raCo = new System.Windows.Forms.RadioButton();
             this.raKhong = new System.Windows.Forms.RadioButton();
@@ -52,7 +50,6 @@
             this.btHoanTat = new System.Windows.Forms.Button();
             this.et1 = new System.Windows.Forms.Label();
             this.et2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.AnhSV)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,7 +59,7 @@
             this.btThem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.btThem.Image = global::A.GiaoDien.Properties.Resources.camera_test;
             this.btThem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btThem.Location = new System.Drawing.Point(305, 339);
+            this.btThem.Location = new System.Drawing.Point(226, 342);
             this.btThem.Name = "btThem";
             this.btThem.Size = new System.Drawing.Size(116, 37);
             this.btThem.TabIndex = 11;
@@ -70,28 +67,6 @@
             this.btThem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btThem.UseVisualStyleBackColor = true;
             this.btThem.Click += new System.EventHandler(this.btThem_Click);
-            // 
-            // ChonAnh
-            // 
-            this.ChonAnh.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChonAnh.ForeColor = System.Drawing.Color.Red;
-            this.ChonAnh.Location = new System.Drawing.Point(721, 277);
-            this.ChonAnh.Name = "ChonAnh";
-            this.ChonAnh.Size = new System.Drawing.Size(75, 23);
-            this.ChonAnh.TabIndex = 10;
-            this.ChonAnh.Text = "Chọn Ảnh";
-            this.ChonAnh.UseVisualStyleBackColor = true;
-            this.ChonAnh.Click += new System.EventHandler(this.ChonAnh_Click);
-            // 
-            // AnhSV
-            // 
-            this.AnhSV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AnhSV.Location = new System.Drawing.Point(702, 129);
-            this.AnhSV.Name = "AnhSV";
-            this.AnhSV.Size = new System.Drawing.Size(121, 135);
-            this.AnhSV.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.AnhSV.TabIndex = 35;
-            this.AnhSV.TabStop = false;
             // 
             // panel1
             // 
@@ -130,7 +105,7 @@
             // 
             this.txtDiaChi.Location = new System.Drawing.Point(497, 227);
             this.txtDiaChi.Name = "txtDiaChi";
-            this.txtDiaChi.Size = new System.Drawing.Size(154, 72);
+            this.txtDiaChi.Size = new System.Drawing.Size(216, 72);
             this.txtDiaChi.TabIndex = 9;
             this.txtDiaChi.Text = "";
             this.txtDiaChi.KeyUp += new System.Windows.Forms.KeyEventHandler(this.EnterDiaChi);
@@ -140,7 +115,7 @@
             this.cbLop.FormattingEnabled = true;
             this.cbLop.Location = new System.Drawing.Point(497, 130);
             this.cbLop.Name = "cbLop";
-            this.cbLop.Size = new System.Drawing.Size(150, 21);
+            this.cbLop.Size = new System.Drawing.Size(216, 21);
             this.cbLop.TabIndex = 6;
             // 
             // raNu
@@ -269,9 +244,9 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.label1.Location = new System.Drawing.Point(309, 32);
+            this.label1.Location = new System.Drawing.Point(242, 39);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(273, 32);
+            this.label1.Size = new System.Drawing.Size(272, 32);
             this.label1.TabIndex = 18;
             this.label1.Text = "Thông Tin Sinh Viên.";
             // 
@@ -281,7 +256,7 @@
             this.btHoanTat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.btHoanTat.Image = global::A.GiaoDien.Properties.Resources.back_2;
             this.btHoanTat.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btHoanTat.Location = new System.Drawing.Point(477, 339);
+            this.btHoanTat.Location = new System.Drawing.Point(398, 342);
             this.btHoanTat.Name = "btHoanTat";
             this.btHoanTat.Size = new System.Drawing.Size(116, 37);
             this.btHoanTat.TabIndex = 12;
@@ -304,7 +279,7 @@
             // 
             this.et2.AutoSize = true;
             this.et2.ForeColor = System.Drawing.Color.Red;
-            this.et2.Location = new System.Drawing.Point(657, 229);
+            this.et2.Location = new System.Drawing.Point(681, 211);
             this.et2.Name = "et2";
             this.et2.Size = new System.Drawing.Size(32, 13);
             this.et2.TabIndex = 36;
@@ -314,13 +289,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(841, 409);
+            this.ClientSize = new System.Drawing.Size(750, 409);
             this.Controls.Add(this.et2);
             this.Controls.Add(this.et1);
             this.Controls.Add(this.btHoanTat);
             this.Controls.Add(this.btThem);
-            this.Controls.Add(this.ChonAnh);
-            this.Controls.Add(this.AnhSV);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.txtDiaChi);
             this.Controls.Add(this.cbLop);
@@ -341,7 +314,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Quản Lý Sinh Viên";
             this.Load += new System.EventHandler(this.QuanLySinhVien_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.AnhSV)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -352,8 +324,6 @@
         #endregion
 
         private System.Windows.Forms.Button btThem;
-        private System.Windows.Forms.Button ChonAnh;
-        private System.Windows.Forms.PictureBox AnhSV;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton raCo;
         private System.Windows.Forms.RadioButton raKhong;

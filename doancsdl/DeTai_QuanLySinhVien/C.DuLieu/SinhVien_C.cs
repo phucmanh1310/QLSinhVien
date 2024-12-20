@@ -2,24 +2,27 @@
 using MongoDB.Driver;
 using System.Collections.Generic;
 using D.ThongTin;
+using System;
 
 namespace C.DuLieu
 {
     public class SinhVien_C
     {
         private IMongoCollection<BsonDocument> collection;
-
+        private readonly IMongoDatabase database;
         public SinhVien_C()
         {
             var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetDatabase("QLSinhVien");
+            database = client.GetDatabase("QLSINHVIEN");
             collection = database.GetCollection<BsonDocument>("SinhVien");
         }
 
-        // Lấy danh sách sinh viên
+        // Lấy danh sách sinh viên      
         public List<BsonDocument> DanhSachSinhVien()
         {
-            return collection.Find(new BsonDocument()).ToList();
+            var collection = database.GetCollection<BsonDocument>("SinhVien");
+            var result = collection.Find(new BsonDocument()).ToList();
+            return result;
         }
 
         // Tìm kiếm sinh viên
@@ -40,11 +43,12 @@ namespace C.DuLieu
                 { "GioiTinh", SV.GioiTinh },
                 { "Lop", SV.Lop },
                 { "DiaChi", SV.DiaChi },
-                { "ChinhSachUuTien", SV.ChinhSachUuTien },
-                { "Anh", SV.Anh }
+                { "ChinhSachUuTien", SV.ChinhSachUuTien }
             };
+
             collection.InsertOne(document);
         }
+
 
         // Chỉnh sửa thông tin sinh viên
         public void SuaThongTinSinhVien(SinhVien_ThongTin SV)
@@ -60,7 +64,6 @@ namespace C.DuLieu
 
             collection.UpdateOne(filter, update);
         }
-
         // Xóa sinh viên
         public void XoaSinhVien(string maSinhVien)
         {
@@ -70,10 +73,24 @@ namespace C.DuLieu
 
 
         // Lấy danh sách sinh viên của lớp
-        public List<BsonDocument> DanhSachSinhVienCuaLop(string lop)
+        public List<BsonDocument> DanhSachSinhVienCuaLop(SinhVien_ThongTin SV)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("Lop", lop);
-            return collection.Find(filter).ToList();
+            if (string.IsNullOrEmpty(SV.Lop))
+            {
+                throw new ArgumentException("Mã lớp không được để trống.");
+            }
+            // Tạo bộ lọc MongoDB
+            var filter = Builders<BsonDocument>.Filter.Eq("Lop", SV.Lop);
+
+            // Truy vấn danh sách sinh viên theo lớp
+            try
+            {
+                return collection.Find(filter).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi lấy danh sách sinh viên của lớp: {ex.Message}");
+            }
         }
 
         // Lấy danh sách sinh viên ra trường trong năm
@@ -102,5 +119,18 @@ namespace C.DuLieu
             );
             return collection.Find(filter).ToList();
         }
+        public byte[] LayAnhSinhVien(SinhVien_ThongTin SV)
+        {
+            var collection = database.GetCollection<BsonDocument>("SinhVien");
+            var filter = Builders<BsonDocument>.Filter.Eq("MaSinhVien", SV.MaSinhVien);
+            var result = collection.Find(filter).FirstOrDefault();
+
+            if (result != null && result.Contains("Anh") && result["Anh"] != BsonNull.Value)
+            {
+                return result["Anh"].AsByteArray;
+            }
+            return null; // Trả về null nếu không có ảnh
+        }
+
     }
 }

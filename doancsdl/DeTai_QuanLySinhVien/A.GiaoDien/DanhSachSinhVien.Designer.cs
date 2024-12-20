@@ -41,17 +41,17 @@
             this.txtTimKiem = new System.Windows.Forms.ToolStripTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbDanhSachSinhVien = new System.Windows.Forms.DataGridView();
-            this.MaSinhVien = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TenSinhVien = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NgaySinh = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GioiTinh = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Lop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DiaChi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ChinhSachUuTien = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.btXemDiem = new System.Windows.Forms.ToolStripButton();
             this.btInBaoCao = new System.Windows.Forms.ToolStripButton();
+            this.colMaSinhVien = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTenSinhVien = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNgaySinh = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GioiTinh = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colLop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDiaChi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ChinhSachUuTien = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbDanhSachSinhVien)).BeginInit();
@@ -88,7 +88,7 @@
             this.btThem.Image = ((System.Drawing.Image)(resources.GetObject("btThem.Image")));
             this.btThem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btThem.Name = "btThem";
-            this.btThem.Size = new System.Drawing.Size(113, 22);
+            this.btThem.Size = new System.Drawing.Size(112, 22);
             this.btThem.Text = "Thêm Sinh Viên.";
             this.btThem.Click += new System.EventHandler(this.btThem_Click);
             // 
@@ -104,7 +104,7 @@
             this.btSua.Image = ((System.Drawing.Image)(resources.GetObject("btSua.Image")));
             this.btSua.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btSua.Name = "btSua";
-            this.btSua.Size = new System.Drawing.Size(107, 22);
+            this.btSua.Size = new System.Drawing.Size(105, 22);
             this.btSua.Text = "Sửa Thông Tin.";
             this.btSua.Click += new System.EventHandler(this.btSua_Click);
             // 
@@ -134,11 +134,12 @@
             // lbTimKiem
             // 
             this.lbTimKiem.Name = "lbTimKiem";
-            this.lbTimKiem.Size = new System.Drawing.Size(176, 22);
+            this.lbTimKiem.Size = new System.Drawing.Size(173, 22);
             this.lbTimKiem.Text = "Tìm Kiếm (Mã Số, Họ Tên, Lớp):";
             // 
             // txtTimKiem
             // 
+            this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(150, 25);
             this.txtTimKiem.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TimKiem);
@@ -158,12 +159,12 @@
             this.tbDanhSachSinhVien.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.tbDanhSachSinhVien.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tbDanhSachSinhVien.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.MaSinhVien,
-            this.TenSinhVien,
-            this.NgaySinh,
+            this.colMaSinhVien,
+            this.colTenSinhVien,
+            this.colNgaySinh,
             this.GioiTinh,
-            this.Lop,
-            this.DiaChi,
+            this.colLop,
+            this.colDiaChi,
             this.ChinhSachUuTien});
             this.tbDanhSachSinhVien.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbDanhSachSinhVien.Location = new System.Drawing.Point(3, 16);
@@ -171,55 +172,8 @@
             this.tbDanhSachSinhVien.RowHeadersVisible = false;
             this.tbDanhSachSinhVien.Size = new System.Drawing.Size(850, 516);
             this.tbDanhSachSinhVien.TabIndex = 0;
-            this.tbDanhSachSinhVien.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbDanhSachSinhVien_CellContentClick);
+            this.tbDanhSachSinhVien.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbDanhSachSinhVien_CellClick);
             this.tbDanhSachSinhVien.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.DupChuot_XemKetQuaHocTap);
-            // 
-            // MaSinhVien
-            // 
-            this.MaSinhVien.DataPropertyName = "MaSinhVien";
-            this.MaSinhVien.HeaderText = "Mã Sinh Viên";
-            this.MaSinhVien.Name = "MaSinhVien";
-            // 
-            // TenSinhVien
-            // 
-            this.TenSinhVien.DataPropertyName = "TenSinhVien";
-            this.TenSinhVien.HeaderText = "Tên Sinh Viên";
-            this.TenSinhVien.Name = "TenSinhVien";
-            this.TenSinhVien.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // NgaySinh
-            // 
-            this.NgaySinh.DataPropertyName = "NgaySinh";
-            this.NgaySinh.HeaderText = "Ngày Sinh";
-            this.NgaySinh.Name = "NgaySinh";
-            // 
-            // GioiTinh
-            // 
-            this.GioiTinh.DataPropertyName = "GioiTinh";
-            this.GioiTinh.HeaderText = "Giới Tính";
-            this.GioiTinh.Name = "GioiTinh";
-            this.GioiTinh.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.GioiTinh.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Lop
-            // 
-            this.Lop.DataPropertyName = "Lop";
-            this.Lop.HeaderText = "Lớp";
-            this.Lop.Name = "Lop";
-            // 
-            // DiaChi
-            // 
-            this.DiaChi.DataPropertyName = "DiaChi";
-            this.DiaChi.HeaderText = "Địa Chỉ";
-            this.DiaChi.Name = "DiaChi";
-            // 
-            // ChinhSachUuTien
-            // 
-            this.ChinhSachUuTien.DataPropertyName = "ChinhSachUuTien";
-            this.ChinhSachUuTien.HeaderText = "Chính Sách Ưu Tiên";
-            this.ChinhSachUuTien.Name = "ChinhSachUuTien";
-            this.ChinhSachUuTien.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ChinhSachUuTien.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // toolStrip2
             // 
@@ -257,7 +211,53 @@
             this.btInBaoCao.Name = "btInBaoCao";
             this.btInBaoCao.Size = new System.Drawing.Size(84, 22);
             this.btInBaoCao.Text = "In Báo Cáo";
-/*            this.btInBaoCao.Click += new System.EventHandler(this.btInBaoCao_Click);*/
+            // 
+            // colMaSinhVien
+            // 
+            this.colMaSinhVien.DataPropertyName = "MaSinhVien";
+            this.colMaSinhVien.HeaderText = "Mã Sinh Viên";
+            this.colMaSinhVien.Name = "colMaSinhVien";
+            // 
+            // colTenSinhVien
+            // 
+            this.colTenSinhVien.DataPropertyName = "TenSinhVien";
+            this.colTenSinhVien.HeaderText = "Tên Sinh Viên";
+            this.colTenSinhVien.Name = "colTenSinhVien";
+            this.colTenSinhVien.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // colNgaySinh
+            // 
+            this.colNgaySinh.DataPropertyName = "NgaySinh";
+            this.colNgaySinh.HeaderText = "Ngày Sinh";
+            this.colNgaySinh.Name = "colNgaySinh";
+            // 
+            // GioiTinh
+            // 
+            this.GioiTinh.DataPropertyName = "GioiTinh";
+            this.GioiTinh.HeaderText = "Giới Tính";
+            this.GioiTinh.Name = "GioiTinh";
+            this.GioiTinh.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.GioiTinh.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // colLop
+            // 
+            this.colLop.DataPropertyName = "Lop";
+            this.colLop.HeaderText = "Lớp";
+            this.colLop.Name = "colLop";
+            // 
+            // colDiaChi
+            // 
+            this.colDiaChi.DataPropertyName = "DiaChi";
+            this.colDiaChi.HeaderText = "Địa Chỉ";
+            this.colDiaChi.Name = "colDiaChi";
+            // 
+            // ChinhSachUuTien
+            // 
+            this.ChinhSachUuTien.DataPropertyName = "ChinhSachUuTien";
+            this.ChinhSachUuTien.HeaderText = "Chính Sách Ưu Tiên";
+            this.ChinhSachUuTien.Name = "ChinhSachUuTien";
+            this.ChinhSachUuTien.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ChinhSachUuTien.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // DanhSachSinhVien
             // 
@@ -292,13 +292,6 @@
         private System.Windows.Forms.ToolStripTextBox txtTimKiem;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView tbDanhSachSinhVien;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MaSinhVien;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TenSinhVien;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NgaySinh;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn GioiTinh;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Lop;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DiaChi;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ChinhSachUuTien;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
@@ -307,5 +300,12 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripButton btXemDiem;
         private System.Windows.Forms.ToolStripButton btInBaoCao;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaSinhVien;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTenSinhVien;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNgaySinh;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn GioiTinh;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLop;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDiaChi;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ChinhSachUuTien;
     }
 }

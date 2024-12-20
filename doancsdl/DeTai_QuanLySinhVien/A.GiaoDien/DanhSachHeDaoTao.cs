@@ -34,8 +34,7 @@ namespace A.GiaoDien
             try
             {
                 var data = cls_HeDaoTao.DanhSachHeDaoTao(); // Lấy dữ liệu từ MongoDB
-                var dataTable = DataConversion1.ConvertToDataTable1(data); // Chuyển đổi sang DataTable
-                tbHeDaoTao.DataSource = dataTable; // Gán dữ liệu cho DataGridView
+                tbHeDaoTao.DataSource = data; // Gán dữ liệu cho DataGridView
             }
             catch (Exception ex)
             {
@@ -55,9 +54,7 @@ namespace A.GiaoDien
                 try
                 {
                     var data = cls_HeDaoTao.DanhSachHeDaoTao(); // Lấy dữ liệu từ MongoDB
-                    var sanitizedData = SanitizeBsonDocuments(data); // Làm sạch dữ liệu
-                    var dataTable = DataConversion1.ConvertToDataTable1(sanitizedData);
-                    tbHeDaoTao.DataSource = dataTable; // Gán dữ liệu cho DataGridView
+                    tbHeDaoTao.DataSource = data; // Gán dữ liệu cho DataGridView
                 }
                 catch (Exception ex)
                 {
@@ -137,7 +134,7 @@ namespace A.GiaoDien
                     try
                     {
                         cls_HeDaoTao.XoaHeDaoTao(HDT);
-                        tbHeDaoTao.DataSource = cls_HeDaoTao.DanhSachHeDaoTao();
+                        tbHeDaoTao.DataSource =cls_HeDaoTao.DanhSachHeDaoTao();
                     }
                     catch
                     {

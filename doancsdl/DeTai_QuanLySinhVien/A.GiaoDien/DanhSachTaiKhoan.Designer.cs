@@ -42,9 +42,10 @@
             this.btInBaoCao = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbDanhSachTaiKhoan = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColumnTaiKhoan = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnQuyen = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnMatKhau = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.toolStrip2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbDanhSachTaiKhoan)).BeginInit();
@@ -81,7 +82,7 @@
             this.btThem.Image = ((System.Drawing.Image)(resources.GetObject("btThem.Image")));
             this.btThem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btThem.Name = "btThem";
-            this.btThem.Size = new System.Drawing.Size(117, 22);
+            this.btThem.Size = new System.Drawing.Size(114, 22);
             this.btThem.Text = "Thêm Tài Khoản.";
             this.btThem.Click += new System.EventHandler(this.btThem_Click);
             // 
@@ -97,7 +98,7 @@
             this.btSua.Image = ((System.Drawing.Image)(resources.GetObject("btSua.Image")));
             this.btSua.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btSua.Name = "btSua";
-            this.btSua.Size = new System.Drawing.Size(107, 22);
+            this.btSua.Size = new System.Drawing.Size(105, 22);
             this.btSua.Text = "Sửa Thông Tin.";
             this.btSua.Click += new System.EventHandler(this.btSua_Click);
             // 
@@ -113,7 +114,7 @@
             this.btXoa.Image = ((System.Drawing.Image)(resources.GetObject("btXoa.Image")));
             this.btXoa.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btXoa.Name = "btXoa";
-            this.btXoa.Size = new System.Drawing.Size(106, 22);
+            this.btXoa.Size = new System.Drawing.Size(104, 22);
             this.btXoa.Text = "Xóa Tài Khoản.";
             this.btXoa.Click += new System.EventHandler(this.btXoa_Click);
             // 
@@ -127,11 +128,12 @@
             // lbTimKiem
             // 
             this.lbTimKiem.Name = "lbTimKiem";
-            this.lbTimKiem.Size = new System.Drawing.Size(77, 22);
+            this.lbTimKiem.Size = new System.Drawing.Size(76, 22);
             this.lbTimKiem.Text = "Tìm Kiếm (*):";
             // 
             // txtTimKiem
             // 
+            this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(150, 25);
             this.txtTimKiem.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KhiAnTimKiem);
@@ -144,7 +146,6 @@
             this.btInBaoCao.Name = "btInBaoCao";
             this.btInBaoCao.Size = new System.Drawing.Size(84, 22);
             this.btInBaoCao.Text = "In Báo Cáo";
-           /* this.btInBaoCao.Click += new System.EventHandler(this.btInBaoCao_Click);*/
             // 
             // groupBox1
             // 
@@ -161,35 +162,47 @@
             this.tbDanhSachTaiKhoan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.tbDanhSachTaiKhoan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tbDanhSachTaiKhoan.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3});
+            this.ColumnTaiKhoan,
+            this.ColumnQuyen,
+            this.ColumnMatKhau,
+            this.Column4});
             this.tbDanhSachTaiKhoan.Location = new System.Drawing.Point(7, 20);
             this.tbDanhSachTaiKhoan.Name = "tbDanhSachTaiKhoan";
             this.tbDanhSachTaiKhoan.Size = new System.Drawing.Size(844, 529);
             this.tbDanhSachTaiKhoan.TabIndex = 0;
+            this.tbDanhSachTaiKhoan.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbDanhSachTaiKhoan_CellClick);
             this.tbDanhSachTaiKhoan.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbDanhSachTaiKhoan_CellContentClick);
             this.tbDanhSachTaiKhoan.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.KichDup);
             // 
-            // Column1
+            // ColumnTaiKhoan
             // 
-            this.Column1.DataPropertyName = "TaiKhoan";
-            this.Column1.HeaderText = "Tên Tài Khoản";
-            this.Column1.Name = "Column1";
+            this.ColumnTaiKhoan.DataPropertyName = "TaiKhoan";
+            this.ColumnTaiKhoan.FillWeight = 134.4005F;
+            this.ColumnTaiKhoan.HeaderText = "Tên Tài Khoản";
+            this.ColumnTaiKhoan.Name = "ColumnTaiKhoan";
             // 
-            // Column2
+            // ColumnQuyen
             // 
-            this.Column2.DataPropertyName = "Quyen";
-            this.Column2.HeaderText = "Quyền Sử Dụng";
-            this.Column2.Name = "Column2";
+            this.ColumnQuyen.DataPropertyName = "Quyen";
+            this.ColumnQuyen.FillWeight = 60.0521F;
+            this.ColumnQuyen.HeaderText = "Quyền Sử Dụng";
+            this.ColumnQuyen.Name = "ColumnQuyen";
             // 
-            // Column3
+            // ColumnMatKhau
             // 
-            this.Column3.DataPropertyName = "TrangThai";
-            this.Column3.HeaderText = "Trạng Thái (on/off)";
-            this.Column3.Name = "Column3";
-            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ColumnMatKhau.DataPropertyName = "MatKhau";
+            this.ColumnMatKhau.FillWeight = 104.0246F;
+            this.ColumnMatKhau.HeaderText = "Mật Khẩu";
+            this.ColumnMatKhau.Name = "ColumnMatKhau";
+            // 
+            // Column4
+            // 
+            this.Column4.DataPropertyName = "TrangThai";
+            this.Column4.FillWeight = 101.5229F;
+            this.Column4.HeaderText = "Trạng Thái (on/off)";
+            this.Column4.Name = "Column4";
+            this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // DanhSachTaiKhoan
             // 
@@ -225,9 +238,10 @@
         private System.Windows.Forms.ToolStripTextBox txtTimKiem;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView tbDanhSachTaiKhoan;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Column3;
         private System.Windows.Forms.ToolStripButton btInBaoCao;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTaiKhoan;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnQuyen;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMatKhau;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column4;
     }
 }

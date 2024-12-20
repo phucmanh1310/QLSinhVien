@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using D.ThongTin;
 using System;
 using System.Linq;
+using System.Data;
 
 namespace C.DuLieu
 {
@@ -32,11 +33,11 @@ namespace C.DuLieu
 
 
         // Lấy danh sách hệ đào tạo
-        public List<BsonDocument> DanhSachHeDaoTao()
+        public DataTable DanhSachHeDaoTao()
         {
             var filter = new BsonDocument();
             var documents = collection.Find(filter).ToList();
-            return SanitizeBsonDocuments(documents); // Làm sạch dữ liệu
+            return DataConversion1.ConvertToDataTable1(documents); // Làm sạch dữ liệu
         }
 
 

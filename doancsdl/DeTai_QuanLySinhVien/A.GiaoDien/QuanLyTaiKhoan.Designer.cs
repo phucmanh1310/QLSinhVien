@@ -35,6 +35,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cbQuyen = new System.Windows.Forms.ComboBox();
+            this.txtMatKhau = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btXacNhan
@@ -43,7 +45,7 @@
             this.btXacNhan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.btXacNhan.Image = global::A.GiaoDien.Properties.Resources.camera_test;
             this.btXacNhan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btXacNhan.Location = new System.Drawing.Point(41, 143);
+            this.btXacNhan.Location = new System.Drawing.Point(35, 169);
             this.btXacNhan.Name = "btXacNhan";
             this.btXacNhan.Size = new System.Drawing.Size(108, 34);
             this.btXacNhan.TabIndex = 13;
@@ -58,7 +60,7 @@
             this.btHoanTat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.btHoanTat.Image = global::A.GiaoDien.Properties.Resources.back_2;
             this.btHoanTat.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btHoanTat.Location = new System.Drawing.Point(166, 143);
+            this.btHoanTat.Location = new System.Drawing.Point(166, 169);
             this.btHoanTat.Name = "btHoanTat";
             this.btHoanTat.Size = new System.Drawing.Size(106, 34);
             this.btHoanTat.TabIndex = 14;
@@ -76,7 +78,7 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(16, 99);
+            this.label3.Location = new System.Drawing.Point(15, 127);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(100, 20);
             this.label3.TabIndex = 8;
@@ -106,16 +108,34 @@
             // cbQuyen
             // 
             this.cbQuyen.FormattingEnabled = true;
-            this.cbQuyen.Location = new System.Drawing.Point(123, 99);
+            this.cbQuyen.Location = new System.Drawing.Point(122, 127);
             this.cbQuyen.Name = "cbQuyen";
             this.cbQuyen.Size = new System.Drawing.Size(149, 21);
             this.cbQuyen.TabIndex = 15;
+            // 
+            // txtMatKhau
+            // 
+            this.txtMatKhau.Location = new System.Drawing.Point(122, 89);
+            this.txtMatKhau.Name = "txtMatKhau";
+            this.txtMatKhau.Size = new System.Drawing.Size(150, 20);
+            this.txtMatKhau.TabIndex = 17;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(16, 88);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(100, 20);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "Mật Khẩu :";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // QuanLyTaiKhoan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(324, 196);
+            this.ClientSize = new System.Drawing.Size(336, 236);
+            this.Controls.Add(this.txtMatKhau);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.cbQuyen);
             this.Controls.Add(this.btXacNhan);
             this.Controls.Add(this.btHoanTat);
@@ -141,5 +161,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbQuyen;
+        private System.Windows.Forms.TextBox txtMatKhau;
+        private System.Windows.Forms.Label label4;
     }
 }

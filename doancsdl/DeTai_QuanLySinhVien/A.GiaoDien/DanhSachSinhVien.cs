@@ -33,17 +33,28 @@ namespace A.GiaoDien
         //LẤY RA DANH SÁCH SINH VIÊN.
         private void DanhSachSinhVien_Load(object sender, EventArgs e)
         {
+            LoadDanhSachSinhVien();
             txtTimKiem.Focus();
-
-            // Lấy dữ liệu từ MongoDB
-            List<BsonDocument> documents = cls_SinhVien.DanhSachSinhVien();
-
-            // Chuyển đổi sang DataTable
-            DataTable table = DataConversion1.ConvertToDataTable1(documents);
-
-            // Gán vào DataGridView
-            tbDanhSachSinhVien.DataSource = table;
         }
+        private void LoadDanhSachSinhVien()
+        {
+            try
+            {
+                var data = cls_SinhVien.DanhSachSinhVien();
+                var dataTable = DataConversion1.ConvertToDataTable1(data);
+
+                // Xóa cột _id nếu có
+                if (dataTable.Columns.Contains("_id"))
+                    dataTable.Columns.Remove("_id");
+
+                tbDanhSachSinhVien.DataSource = dataTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải danh sách sinh viên: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         //TÌM KIẾM SINH VIÊN THEO MÃ SỐ, HỌ TÊN, LỚP.
         private void TimKiem(object sender, KeyEventArgs e)
@@ -80,52 +91,42 @@ namespace A.GiaoDien
         //KHI CHỌN THÊM SINH VIÊN.
         private void ThemSinhVien()
         {
-            SinhVien_ThongTin SV = new SinhVien_ThongTin();
             ChucNang = "F9";
+            SinhVien_ThongTin SV = new SinhVien_ThongTin();
             A.GiaoDien.QuanLySinhVien QLSV = new A.GiaoDien.QuanLySinhVien(ChucNang, SV);
             QLSV.DuLieu = new QuanLySinhVien.DuLieuTruyenVe(LayDuLieu);
             QLSV.ShowDialog(this);
-            txtTimKiem.Focus();
+            LoadDanhSachSinhVien(); // Tải lại danh sách sau khi thêm
         }
+
         private void btThem_Click(object sender, EventArgs e)
         {
             ThemSinhVien();
         }
-            //#Truyền dữ liệu.
+        //#Truyền dữ liệu.
         public void LayDuLieu(SinhVien_ThongTin SV)
         {
-            this.Ma = SV.MaSinhVien;
-            if (!this.Ma.Equals(""))
-            {
-                //Load lại bảng.
-                tbDanhSachSinhVien.DataSource = cls_SinhVien.DanhSachSinhVien();
-            }
+            LoadDanhSachSinhVien(); // Làm mới dữ liệu
+            txtTimKiem.Focus();
         }
+
         //KHI CHỌN SỬA THÔNG TIN SINH VIÊN.
         private void SuaSinhVien()
         {
             ChucNang = "F10";
             SinhVien_ThongTin SV = new SinhVien_ThongTin();
-
-            SV.MaSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells[0].Value?.ToString() ?? "";
-            SV.TenSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells[1].Value?.ToString() ?? "";
-
-            DateTime ngaySinh;
-            if (DateTime.TryParse(tbDanhSachSinhVien.Rows[DongChon].Cells[2].Value?.ToString(), out ngaySinh))
-            {
-                SV.NgaySinh = ngaySinh;
-            }
-
-            SV.GioiTinh = tbDanhSachSinhVien.Rows[DongChon].Cells[3].Value?.ToString() == "True";
-            SV.Lop = tbDanhSachSinhVien.Rows[DongChon].Cells[4].Value?.ToString() ?? "";
-            SV.DiaChi = tbDanhSachSinhVien.Rows[DongChon].Cells[5].Value?.ToString() ?? "";
-            SV.ChinhSachUuTien = tbDanhSachSinhVien.Rows[DongChon].Cells[6].Value?.ToString() == "True";
+            SV.MaSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells["colMaSinhVien"].Value.ToString();
+            SV.TenSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells["colTenSinhVien"].Value.ToString();
+            SV.DiaChi = tbDanhSachSinhVien.Rows[DongChon].Cells["colDiaChi"].Value.ToString();
+            SV.NgaySinh = DateTime.Parse(tbDanhSachSinhVien.Rows[DongChon].Cells["colNgaySinh"].Value.ToString());
+            SV.Lop = tbDanhSachSinhVien.Rows[DongChon].Cells["colLop"].Value.ToString();
 
             A.GiaoDien.QuanLySinhVien QLSV = new A.GiaoDien.QuanLySinhVien(ChucNang, SV);
             QLSV.DuLieu = new QuanLySinhVien.DuLieuTruyenVe(LayDuLieu);
             QLSV.ShowDialog(this);
-            txtTimKiem.Focus();
+            LoadDanhSachSinhVien(); // Tải lại danh sách sau khi sửa
         }
+
 
         private void btSua_Click(object sender, EventArgs e)
         {
@@ -142,33 +143,29 @@ namespace A.GiaoDien
         //XÓA SINH VIÊN.
         private void XoaSinhVien()
         {
-            if (KiemTraXoa == 0)
-            {
-                MessageBox.Show("Bạn hãy chọn sinh viên muốn xóa.", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
             if (KiemTraXoa == 1)
             {
-                SinhVien_ThongTin SV = new SinhVien_ThongTin();
-                SV.MaSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells[0].Value.ToString();
-                SV.TenSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells[1].Value.ToString();
-                if (MessageBox.Show("Bạn có thật sự muốn xóa thông tin sinh viên " + SV.MaSinhVien + "", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                string maSV = tbDanhSachSinhVien.Rows[DongChon].Cells[0].Value.ToString();
+                if (MessageBox.Show($"Bạn có muốn xóa sinh viên {maSV} không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
-                        cls_SinhVien.XoaSinhVien(SV.MaSinhVien);
-                        MessageBox.Show("Bạn đã xóa sinh viên " + SV.TenSinhVien + " có mã " + SV.MaSinhVien + "", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.None);
-
+                        cls_SinhVien.XoaSinhVien(maSV);
+                        MessageBox.Show("Xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadDanhSachSinhVien(); // Tải lại danh sách sau khi xóa
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Không thể xóa dữ liệu này, hãy kiểm tra kết nối!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Lỗi khi xóa: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-                tbDanhSachSinhVien.DataSource = cls_SinhVien.DanhSachSinhVien();
-                KiemTraXoa = 0;
             }
-            txtTimKiem.Focus();
+            else
+            {
+                MessageBox.Show("Vui lòng chọn sinh viên cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
+
         private void btXoa_Click(object sender, EventArgs e)
         {
             XoaSinhVien();
@@ -178,9 +175,9 @@ namespace A.GiaoDien
         private void XemKetQuaHocTap()
         {
             SinhVien_ThongTin SV = new SinhVien_ThongTin();
-            SV.MaSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells[0].Value.ToString();
-            SV.TenSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells[1].Value.ToString();
-            SV.Lop = tbDanhSachSinhVien.Rows[DongChon].Cells[4].Value.ToString();
+            SV.MaSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells["colMaSinhVien"].Value.ToString();
+            SV.TenSinhVien = tbDanhSachSinhVien.Rows[DongChon].Cells["colTenSinhVien"].Value.ToString();
+            SV.Lop = tbDanhSachSinhVien.Rows[DongChon].Cells["colLop"].Value.ToString();
 
             A.GiaoDien.KetQuaHocTapCuaSinhVien KQHT = new A.GiaoDien.KetQuaHocTapCuaSinhVien(SV);
             KQHT.ShowDialog(this);
@@ -196,16 +193,27 @@ namespace A.GiaoDien
         {
             XemKetQuaHocTap();
         }
-        //IN BÁO CÁO
-       /* private void btInBaoCao_Click(object sender, EventArgs e)
+
+        private void tbDanhSachSinhVien_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            SinhVien_ThongTin SV = new SinhVien_ThongTin();
-            SV.MaSinhVien = txtTimKiem.Text;
-            BaoCao.BaoCao.DuLieu = cls_SinhVien.TimKiemSinhVien(SV);
-            BaoCao.BaoCao.Kieu = "TimKiemSinhVien";
-            BaoCao.BaoCao BC = new BaoCao.BaoCao();
-            BC.ShowDialog();
-        }*/
-        
+            if (e.RowIndex >= 0) // Kiểm tra nếu chỉ số dòng hợp lệ
+            {
+                DongChon = e.RowIndex; // Gán dòng được chọn vào biến DongChon
+            }
+        }
+
+
+
+        //IN BÁO CÁO
+        /* private void btInBaoCao_Click(object sender, EventArgs e)
+         {
+             SinhVien_ThongTin SV = new SinhVien_ThongTin();
+             SV.MaSinhVien = txtTimKiem.Text;
+             BaoCao.BaoCao.DuLieu = cls_SinhVien.TimKiemSinhVien(SV);
+             BaoCao.BaoCao.Kieu = "TimKiemSinhVien";
+             BaoCao.BaoCao BC = new BaoCao.BaoCao();
+             BC.ShowDialog();
+         }*/
+
     }
 }

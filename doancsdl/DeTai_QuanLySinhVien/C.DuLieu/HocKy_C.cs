@@ -32,8 +32,17 @@ namespace C.DuLieu
         // Lấy danh sách học kỳ
         public List<BsonDocument> DanhSachHocKy()
         {
-            return collection.Find(new BsonDocument()).ToList();
+            try
+            {
+                return collection.Find(new BsonDocument()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi lấy danh sách học kỳ: " + ex.Message);
+                return new List<BsonDocument>();
+            }
         }
+
 
         // Lấy danh sách thông tin đầy đủ về học kỳ
         public List<BsonDocument> DanhSachThongTinHocKy()

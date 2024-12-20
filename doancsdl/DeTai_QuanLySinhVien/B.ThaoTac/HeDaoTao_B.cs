@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using D.ThongTin;
 using C.DuLieu;
+using System.Data;
 
 namespace B.ThaoTac
 {
@@ -9,7 +10,7 @@ namespace B.ThaoTac
     {
         HeDaoTao_C cls = new HeDaoTao_C();
 
-        public List<BsonDocument> DanhSachHeDaoTao()
+        public DataTable DanhSachHeDaoTao()
         {
             return cls.DanhSachHeDaoTao();
         }

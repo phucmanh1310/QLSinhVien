@@ -137,6 +137,7 @@
   <ItemGroup>
     <Compile Include="BangDiem_C.cs" />
     <Compile Include="DangNhap_C.cs" />
+    <Compile Include="DataConversion.cs" />
     <Compile Include="DoiDiem_C.cs" />
     <Compile Include="HeDaoTao_C.cs" />
     <Compile Include="HocKy_C.cs" />

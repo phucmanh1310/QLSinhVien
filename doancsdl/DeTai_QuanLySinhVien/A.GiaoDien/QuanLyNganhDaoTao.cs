@@ -45,11 +45,12 @@ namespace A.GiaoDien
 
         private void QuanLyNganhDaoTao_Load(object sender, EventArgs e)
         {
+            var data = cls_Khoa.DanhSachKhoa();
+            var table = DataConversion1.ConvertToDataTable1(data);
             //LOAD O COMBOBOX
-            cbTenKhoa.DataSource = cls_Khoa.DanhSachKhoa();
-            cbTenKhoa.DisplayMember = "TenKhoa";
-            cbTenKhoa.ValueMember = "MaKhoa";
-
+            cbTenKhoa.DataSource = table; // Lấy danh sách khoa
+            cbTenKhoa.DisplayMember = "TenKhoa";            // Hiển thị Tên Khoa
+            cbTenKhoa.ValueMember = "MaKhoa";               // Giá trị là MaKhoa
             txtMaNganh.Focus();
         }
         //DỮ LIỆU TRUYỀN VỀ.

@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using C.DuLieu;
 using D.ThongTin;
+using System.Data;
 
 namespace B.ThaoTac
 {
@@ -9,44 +10,44 @@ namespace B.ThaoTac
     {
         BangDiem_C cls = new BangDiem_C();
 
-        public List<BsonDocument> LayDiemTheoKySinhVien(string maSinhVien, string maHocKy)
+        public DataTable LayDiemTheoKySinhVien(BangDiem_ThongTin BD)
         {
-            return cls.LayDiemTheoKySinhVien(maSinhVien, maHocKy);
+            return cls.LayDiemTheoKySinhVien(BD);
         }
 
         public void ThemKetQua(BangDiem_ThongTin BD)
         {
-            cls.ThemKetQua(BD);
+             cls.ThemKetQua(BD);
         }
 
-        public void XoaKetQua(int stt)
+        public void XoaKetQua(BangDiem_ThongTin BD)
         {
-            cls.XoaKetQua(stt);
+            cls.XoaDiemCuaSinhVien(BD);
         }
 
-        public void CapNhatDiem(BangDiem_ThongTin BD)
+        public void UpDateDiemQTVaDiemThi(BangDiem_ThongTin BD)
         {
             cls.CapNhatDiem(BD);
         }
 
-        public List<BsonDocument> LayKetQuaHocTap(string maSinhVien)
+        public List<BsonDocument> LayKetQuaHocTap(BangDiem_ThongTin BD)
         {
-            return cls.LayKetQuaHocTap(maSinhVien);
+            return cls.LayKetQuaHocTap(BD);
         }
 
-        public BsonDocument KetQuaTongKetDaoTao(string maSinhVien)
+        public DataTable KetQuaTongKetDaoTao(BangDiem_ThongTin BD)
         {
-            return cls.KetQuaTongKetDaoTao(maSinhVien);
+            return cls.KetQuaTongKetDaoTao(BD);
         }
 
-        public BsonDocument SoTinChiDat(string maSinhVien, string maHocKy)
+        public DataTable SoTinChiDat(BangDiem_ThongTin BD)
         {
-            return cls.SoTinChiDat(maSinhVien, maHocKy);
+            return cls.SoTinChiDat(BD);
         }
 
-        public BsonDocument KetQuaTongKetHocKy(string maSinhVien, string maHocKy)
+        public DataTable KetQuaTongKetHocKy(BangDiem_ThongTin BD)
         {
-            return cls.KetQuaTongKetHocKy(maSinhVien, maHocKy);
+            return cls.KetQuaTongKetHocKy(BD);
         }
         public List<BsonDocument> DanhSachSinhVienXetHocBong(string maHocKy)
         {
@@ -62,10 +63,5 @@ namespace B.ThaoTac
         {
             return cls.DanhSachSinhVienXetHocBong_Khoa_Top(maHocKy, maKhoa, top);
         }
-        public void UpDateDiemQTVaDiemThi(BangDiem_ThongTin BD)
-        {
-            cls.CapNhatDiem(BD);
-        }
-
     }
 }

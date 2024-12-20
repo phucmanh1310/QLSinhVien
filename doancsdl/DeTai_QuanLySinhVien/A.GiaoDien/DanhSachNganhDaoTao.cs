@@ -22,7 +22,7 @@ namespace A.GiaoDien
         string ChucNang = null;
         int DongChon = 0;
         int XacNhanXoa = 0;
-        string MaNganh = null;
+        string MaKhoa = null;
         public DanhSachNganhDaoTao()
         {
             InitializeComponent();
@@ -39,6 +39,7 @@ namespace A.GiaoDien
             {
                 var data = cls_NganhDaoTao.DanhSachThongTinNganhDaoTao();
                 tbNganhDaoTao.DataSource = DataConversion1.ConvertToDataTable1(data);
+
             }
             catch (Exception ex)
             {
@@ -74,19 +75,40 @@ namespace A.GiaoDien
         //KHI KÍCH BUTTON SỬA THÔNG TIN
         private void SuaNganhDaoTao()
         {
-            ChucNang = "F10";
-            NganhDaoTao_ThongTin NDT = new NganhDaoTao_ThongTin();
-            NDT.MaNganh = tbNganhDaoTao.Rows[DongChon].Cells[0].Value.ToString();
-            NDT.TenNganh = tbNganhDaoTao.Rows[DongChon].Cells[1].Value.ToString();
-            NDT.MaKhoa = tbNganhDaoTao.Rows[DongChon].Cells[2].Value.ToString();
+            if (DongChon >= 0) // Kiểm tra dòng hợp lệ
+            {
+                // Lấy dữ liệu từ DataGridView
+                string maNganh = tbNganhDaoTao.Rows[DongChon].Cells["ColumnMaNganh"].Value.ToString();
+                string tenNganh = tbNganhDaoTao.Rows[DongChon].Cells["ColumnTenNganh"].Value.ToString();
+                string maKhoa = tbNganhDaoTao.Rows[DongChon].Cells["ColumnMaKhoa"].Value?.ToString();
+                // In ra để kiểm tra
+                Console.WriteLine($"MaNganh: {maNganh}, TenNganh: {tenNganh}, MaKhoa: {maKhoa}");
+                if (string.IsNullOrEmpty(maKhoa))
+                {
+                    MessageBox.Show("Không lấy được Mã Khoa.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-            A.GiaoDien.QuanLyNganhDaoTao QLNDT = new A.GiaoDien.QuanLyNganhDaoTao(ChucNang, NDT);
-            QLNDT.DuLieu = new QuanLyNganhDaoTao.DuLieuTruyenVe(LayDuLieu);
-            QLNDT.ShowDialog(this);
+                // Truyền dữ liệu sang form sửa
+                NganhDaoTao_ThongTin NDT = new NganhDaoTao_ThongTin
+                {
+                    MaNganh = maNganh,
+                    TenNganh = tenNganh,
+                    MaKhoa = maKhoa
+                };
 
-            // Làm mới danh sách
-            LoadDanhSachNganhDaoTao();
+                QuanLyNganhDaoTao QLNDT = new QuanLyNganhDaoTao("F10", NDT);
+                QLNDT.ShowDialog(this);
+
+                // Làm mới danh sách
+                LoadDanhSachNganhDaoTao();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn dòng hợp lệ để sửa.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
+
         private void tbNganhDaoTao_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             DongChon = e.RowIndex;
@@ -103,7 +125,7 @@ namespace A.GiaoDien
         {
             if (XacNhanXoa == 1)
             {
-                string maNganh = tbNganhDaoTao.Rows[DongChon].Cells[0].Value.ToString();
+                string maNganh = tbNganhDaoTao.Rows[DongChon].Cells["ColumnMaNganh"].Value.ToString();
                 if (MessageBox.Show($"Bạn có chắc chắn muốn xóa ngành {maNganh} không?",
                                     "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {

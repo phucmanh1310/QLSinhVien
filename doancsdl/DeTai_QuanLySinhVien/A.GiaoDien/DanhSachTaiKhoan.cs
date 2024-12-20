@@ -30,27 +30,29 @@ namespace A.GiaoDien
         //SAU KHI KOWIR TẠO
         private void DanhSachTaiKhoan_Load(object sender, EventArgs e)
         {
-            try
-            {
-                tbDanhSachTaiKhoan.DataSource = cls_DangNhap.DanhSachTaiKhoan();
-            }
-            catch { }
+            LoadDanhSachTaiKhoan();
             txtTimKiem.Focus();
         }
+        private void LoadDanhSachTaiKhoan()
+        {
+            try
+            {
+                var data = cls_DangNhap.DanhSachTaiKhoan(); // Gọi dữ liệu từ MongoDB
+                tbDanhSachTaiKhoan.DataSource = DataConversion1.ConvertToDataTable1(data); // Chuyển đổi BsonDocument sang DataTable
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi tải danh sách tài khoản: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         //LẤY DỮ LIỆU GỬI VỀ.
         public void LayDuLieu(DangNhap_ThongTin DN)
         {
-            this.TaiKhoan = DN.TaiKhoan;
-            if (!this.TaiKhoan.Equals(""))
-            {
-                try
-                {
-                    tbDanhSachTaiKhoan.DataSource = cls_DangNhap.DanhSachTaiKhoan();
-                }
-                catch { }
-            }
+            LoadDanhSachTaiKhoan(); // Làm mới danh sách tài khoản
             txtTimKiem.Focus();
         }
+
         //KHI KÍCH BUTTON THÊM
         private void ThemTaiKhoan()
         {
@@ -66,26 +68,37 @@ namespace A.GiaoDien
         private void btThem_Click(object sender, EventArgs e)
         {
             ThemTaiKhoan();
+            LoadDanhSachTaiKhoan(); // Cập nhật danh sách
             txtTimKiem.Focus();
         }
+
         //KHI KÍCH BUTTON SỬA THÔNG TIN
         private void SuaTaiKhoan()
         {
             ChucNang = "F10";
-            DangNhap_ThongTin DangNhap = new DangNhap_ThongTin();
-            DangNhap.TaiKhoan = tbDanhSachTaiKhoan.Rows[DongChon].Cells[0].Value.ToString();
-            DangNhap.Quyen = tbDanhSachTaiKhoan.Rows[DongChon].Cells[1].Value.ToString();
-             A.GiaoDien.QuanLyTaiKhoan QLTK = new A.GiaoDien.QuanLyTaiKhoan(ChucNang, DangNhap);
+
+            DangNhap_ThongTin DangNhap = new DangNhap_ThongTin
+            {
+                TaiKhoan = tbDanhSachTaiKhoan.Rows[DongChon].Cells["ColumnTaiKhoan"].Value.ToString(),
+                Quyen = tbDanhSachTaiKhoan.Rows[DongChon].Cells["ColumnQuyen"].Value.ToString(),
+                MatKhau = tbDanhSachTaiKhoan.Rows[DongChon].Cells["ColumnMatKhau"].Value.ToString() // Lấy mật khẩu từ cột DataGridView
+            };
+
+            A.GiaoDien.QuanLyTaiKhoan QLTK = new A.GiaoDien.QuanLyTaiKhoan(ChucNang, DangNhap);
             QLTK.DuLieu = new QuanLyTaiKhoan.DuLieuTruyenVe(LayDuLieu);
             QLTK.ShowDialog(this);
             XacNhanXoa = 0;
             txtTimKiem.Focus();
         }
+
         //KÍCH SỬA
         private void btSua_Click(object sender, EventArgs e)
         {
             SuaTaiKhoan();
+            LoadDanhSachTaiKhoan(); // Cập nhật danh sách
+            txtTimKiem.Focus();
         }
+
         //KÍCH VÀO BẢNG
         private void tbDanhSachTaiKhoan_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -98,27 +111,29 @@ namespace A.GiaoDien
         {
             if (XacNhanXoa == 1)
             {
-                DangNhap_ThongTin DangNhap = new DangNhap_ThongTin();
-                DangNhap.TaiKhoan = tbDanhSachTaiKhoan.Rows[DongChon].Cells[0].Value.ToString();
-                if (MessageBox.Show("Bạn có thật sự muốn xóa thông tin tài khoản " + DangNhap.TaiKhoan + "", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                DangNhap_ThongTin DangNhap = new DangNhap_ThongTin
+                {
+                    TaiKhoan = tbDanhSachTaiKhoan.Rows[DongChon].Cells[0].Value.ToString()
+                };
+
+                if (MessageBox.Show($"Bạn có chắc muốn xóa tài khoản '{DangNhap.TaiKhoan}'?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
                         cls_DangNhap.XoaTaiKhoan(DangNhap);
-                        tbDanhSachTaiKhoan.DataSource = cls_DangNhap.DanhSachTaiKhoan();
+                        MessageBox.Show("Xóa tài khoản thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadDanhSachTaiKhoan(); // Cập nhật danh sách
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Không thể xóa dữ liệu này, hãy kiểm tra lại.!", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Lỗi khi xóa tài khoản: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 XacNhanXoa = 0;
-                txtTimKiem.Focus();
             }
             else
             {
-                MessageBox.Show("Bạn hãy chọn khóa học muốn xóa.", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtTimKiem.Focus();
+                MessageBox.Show("Vui lòng chọn tài khoản cần xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         //
@@ -129,35 +144,25 @@ namespace A.GiaoDien
 
         private void KhiAnTimKiem(object sender, KeyEventArgs e)
         {
-            if (!e.KeyValue.ToString().Equals("120") && !e.KeyValue.ToString().Equals("121") && !e.KeyValue.ToString().Equals("122") && !e.KeyValue.ToString().Equals("123"))
+            if (e.KeyCode == Keys.Enter)
             {
-                txtTimKiem.BackColor = Color.White;
-                DangNhap_ThongTin DN = new DangNhap_ThongTin();
-                DN.TaiKhoan = txtTimKiem.Text;
-                tbDanhSachTaiKhoan.DataSource = cls_DangNhap.TimKiemTaiKhoan(DN);
+                DangNhap_ThongTin DN = new DangNhap_ThongTin
+                {
+                    TaiKhoan = txtTimKiem.Text.Trim()
+                };
+
+                try
+                {
+                    var data = cls_DangNhap.TimKiemTaiKhoan(DN);
+                    tbDanhSachTaiKhoan.DataSource = DataConversion1.ConvertToDataTable1(data);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            if (e.KeyValue.ToString().Equals("120"))
-            {
-                ThemTaiKhoan();
-                txtTimKiem.Focus();
-            }
-            if (e.KeyValue.ToString().Equals("121"))
-            {
-                SuaTaiKhoan();
-                txtTimKiem.Focus();
-            }
-            if (e.KeyValue.ToString().Equals("122"))
-            {
-                XoaTaiKhoan();
-                txtTimKiem.Focus();
-            }
-            if (e.KeyValue.ToString().Equals("123"))
-            {
-                txtTimKiem.BackColor = Color.YellowGreen;
-                txtTimKiem.Focus();
-            }
-            txtTimKiem.Focus();
         }
+
 
         private void KichDup(object sender, MouseEventArgs e)
         {
@@ -165,14 +170,21 @@ namespace A.GiaoDien
             txtTimKiem.Focus();
         }
 
-       /* private void btInBaoCao_Click(object sender, EventArgs e)
+        private void tbDanhSachTaiKhoan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            DangNhap_ThongTin DN = new DangNhap_ThongTin();
-            DN.TaiKhoan = txtTimKiem.Text;
-            BaoCao.BaoCao.DuLieu = cls_DangNhap.TimKiemTaiKhoan(DN);
-            BaoCao.BaoCao.Kieu = "TimKiemTaiKhoan";
-            BaoCao.BaoCao BC = new BaoCao.BaoCao();
-            BC.ShowDialog();
-        }*/
+            DongChon = e.RowIndex;
+            XacNhanXoa = 1;
+            txtTimKiem.Focus();
+        }
+
+        /* private void btInBaoCao_Click(object sender, EventArgs e)
+         {
+             DangNhap_ThongTin DN = new DangNhap_ThongTin();
+             DN.TaiKhoan = txtTimKiem.Text;
+             BaoCao.BaoCao.DuLieu = cls_DangNhap.TimKiemTaiKhoan(DN);
+             BaoCao.BaoCao.Kieu = "TimKiemTaiKhoan";
+             BaoCao.BaoCao BC = new BaoCao.BaoCao();
+             BC.ShowDialog();
+         }*/
     }
 }

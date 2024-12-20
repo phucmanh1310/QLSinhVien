@@ -44,12 +44,15 @@
             this.btInBaoCao = new System.Windows.Forms.ToolStripButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbDanhSachLopHoc = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMaLop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTenLop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMaKhoaHoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTenHe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTenNganh = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTenKhoa = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMaHe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMaNganh = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMaKhoa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbDanhSachLopHoc)).BeginInit();
@@ -88,7 +91,7 @@
             this.btThem.Image = ((System.Drawing.Image)(resources.GetObject("btThem.Image")));
             this.btThem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btThem.Name = "btThem";
-            this.btThem.Size = new System.Drawing.Size(109, 22);
+            this.btThem.Size = new System.Drawing.Size(108, 22);
             this.btThem.Text = "Thêm Lớp Học.";
             this.btThem.Click += new System.EventHandler(this.btThem_Click);
             // 
@@ -104,7 +107,7 @@
             this.btSua.Image = ((System.Drawing.Image)(resources.GetObject("btSua.Image")));
             this.btSua.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btSua.Name = "btSua";
-            this.btSua.Size = new System.Drawing.Size(107, 22);
+            this.btSua.Size = new System.Drawing.Size(105, 22);
             this.btSua.Text = "Sửa Thông Tin.";
             this.btSua.Click += new System.EventHandler(this.btSua_Click);
             // 
@@ -134,11 +137,12 @@
             // lbTimKiem
             // 
             this.lbTimKiem.Name = "lbTimKiem";
-            this.lbTimKiem.Size = new System.Drawing.Size(77, 22);
+            this.lbTimKiem.Size = new System.Drawing.Size(76, 22);
             this.lbTimKiem.Text = "Tìm Kiếm (*):";
             // 
             // txtTimKiem
             // 
+            this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(150, 25);
             this.txtTimKiem.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KhiTimKiem_PhimTat);
@@ -168,7 +172,6 @@
             this.btInBaoCao.Name = "btInBaoCao";
             this.btInBaoCao.Size = new System.Drawing.Size(84, 20);
             this.btInBaoCao.Text = "In Báo Cáo";
-            //this.btInBaoCao.Click += new System.EventHandler(this.btInBaoCao_Click);
             // 
             // groupBox1
             // 
@@ -185,54 +188,79 @@
             this.tbDanhSachLopHoc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.tbDanhSachLopHoc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tbDanhSachLopHoc.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4,
-            this.Column5,
-            this.Column6});
+            this.colMaLop,
+            this.colTenLop,
+            this.colMaKhoaHoc,
+            this.colTenHe,
+            this.colTenNganh,
+            this.colTenKhoa,
+            this.colMaHe,
+            this.colMaNganh,
+            this.colMaKhoa});
             this.tbDanhSachLopHoc.Location = new System.Drawing.Point(6, 19);
             this.tbDanhSachLopHoc.Name = "tbDanhSachLopHoc";
             this.tbDanhSachLopHoc.Size = new System.Drawing.Size(845, 538);
             this.tbDanhSachLopHoc.TabIndex = 0;
+            this.tbDanhSachLopHoc.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbDanhSachLopHoc_CellClick);
             this.tbDanhSachLopHoc.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tbDanhSachLopHoc_CellContentClick);
             this.tbDanhSachLopHoc.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.KhiChonLopNhapDiem);
             // 
-            // Column1
+            // colMaLop
             // 
-            this.Column1.DataPropertyName = "MaLop";
-            this.Column1.HeaderText = "Mã Lớp";
-            this.Column1.Name = "Column1";
+            this.colMaLop.DataPropertyName = "MaLop";
+            this.colMaLop.HeaderText = "Mã Lớp";
+            this.colMaLop.Name = "colMaLop";
             // 
-            // Column2
+            // colTenLop
             // 
-            this.Column2.DataPropertyName = "TenLop";
-            this.Column2.HeaderText = "Tên Lớp";
-            this.Column2.Name = "Column2";
+            this.colTenLop.DataPropertyName = "TenLop";
+            this.colTenLop.HeaderText = "Tên Lớp";
+            this.colTenLop.Name = "colTenLop";
             // 
-            // Column3
+            // colMaKhoaHoc
             // 
-            this.Column3.DataPropertyName = "MaKhoaHoc";
-            this.Column3.HeaderText = "Mã Khóa Học";
-            this.Column3.Name = "Column3";
+            this.colMaKhoaHoc.DataPropertyName = "MaKhoaHoc";
+            this.colMaKhoaHoc.HeaderText = "Mã Khóa Học";
+            this.colMaKhoaHoc.Name = "colMaKhoaHoc";
             // 
-            // Column4
+            // colTenHe
             // 
-            this.Column4.DataPropertyName = "TenHe";
-            this.Column4.HeaderText = "Tên Hệ";
-            this.Column4.Name = "Column4";
+            this.colTenHe.DataPropertyName = "TenHe";
+            this.colTenHe.HeaderText = "Tên Hệ";
+            this.colTenHe.Name = "colTenHe";
             // 
-            // Column5
+            // colTenNganh
             // 
-            this.Column5.DataPropertyName = "TenNganh";
-            this.Column5.HeaderText = "Tên Ngành";
-            this.Column5.Name = "Column5";
+            this.colTenNganh.DataPropertyName = "TenNganh";
+            this.colTenNganh.HeaderText = "Tên Ngành";
+            this.colTenNganh.Name = "colTenNganh";
             // 
-            // Column6
+            // colTenKhoa
             // 
-            this.Column6.DataPropertyName = "TenKhoa";
-            this.Column6.HeaderText = "Tên Khoa";
-            this.Column6.Name = "Column6";
+            this.colTenKhoa.DataPropertyName = "TenKhoa";
+            this.colTenKhoa.HeaderText = "Tên Khoa";
+            this.colTenKhoa.Name = "colTenKhoa";
+            // 
+            // colMaHe
+            // 
+            this.colMaHe.DataPropertyName = "MaHe";
+            this.colMaHe.HeaderText = "Mã Hệ Đào Tạo";
+            this.colMaHe.Name = "colMaHe";
+            this.colMaHe.Visible = false;
+            // 
+            // colMaNganh
+            // 
+            this.colMaNganh.DataPropertyName = "MaNganh";
+            this.colMaNganh.HeaderText = "Mã Ngành";
+            this.colMaNganh.Name = "colMaNganh";
+            this.colMaNganh.Visible = false;
+            // 
+            // colMaKhoa
+            // 
+            this.colMaKhoa.DataPropertyName = "MaKhoa";
+            this.colMaKhoa.HeaderText = "Mã Khoa";
+            this.colMaKhoa.Name = "colMaKhoa";
+            this.colMaKhoa.Visible = false;
             // 
             // DanhSachLopHoc
             // 
@@ -269,14 +297,16 @@
         private System.Windows.Forms.ToolStripButton btNhapDiem;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView tbDanhSachLopHoc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripButton btInBaoCao;
-
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaLop;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTenLop;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaKhoaHoc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTenHe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTenNganh;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTenKhoa;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaHe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaNganh;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaKhoa;
     }
 }

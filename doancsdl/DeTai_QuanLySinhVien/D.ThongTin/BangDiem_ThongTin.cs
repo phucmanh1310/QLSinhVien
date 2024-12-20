@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D.ThongTin
 {
@@ -69,6 +65,44 @@ namespace D.ThongTin
         {
             get { return _DiemTKHe4; }
             set { _DiemTKHe4 = value; }
+        }
+
+        // Phương thức tính điểm hệ 10
+        public static float TinhDiemHe10(float diemQuaTrinh, float diemThi)
+        {
+            return (diemQuaTrinh * 0.5f) + (diemThi * 0.5f);
+        }
+
+        // Phương thức quy đổi điểm hệ 4
+        public static float QuyDoiDiemHe4(float diemHe10)
+        {
+            if (diemHe10 < 4.0f) return 0.0f;
+            if (diemHe10 < 5.5f) return 1.0f;
+            if (diemHe10 < 7.0f) return 2.0f;
+            if (diemHe10 < 8.5f) return 3.0f;
+            return 4.0f;
+        }
+
+        // Phương thức quy đổi điểm chữ
+        public static string QuyDoiDiemChu(float diemHe10)
+        {
+            if (diemHe10 < 4.0f) return "F";
+            if (diemHe10 < 5.5f) return "D";
+            if (diemHe10 < 7.0f) return "C";
+            if (diemHe10 < 8.5f) return "B";
+            return "A";
+        }
+
+        // Phương thức cập nhật điểm và tự động tính toán
+        public void CapNhatDiem(float diemQuaTrinh, float diemThi)
+        {
+            DiemQuaTrinh = diemQuaTrinh;
+            DiemThi = diemThi;
+
+            // Tính điểm hệ 10, hệ 4 và điểm chữ
+            DiemTKHe10 = TinhDiemHe10(DiemQuaTrinh, DiemThi);
+            DiemTKHe4 = QuyDoiDiemHe4(DiemTKHe10);
+            DiemChu = QuyDoiDiemChu(DiemTKHe10);
         }
     }
 }

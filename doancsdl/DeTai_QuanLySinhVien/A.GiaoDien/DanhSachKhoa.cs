@@ -50,7 +50,7 @@ namespace A.GiaoDien
         public void LayDuLieu(Khoa_ThongTin K)
         {
             this.MaKhoa = K.MaKhoa;
-            if (!this.MaKhoa.Equals(""))
+            if (!string.IsNullOrEmpty(this.MaKhoa))
             {
                 try
                 {
@@ -83,8 +83,8 @@ namespace A.GiaoDien
         {
             if (DongChon >= 0)
             {
-                string maKhoa = tbKhoa.Rows[DongChon].Cells["MaKhoa"].Value.ToString();
-                string tenKhoa = tbKhoa.Rows[DongChon].Cells["TenKhoa"].Value.ToString();
+                string maKhoa = tbKhoa.Rows[DongChon].Cells["ColumnMaKhoa"].Value.ToString();
+                string tenKhoa = tbKhoa.Rows[DongChon].Cells["ColumnTenKhoa"].Value.ToString();
 
                 Khoa_ThongTin Khoa = new Khoa_ThongTin
                 {

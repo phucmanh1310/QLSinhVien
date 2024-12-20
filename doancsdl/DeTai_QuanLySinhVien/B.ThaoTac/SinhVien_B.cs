@@ -22,9 +22,8 @@ namespace B.ThaoTac
 
         // Lấy danh sách sinh viên
         public List<BsonDocument> DanhSachSinhVien()
-        {
-            var collection = database.GetCollection<BsonDocument>("SinhVien");
-            return collection.Find(new BsonDocument()).ToList();
+        {           
+            return cls.DanhSachSinhVien();
         }
 
 
@@ -54,9 +53,9 @@ namespace B.ThaoTac
         }
 
         // Lấy danh sách sinh viên của lớp
-        public List<BsonDocument> DanhSachSinhVienCuaLop(string lop)
+        public List<BsonDocument> DanhSachSinhVienCuaLop(SinhVien_ThongTin SV)
         {
-            return cls.DanhSachSinhVienCuaLop(lop);
+            return cls.DanhSachSinhVienCuaLop(SV);
         }
 
         // Lấy danh sách sinh viên ra trường trong năm
