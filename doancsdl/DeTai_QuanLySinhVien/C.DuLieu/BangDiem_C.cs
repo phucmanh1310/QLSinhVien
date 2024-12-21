@@ -14,12 +14,12 @@ namespace C.DuLieu
         public BangDiem_C()
         {
             var client = new MongoClient("mongodb://localhost:27017");
-            var database = client.GetDatabase("QLSinhVien");
+            var database = client.GetDatabase("QLSINHVIEN");
             collection = database.GetCollection<BsonDocument>("BangDiem");
         }
 
         // Lấy điểm trong 1 học kỳ của sinh viên
-       public DataTable LayDiemTheoKySinhVien(BangDiem_ThongTin BD)
+      /* public DataTable LayDiemTheoKySinhVien(BangDiem_ThongTin BD)
         {
             var filter = Builders<BsonDocument>.Filter.And(
                 Builders<BsonDocument>.Filter.Eq("MaSinhVien", BD.MaSinhVien),
@@ -27,28 +27,78 @@ namespace C.DuLieu
             );
             var documents = cls.LayDuLieu("BangDiem", filter);
             return DataConversion1.ConvertToDataTable1(documents);
+        }*/
+        public DataTable LayDiemTheoKySinhVien(BangDiem_ThongTin BD)
+        {
+            // Lấy dữ liệu từ MongoDB và thực hiện lookup
+            var aggregate = collection.Aggregate()
+                .Match(Builders<BsonDocument>.Filter.And(
+                    Builders<BsonDocument>.Filter.Eq("MaSinhVien", BD.MaSinhVien),
+                    Builders<BsonDocument>.Filter.Eq("MaHocKy", BD.MaHocKy)
+                ))
+                .Lookup("MonHoc", "MaMonHoc", "MaMonHoc", "MonHocInfo")
+                .Unwind("MonHocInfo")
+                .Lookup("DoiDiem", "DiemTKHe4", "DiemSo", "DoiDiemInfo")
+                .Unwind("DoiDiemInfo")
+                .Project(new BsonDocument
+                {
+            { "STT", 1 },
+            { "MaHocKy", 1 },
+            {"MaMonHoc",1 },
+            { "TenMonHoc", "$MonHocInfo.TenMonHoc" },
+            { "SoTinChi", "$MonHocInfo.SoTinChi" },
+            { "DiemQuaTrinh", 1 },
+            { "DiemThi", 1 },
+            {"DiemTKHe10",1 },
+            { "DiemTKHe4", 1 },
+            { "DiemChu", "$DoiDiemInfo.DiemChu" },
+            { "KetLuan", "$DoiDiemInfo.KetLuan" }
+                });
+
+            // Chuyển đổi kết quả sang DataTable
+            var results = aggregate.ToList();
+            if (results.Count == 0)
+            {
+                Console.WriteLine("Không có dữ liệu nào được trả về.");
+            }
+            return DataConversion1.ConvertToDataTable1(results);
         }
 
 
         // Thêm kết quả học tập
         public void ThemKetQua(BangDiem_ThongTin BD)
         {
-            BD.DiemTKHe10 = BangDiem_ThongTin.TinhDiemHe10(BD.DiemQuaTrinh, BD.DiemThi);
-            BD.DiemTKHe4 = BangDiem_ThongTin.QuyDoiDiemHe4(BD.DiemTKHe10);
-
-            var document = new BsonDocument
+            try
             {
-                { "MaSinhVien", BD.MaSinhVien },
-                { "MaMonHoc", BD.MaMonHoc },
-                { "MaHocKy", BD.MaHocKy },
-                { "DiemQuaTrinh", BD.DiemQuaTrinh },
-                { "DiemThi", BD.DiemThi },
-                { "DiemTKHe10", BD.DiemTKHe10 },
-                { "DiemTKHe4", BD.DiemTKHe4 }
-            };
-            cls.ThemDuLieu("BangDiem", document);
+                // Lấy số lượng bản ghi hiện có
+                var filter = Builders<BsonDocument>.Filter.Eq("MaSinhVien", BD.MaSinhVien);
+                var count = collection.CountDocuments(filter);
 
+                // Tăng STT dựa trên số lượng bản ghi
+                BD.Stt = (int)count + 1;
+
+                // Tạo document mới
+                var document = new BsonDocument
+                {
+                    { "STT", BD.Stt },
+                    { "MaSinhVien", BD.MaSinhVien },
+                    { "MaMonHoc", BD.MaMonHoc },
+                    { "MaHocKy", BD.MaHocKy },
+                    { "DiemQuaTrinh", BD.DiemQuaTrinh },
+                    { "DiemThi", BD.DiemThi },
+                    { "DiemTKHe10", BangDiem_ThongTin.TinhDiemHe10(BD.DiemQuaTrinh, BD.DiemThi) },
+                    { "DiemTKHe4", BangDiem_ThongTin.QuyDoiDiemHe4(BD.DiemQuaTrinh) }
+                };
+
+                collection.InsertOne(document);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi thêm kết quả: " + ex.Message);
+            }
         }
+
+
 
 
         // Xóa kết quả học tập
@@ -73,35 +123,55 @@ namespace C.DuLieu
         }
 
         // Lấy kết quả học tập tổng quát
-        public List<BsonDocument> LayKetQuaHocTap(BangDiem_ThongTin BD)
+        public DataTable LayKetQuaHocTap(BangDiem_ThongTin BD)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("MaSinhVien", BD.MaSinhVien);
-            return collection.Find(filter).ToList();
-        }// khi sử dụng dạng table phải chuyển đổi nó
+
+            var results = collection.Find(filter).ToList();
+            return DataConversion1.ConvertToDataTable1(results);
+        }
+
 
         // Kết quả tổng kết đào tạo
         public DataTable KetQuaTongKetDaoTao(BangDiem_ThongTin BD)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("MaSinhVien", BD.MaSinhVien);
-            var documents = cls.LayDuLieu("BangDiem", filter);
-            return DataConversion1.ConvertToDataTable1(documents);
+            var aggregate = collection.Aggregate()
+                .Match(Builders<BsonDocument>.Filter.And(
+                Builders<BsonDocument>.Filter.Eq("MaSinhVien", BD.MaSinhVien),
+                Builders<BsonDocument>.Filter.Eq("MaHocKy", BD.MaHocKy)
+                        ))
+                .Group(new BsonDocument
+                {
+            { "_id", "$MaSinhVien" },
+            { "SoTinChiTichLuy", new BsonDocument("$sum", "$SoTinChi") },
+            { "DiemTBHe10", new BsonDocument("$avg", "$DiemTKHe10") },
+            { "DiemTBHe4", new BsonDocument("$avg", "$DiemTKHe4") }
+                });
+
+            var results = aggregate.ToList();
+            return DataConversion1.ConvertToDataTable1(results);
         }
+
 
 
         // Số tín chỉ đạt trong kỳ
         public DataTable SoTinChiDat(BangDiem_ThongTin BD)
         {
-            int Nparameter = 2;
-            string[] name = new string[Nparameter];
-            object[] value = new object[Nparameter];
-            name[0] = "@MaSinhVien";
-            value[0] = BD.MaSinhVien;
-            name[1] = "@MaHocKy";
-            value[1] = BD.MaHocKy;
-            return cls.TimKiem("SoTinChiDat", name, value, Nparameter);
+            var aggregate = collection.Aggregate()
+                .Match(Builders<BsonDocument>.Filter.And(
+                    Builders<BsonDocument>.Filter.Eq("MaSinhVien", BD.MaSinhVien),
+                    Builders<BsonDocument>.Filter.Eq("MaHocKy", BD.MaHocKy),
+                    Builders<BsonDocument>.Filter.Gte("DiemChu", "D") // Giả định điểm từ D trở lên được tính là đạt
+                ))
+                .Group(new BsonDocument
+                {
+            { "_id", "$MaHocKy" },
+            { "SoTinChi", new BsonDocument("$sum", "$SoTinChi") }
+                });
+
+            var results = aggregate.ToList();
+            return DataConversion1.ConvertToDataTable1(results);
         }
-
-
 
         // Kết quả tổng kết học kỳ
         public DataTable KetQuaTongKetHocKy(BangDiem_ThongTin BD)

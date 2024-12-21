@@ -30,7 +30,7 @@ namespace B.ThaoTac
             cls.CapNhatDiem(BD);
         }
 
-        public List<BsonDocument> LayKetQuaHocTap(BangDiem_ThongTin BD)
+        public DataTable LayKetQuaHocTap(BangDiem_ThongTin BD)
         {
             return cls.LayKetQuaHocTap(BD);
         }

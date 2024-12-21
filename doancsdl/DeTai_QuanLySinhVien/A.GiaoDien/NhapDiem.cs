@@ -37,7 +37,36 @@ namespace A.GiaoDien
                    
             if (ChucNang.Equals("F1"))
             {
-                LoadDanhSachSinhVienCuaLop(maLop);
+                try
+                {
+                    SinhVien_ThongTin SV = new SinhVien_ThongTin();
+                    SV.Lop = maLop;
+                    source = new BindingSource();
+                    var data = DataConversion1.ConvertToDataTable1(cls_SinhVien.DanhSachSinhVienCuaLop(SV));
+                    if (data.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in data.Rows)
+                        {
+                            source.Add(row);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không có sinh viên trong lớp này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+
+                    foreach (DataRow Hang in DataConversion1.ConvertToDataTable1(cls_SinhVien.DanhSachSinhVienCuaLop(SV)).Rows)
+                        source.Add(Hang);
+
+                    //LẤY RA GIÁ TRỊ ĐẦU TIÊN.
+                    source.MoveFirst();
+                    ShowRecord();
+                    XemDiemTheoKySinhVien();
+                }
+                catch
+                {
+                    MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             if (ChucNang.Equals("ChinhSua"))
             {
@@ -55,47 +84,6 @@ namespace A.GiaoDien
             }
             txtDiemQuaTrinh.Focus();
         }
-        private async void LoadDanhSachSinhVienCuaLop(String MaLop)
-        {
-            try
-            {
-                SinhVien_ThongTin SV = new SinhVien_ThongTin();
-                SV.Lop = MaLop;            
-                var sinhVienData = await Task.Run(() => cls_SinhVien.DanhSachSinhVienCuaLop(SV));
-                if (sinhVienData == null || sinhVienData.Count == 0)
-                {
-                    MessageBox.Show("Không có sinh viên trong lớp này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                var sinhVienTable = DataConversion1.ConvertToDataTable1(sinhVienData);
-                if (sinhVienTable == null || sinhVienTable.Rows.Count == 0)
-                {
-                    MessageBox.Show("Không có dữ liệu sau khi chuyển đổi.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                Invoke(new Action(() =>
-                {
-                    source = new BindingSource();
-                    foreach (DataRow row in sinhVienTable.Rows)
-                    {
-                        source.Add(row);
-                    }
-                    foreach (DataRow Hang in sinhVienTable.Rows)
-                    source.Add(Hang);
-                    //LẤY RA GIÁ TRỊ ĐẦU TIÊN.
-                    source.MoveFirst();
-                    ShowRecord();
-                    XemDiemTheoKySinhVien();
-                }));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi tải danh sách sinh viên: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
 
         private void LoadMonHocHocKy()
         {
@@ -137,20 +125,105 @@ namespace A.GiaoDien
         }
 
         //XEM ĐIỂM THEO 1 KỲ NÀO ĐÓ CỦA SINH VIÊN.
+        /* public void XemDiemTheoKySinhVien()
+         {
+             try
+             {
+                 BangDiem_ThongTin BD = new BangDiem_ThongTin();
+                 BD.MaSinhVien = txtMaSinhVien.Text;
+                 BD.MaHocKy = cbHocKy.SelectedValue.ToString();
+                 tbKetQuaHocTap.DataSource = cls_BangDiem.LayDiemTheoKySinhVien(BD);
+             }
+             catch
+             {
+                 MessageBox.Show("Lỗi khi xem điểm sinh viên theo kỳ, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+             }
+         }*/
         public void XemDiemTheoKySinhVien()
         {
             try
             {
-                BangDiem_ThongTin BD = new BangDiem_ThongTin();
-                BD.MaSinhVien = txtMaSinhVien.Text;
-                BD.MaHocKy = cbHocKy.SelectedValue.ToString();
-                tbKetQuaHocTap.DataSource = cls_BangDiem.LayDiemTheoKySinhVien(BD);
+                // Tạo đối tượng BangDiem_ThongTin
+                BangDiem_ThongTin BD = new BangDiem_ThongTin
+                {
+                    MaSinhVien = txtMaSinhVien.Text,
+                    MaHocKy = cbHocKy.SelectedValue?.ToString()
+                };
+
+                if (string.IsNullOrEmpty(BD.MaSinhVien) || string.IsNullOrEmpty(BD.MaHocKy))
+                {
+                    MessageBox.Show("Hãy chọn sinh viên và học kỳ để xem điểm.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Lấy dữ liệu từ cơ sở dữ liệu
+                var data = cls_BangDiem.LayDiemTheoKySinhVien(BD);
+
+                if (data.Rows.Count > 0)
+                {
+                    // Hiển thị dữ liệu lên DataGridView
+                    tbKetQuaHocTap.DataSource = data;
+
+                    // Cập nhật giao diện cột
+                    tbKetQuaHocTap.Columns["colSTT"].HeaderText = "STT";
+                    tbKetQuaHocTap.Columns["colMaHocKy"].HeaderText = "Mã Học Kỳ";
+                    tbKetQuaHocTap.Columns["colMaMonHoc"].HeaderText = "Mã Môn Học";
+                    tbKetQuaHocTap.Columns["colTenMonHoc"].HeaderText = "Tên Môn Học";
+                    tbKetQuaHocTap.Columns["colSoTinChi"].HeaderText = "Số Tín Chỉ";
+                    tbKetQuaHocTap.Columns["colDiemQuaTrinh"].HeaderText = "Điểm Quá Trình";
+                    tbKetQuaHocTap.Columns["colDiemThi"].HeaderText = "Điểm Thi";
+                    tbKetQuaHocTap.Columns["colDiemChu"].HeaderText = "Điểm Chữ";
+                    tbKetQuaHocTap.Columns["colKetLuan"].HeaderText = "Kết Luận";
+                }
+                else
+                {
+                    tbKetQuaHocTap.DataSource = null; // Xóa dữ liệu nếu không có kết quả
+                    MessageBox.Show("Không có dữ liệu điểm cho kỳ học này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi xem điểm sinh viên theo kỳ, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi xem điểm sinh viên theo kỳ: {ex.Message}", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /*   public void XemDiemTheoKySinhVien()
+           {
+               try
+               {
+                   // Tạo đối tượng BangDiem_ThongTin
+                   BangDiem_ThongTin BD = new BangDiem_ThongTin
+                   {
+                       MaSinhVien = txtMaSinhVien.Text,
+                       MaHocKy = cbHocKy.SelectedValue?.ToString() // Lấy giá trị MaHocKy từ ComboBox
+                   };
+
+                   if (string.IsNullOrEmpty(BD.MaSinhVien) || string.IsNullOrEmpty(BD.MaHocKy))
+                   {
+                       MessageBox.Show("Hãy chọn sinh viên và học kỳ để xem điểm.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                       return;
+                   }
+
+                   // Gọi hàm để lấy dữ liệu
+                   var data = cls_BangDiem.LayDiemTheoKySinhVien(BD);
+
+                   if (data.Rows.Count > 0)
+                   {
+                       // Hiển thị dữ liệu lên GridView
+                       tbKetQuaHocTap.DataSource = data;
+                   }
+                   else
+                   {
+                       tbKetQuaHocTap.DataSource = null; // Clear dữ liệu nếu không có
+                       MessageBox.Show("Không có dữ liệu điểm cho kỳ học này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                   }
+               }
+               catch (Exception ex)
+               {
+                   MessageBox.Show($"Lỗi khi xem điểm sinh viên theo kỳ: {ex.Message}", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               }
+           }*/
+
         public void ThemKetQuaHocTap()
         {
             try
@@ -174,39 +247,70 @@ namespace A.GiaoDien
             }
         }
 
-
-
-
-
-        private void ChinhSuaKetQuaHocTap()
+        public void ChinhSuaKetQuaHocTap()
         {
             try
             {
-                // Tạo đối tượng BangDiem_ThongTin
-                BangDiem_ThongTin BD = new BangDiem_ThongTin
-                {
-                    MaSinhVien = txtMaSinhVien.Text,
-                    MaMonHoc = cbMonHoc.SelectedValue.ToString(),
-                    MaHocKy = cbHocKy.SelectedValue.ToString()
-                };
-
-                // Gọi phương thức CapNhatDiem để tính toán tự động
-                BD.CapNhatDiem(float.Parse(txtDiemQuaTrinh.Text), float.Parse(txtDiemThi.Text));
-
-                // Cập nhật dữ liệu vào MongoDB
+                BangDiem_ThongTin BD = new BangDiem_ThongTin();
+                BD.MaSinhVien = txtMaSinhVien.Text;
+                BD.MaMonHoc = cbMonHoc.SelectedValue.ToString();
+                BD.MaHocKy = cbHocKy.SelectedValue.ToString();
+                BD.DiemQuaTrinh = float.Parse(txtDiemQuaTrinh.Text);
+                BD.DiemThi = float.Parse(txtDiemThi.Text);
                 cls_BangDiem.UpDateDiemQTVaDiemThi(BD);
-
-                // Thông báo thành công
-                MessageBox.Show($"Cập nhật thành công! Điểm chữ mới: {BD.DiemChu}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Cập nhật lại danh sách
                 XemDiemTheoKySinhVien();
+                ChinhSua = "0";
+                btChinhSua_QLD.Text = "Chỉnh sửa";
+                txtDiemQuaTrinh.Text = "";
+                txtDiemThi.Text = "";
+                btXacNhan_QLD.Enabled = true;
+                txtDiemQuaTrinh.Focus();
+                if (ChucNang.Equals("ChinhSua"))
+                {
+                    if (DuLieu != null)
+                    {
+                        DuLieu(BD);
+                    }
+                    this.Hide();
+                }
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"Lỗi khi cập nhật điểm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi kết nối, bạn hãy kiểm tra lại.", "Thông báo lỗi.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+
+        /*       private void ChinhSuaKetQuaHocTap()
+               {
+                   try
+                   {
+                       // Tạo đối tượng BangDiem_ThongTin
+                       BangDiem_ThongTin BD = new BangDiem_ThongTin
+                       {
+                           MaSinhVien = txtMaSinhVien.Text,
+                           MaMonHoc = cbMonHoc.SelectedValue.ToString(),
+                           MaHocKy = cbHocKy.SelectedValue.ToString()
+                       };
+
+                       // Gọi phương thức CapNhatDiem để tính toán tự động
+                       BD.CapNhatDiem(float.Parse(txtDiemQuaTrinh.Text), float.Parse(txtDiemThi.Text));
+
+                       // Cập nhật dữ liệu vào MongoDB
+                       cls_BangDiem.UpDateDiemQTVaDiemThi(BD);
+
+                       // Thông báo thành công
+                       MessageBox.Show($"Cập nhật thành công! Điểm chữ mới: {BD.DiemChu}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                       // Cập nhật lại danh sách
+                       XemDiemTheoKySinhVien();
+                   }
+                   catch (Exception ex)
+                   {
+                       MessageBox.Show($"Lỗi khi cập nhật điểm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                   }
+               }*/
 
         private void btXacNhan_QLD_Click(object sender, EventArgs e)
         {
@@ -266,8 +370,23 @@ namespace A.GiaoDien
                 DataRow currentRow = (DataRow)source.Current;
                 txtMaSinhVien.Text = currentRow["MaSinhVien"].ToString();
                 txtTenSinhVien.Text = currentRow["TenSinhVien"].ToString();
+
+                // Load dữ liệu điểm của sinh viên hiện tại
+                BangDiem_ThongTin BD = new BangDiem_ThongTin
+                {
+                    MaSinhVien = txtMaSinhVien.Text,
+                    MaHocKy = cbHocKy.SelectedValue.ToString()
+                };
+                tbKetQuaHocTap.DataSource = cls_BangDiem.LayDiemTheoKySinhVien(BD);
+            }
+            else
+            {
+                txtMaSinhVien.Text = "";
+                txtTenSinhVien.Text = "";
+                MessageBox.Show("Lớp học chưa có sinh viên nào.!", "Thông báo.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
+
         string XacNhanXoa = "0";
         int row;
         private void tbKetQuaHocTap_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -280,9 +399,9 @@ namespace A.GiaoDien
                 btXacNhan_QLD.Enabled = false;
                 btChinhSua_QLD.Text = "Lưu lại.";
                 txtDiemQuaTrinh.Focus();
-                txtDiemQuaTrinh.Text = tbKetQuaHocTap.Rows[row].Cells["DiemQuaTrinh"].Value?.ToString();
-                txtDiemThi.Text = tbKetQuaHocTap.Rows[row].Cells["DiemThi"].Value?.ToString();
-                cbMonHoc.SelectedValue = tbKetQuaHocTap.Rows[row].Cells["MaMonHoc"].Value?.ToString();
+                txtDiemQuaTrinh.Text = tbKetQuaHocTap.Rows[row].Cells["colDiemQuaTrinh"].Value?.ToString();
+                txtDiemThi.Text = tbKetQuaHocTap.Rows[row].Cells["colDiemThi"].Value?.ToString();
+                cbMonHoc.SelectedValue = tbKetQuaHocTap.Rows[row].Cells["colMaMonHoc"].Value?.ToString();
             }
         }
         //XÓA KẾT QUẢ HỌC TẬP
